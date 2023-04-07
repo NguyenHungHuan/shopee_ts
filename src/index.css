@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'WenQuanYi Zen Hei', 'Hiragino Sans GB', '儷黑 Pro', 'LiHei Pro',
+    'Heiti TC', 'Microsoft JhengHei UI', 'Microsoft JhengHei', sans-serif;
+}
