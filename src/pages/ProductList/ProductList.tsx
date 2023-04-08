@@ -1,4 +1,5 @@
 import FilterPanel from '~/components/FilterPanel'
+import SortBar from '~/components/SortBar'
 
 export default function ProductList() {
   return (
@@ -8,7 +9,10 @@ export default function ProductList() {
           <div className='w-[190px]'>
             <FilterPanel />
           </div>
-          <div className=''>Product</div>
+          <div className='flex-1'>
+            <SortBar />
+            ProductList
+          </div>
         </div>
       </div>
     </div>
