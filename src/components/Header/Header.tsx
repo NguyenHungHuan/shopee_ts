@@ -3,7 +3,7 @@ import NavHeader from '../NavHeader'
 
 export default function Header() {
   return (
-    <header className='sticky'>
+    <header className='sticky z-10'>
       <NavHeader />
       <div className='bg-orange w-full'>
         <div className='min-w-[1200px] w-[1200px] mx-auto py-4 flex items-center justify-between h-[5.3125rem]'>

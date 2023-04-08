@@ -1,11 +1,13 @@
+import Footer from './components/Footer'
 import Header from './components/Header'
-import Login from './pages/Login'
+import ProductList from './pages/ProductList'
 
 function App() {
   return (
     <div>
-      {/* <Login /> */}
       <Header />
+      <ProductList />
+      <Footer />
     </div>
   )
 }
