@@ -84,7 +84,7 @@ export default function FilterPanel() {
           </div>
           <button
             type='submit'
-            className='bg-orange text-sm w-full mt-5 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase'
+            className='bg-orange hover:bg-[#f05d40] text-sm w-full mt-5 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase'
           >
             Apply
           </button>
@@ -131,7 +131,7 @@ export default function FilterPanel() {
       </div>
       <button
         type='submit'
-        className='bg-orange w-full mt-4 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase text-sm'
+        className='bg-orange hover:bg-[#f05d40] w-full mt-4 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase text-sm'
       >
         Clear all
       </button>

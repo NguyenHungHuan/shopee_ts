@@ -16,7 +16,10 @@ export default function Header() {
           </Link>
           <form className='w-full bg-white rounded-sm shadow flex items-center justify-between p-[3px]'>
             <input placeholder='Searching....' type='text' className='w-full outline-none mr-2 py-1 px-4' />
-            <button type='submit' className='py-[10px] px-6 rounded-sm bg-orange outline-none cursor-pointer'>
+            <button
+              type='submit'
+              className='py-[10px] px-6 rounded-sm bg-orange outline-none cursor-pointer hover:bg-[#f05d40]'
+            >
               <svg height={14} viewBox='0 0 19 19' width={14} className='fill-white'>
                 <g fillRule='evenodd' stroke='none' strokeWidth={1}>
                   <g transform='translate(-1016 -32)'>

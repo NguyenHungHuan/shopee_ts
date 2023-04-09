@@ -208,7 +208,7 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className='pl-[20px] mt-[30px] flex items-center gap-[15px]'>
-            <button className='capitalize text-orange flex items-center justify-center gap-[10px] px-[20px] py-[11px] border border-orange bg-[#ffeee8] shadow-sm rounded-sm'>
+            <button className='capitalize text-orange flex items-center justify-center gap-[10px] px-[20px] py-[11px] border border-orange hover:opacity-80 bg-[#ffeee8] shadow-sm rounded-sm'>
               <svg
                 enableBackground='new 0 0 15 15'
                 viewBox='0 0 15 15'
@@ -234,7 +234,7 @@ export default function ProductDetail() {
               </svg>
               <span>add to cart</span>
             </button>
-            <button className='capitalize text-white px-[20px] py-[12px] bg-orange shadow-sm rounded-sm'>
+            <button className='capitalize text-white px-[20px] py-[12px] bg-orange hover:bg-[#f05d40] shadow-sm rounded-sm'>
               buy now
             </button>
           </div>
