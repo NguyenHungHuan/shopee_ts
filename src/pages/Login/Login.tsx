@@ -1,20 +1,22 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import Input from '~/components/Input'
+import { LoginFormData, loginSchema } from '~/utils/rulesForm'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-interface FormData {
-  email: string
-  password: string
-}
 const Login = () => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema)
+  })
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit((data: LoginFormData) => {
     console.log(data)
+    reset()
   })
   return (
     <div className='bg-orange'>
