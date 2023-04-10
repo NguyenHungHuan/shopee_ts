@@ -5,9 +5,11 @@ const path = {
   home: '/',
   productDetail: ':nameId',
   cart: '/cart',
+  user: '/user/*',
   profile: '/user/profile',
   changePassword: '/user/password',
-  historyPurchase: '/user/purchase'
+  historyPurchase: '/user/purchase',
+  star: '*'
 }
 
 export default path

@@ -55,7 +55,7 @@ const Register = () => {
               </div>
               <div className='flex items-center justify-center gap-2 mt-6'>
                 <div className='text-[#ccc] text-sm'>New to Shopee? </div>
-                <Link className='text-orange text-sm' to='/'>
+                <Link className='text-orange text-sm' to='/login'>
                   Log In
                 </Link>
               </div>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import NavHeader from '../NavHeader'
+import path from '~/constants/path'
 
 export default function Header() {
   return (
@@ -36,7 +37,7 @@ export default function Header() {
               </svg>
             </button>
           </form>
-          <Link to='/' className='px-8 py-4 mx-8'>
+          <Link to={path.cart} className='px-8 py-4 mx-8'>
             <svg viewBox='0 0 26.6 25.6' className='fill-white w-[26px] h-[26px] stroke-white'>
               <polyline
                 fill='none'

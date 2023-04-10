@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import path from '~/constants/path'
 
 export default function NavHeader() {
   const isAuthenticated = false
@@ -79,10 +80,10 @@ export default function NavHeader() {
             </li>
             {isAuthenticated && (
               <li className='flex items-center'>
-                <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to='/'>
+                <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to={path.register}>
                   Sign Up
                 </Link>
-                <Link className=' px-2 hover:opacity-80' to='/'>
+                <Link className=' px-2 hover:opacity-80' to={path.login}>
                   Login
                 </Link>
               </li>

@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+import { Link, NavLink } from 'react-router-dom'
+import path from '~/constants/path'
 
 export default function UserSideNav() {
   return (
     <div className='flex-shrink-0 w-[180px]'>
       <div className='flex items-center gap-[15px] py-[15px] border-b border-gray-200'>
-        <Link to='/' className='w-12 h-12 rounded-full overflow-hidden border border-gray-400'>
+        <Link to={path.profile} className='w-12 h-12 rounded-full overflow-hidden border border-gray-400'>
           <img
             className='h-full w-full object-cover'
             src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
@@ -13,7 +15,7 @@ export default function UserSideNav() {
         </Link>
         <div className='text-sm'>
           <div className='font-bold'>nhhuaan</div>
-          <Link to='/' className='flex items-center text-gray-400'>
+          <Link to={path.profile} className='flex items-center text-gray-400'>
             <svg
               width={12}
               height={12}
@@ -32,15 +34,31 @@ export default function UserSideNav() {
         </div>
       </div>
       <div className='mt-[27px]'>
-        <Link to='/' className='flex items-center gap-[10px] mb-4 text-sm text-orange hover:text-orange'>
+        <NavLink
+          to={path.profile}
+          className={({ isActive }) =>
+            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+              'text-orange': isActive,
+              'text-black': !isActive
+            })
+          }
+        >
           <img
             className='w-5 h-5'
             src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
             alt='icon'
           />
           My Account
-        </Link>
-        <Link to='/' className='flex items-center gap-[10px] mb-4 text-sm hover:text-orange'>
+        </NavLink>
+        <NavLink
+          to={path.changePassword}
+          className={({ isActive }) =>
+            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+              'text-orange': isActive,
+              'text-black': !isActive
+            })
+          }
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -56,15 +74,23 @@ export default function UserSideNav() {
             />
           </svg>
           Change Password
-        </Link>
-        <Link to='/' className='flex items-center gap-[10px] mb-4 text-sm hover:text-orange'>
+        </NavLink>
+        <NavLink
+          to={path.historyPurchase}
+          className={({ isActive }) =>
+            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+              'text-orange': isActive,
+              'text-black': !isActive
+            })
+          }
+        >
           <img
             className='w-5 h-5'
             src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
             alt='icon'
           />
           My Purchase
-        </Link>
+        </NavLink>
       </div>
     </div>
   )

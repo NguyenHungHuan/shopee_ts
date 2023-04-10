@@ -1,7 +1,5 @@
+import { Outlet } from 'react-router-dom'
 import UserSideNav from '../../Components/UserSideNav'
-import ChangePassword from '../../pages/ChangePassword'
-import HistoryPurchase from '../../pages/HistoryPurchase/HistoryPurchase'
-import Profile from '../../pages/Profile'
 
 export default function UserLayout() {
   return (
@@ -10,9 +8,7 @@ export default function UserLayout() {
         <div className='flex gap-[27px]'>
           <UserSideNav />
           <div className='flex-1'>
-            <Profile />
-            {/* <ChangePassword /> */}
-            {/* <HistoryPurchase /> */}
+            <Outlet />
           </div>
         </div>
       </div>
