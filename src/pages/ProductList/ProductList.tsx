@@ -5,7 +5,7 @@ import SortBar from '~/components/SortBar'
 export default function ProductList() {
   return (
     <div className='pt-10 pb-[60px] bg-[#f5f5f5] border-b-4 border-b-orange'>
-      <div className='min-w-[1200px] w-[1200px] mx-auto'>
+      <div className='container'>
         <div className='flex gap-5'>
           <div className='w-[190px]'>
             <FilterPanel />

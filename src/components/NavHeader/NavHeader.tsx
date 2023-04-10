@@ -5,7 +5,7 @@ export default function NavHeader() {
   const isAuthenticated = false
   return (
     <div className='bg-orange h-[2.125rem] flex items-center px-20'>
-      <nav className='min-w-[1200px] w-[1200px] mx-auto'>
+      <nav className='container'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center text-white'>
             <Link to='/' className='text-[13px] hover:opacity-80 pr-2 border-r border-r-white/50'>
@@ -78,7 +78,7 @@ export default function NavHeader() {
                 </svg>
               </Link>
             </li>
-            {isAuthenticated && (
+            {!isAuthenticated && (
               <li className='flex items-center'>
                 <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to={path.register}>
                   Sign Up

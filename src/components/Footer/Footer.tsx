@@ -77,7 +77,7 @@ export default function Footer() {
   return (
     <footer className='bg-[#f5f5f5]'>
       <div className='bg-[#fbfbfb]'>
-        <div className='min-w-[1210px] w-[1200px] mx-auto px-20 pt-[60px]'>
+        <div className='container pt-[60px]'>
           <div className='grid grid-cols-5 gap-4 pb-[30px] border-b border-b-gray-300'>
             <div className='col-span-1 text-left'>
               <div className='text-sm font-bold text-black/70'>CUSTOMER SERVICE</div>
@@ -178,7 +178,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className='min-w-[1200px] w-[1200px] mx-auto px-20 py-10'>
+      <div className='container py-10'>
         <div className='flex items-center justify-center mb-10'>
           <Link to='/' className='text-[#000000a6] text-xs px-[25px] border-r border-r-gray-400/80'>
             PRIVACY POLICY

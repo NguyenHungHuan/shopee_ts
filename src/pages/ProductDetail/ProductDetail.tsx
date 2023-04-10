@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export default function ProductDetail() {
   return (
     <div className='pt-10 pb-[60px] bg-[#f5f5f5] border-b-4 border-b-orange'>
-      <div className='min-w-[1200px] w-[1200px] mx-auto flex shadow bg-white rounded-[3px]'>
+      <div className='container flex shadow bg-white rounded-[3px]'>
         <div className='p-[15px] w-[480px]'>
           <div className='relative pt-[100%] w-full'>
             <img
@@ -253,7 +253,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className='min-w-[1200px] w-[1200px] mx-auto shadow bg-white rounded-[3px] mt-[15px] p-[25px]'>
+      <div className='container shadow bg-white rounded-[3px] mt-[15px] p-[25px]'>
         <div className='bg-[#fafafa] p-[14px] text-lg capitalize'>Product Description</div>
         <div className='mt-[30px] m-[15px] text-sm whitespace-pre-wrap leading-loose'>
           <p className='irIKAp'>Đặc điểm:</p>
@@ -321,7 +321,7 @@ export default function ProductDetail() {
           </p>
         </div>
       </div>
-      <div className='min-w-[1200px] w-[1200px] mx-auto'>
+      <div className='container'>
         <div className='text-gray-500 uppercase text-base mt-9'>YOU MAY ALSO LIKE</div>
         <div className='grid grid-cols-6 gap-3 mt-5'>
           {Array(18)

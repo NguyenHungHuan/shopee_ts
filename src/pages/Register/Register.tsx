@@ -1,40 +1,57 @@
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import Input from '~/components/Input'
 
+interface FormData {
+  email: string
+  password: string
+  confirm_password: string
+}
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>()
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+  })
   return (
     <div className='bg-orange'>
-      <div className='min-w-[1200px] w-[1200px] mx-auto px-20'>
+      <div className='container'>
         <div className='grid grid-cols-5 py-[80px]'>
           <div className='col-start-4 col-span-2'>
-            <form className='w-[400px] min-h-[462px] p-[30px] bg-[#fff] shadow-lg rounded' noValidate>
+            <form
+              onSubmit={onSubmit}
+              className='w-[400px] min-h-[462px] p-[30px] bg-[#fff] shadow-lg rounded'
+              noValidate
+            >
               <div className='text-[20px]'>Register</div>
-              <div className='mt-8'>
-                <input
-                  type='text'
-                  placeholder='Phone number / Username / Email'
-                  className='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
-                  name='email'
-                />
-                <div className='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'></div>
-              </div>
-              <div className='mt-3'>
-                <input
-                  type='password'
-                  placeholder='Password'
-                  className='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
-                  name='password'
-                />
-                <div className='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'></div>
-              </div>
-              <div className='mt-3'>
-                <input
-                  type='password'
-                  placeholder='Confirm your password'
-                  className='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
-                  name='confirm_password'
-                />
-                <div className='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'></div>
-              </div>
+              <Input
+                className='mt-8'
+                name='email'
+                register={register}
+                type='email'
+                placeholder='Email'
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                className='mt-3'
+                name='password'
+                register={register}
+                type='password'
+                placeholder='Password'
+                errorMessage={errors.password?.message}
+              />
+              <Input
+                className='mt-3'
+                name='confirm_password'
+                register={register}
+                type='password'
+                placeholder='Confirm your password'
+                errorMessage={errors.confirm_password?.message}
+              />
               <button type='submit' className='w-full mt-3 bg-orange/80 hover:bg-orange text-[#fff] py-2 px-4'>
                 SIGN UP
               </button>

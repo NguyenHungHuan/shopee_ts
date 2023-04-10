@@ -4,7 +4,7 @@ import path from '~/constants/path'
 export default function RegisterHeader() {
   const isLoginPage = useMatch(path.login)
   return (
-    <nav className='bg-white min-w-[1200px] w-[1200px] mx-auto px-20 py-5'>
+    <nav className='bg-white container py-5'>
       <div className='flex items-center justify-between'>
         <div className='flex gap-4 items-end'>
           <Link to='/' className=''>

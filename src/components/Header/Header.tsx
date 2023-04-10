@@ -7,7 +7,7 @@ export default function Header() {
     <header className='sticky z-10'>
       <NavHeader />
       <div className='bg-orange w-full'>
-        <div className='min-w-[1200px] w-[1200px] mx-auto py-4 flex items-center justify-between h-[5.3125rem]'>
+        <div className='container py-4 flex items-center justify-between h-[5.3125rem]'>
           <Link to='/' className='pr-10'>
             <svg viewBox='0 0 192 65' className='w-[162px] h-[50px] fill-white'>
               <g fillRule='evenodd'>

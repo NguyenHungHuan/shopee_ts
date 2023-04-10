@@ -7,7 +7,7 @@ export default function CartHeader() {
     <header className='sticky z-10'>
       <NavHeader />
       <div className='bg-white w-full border-b'>
-        <div className='min-w-[1200px] w-[1200px] mx-auto py-4 flex items-center justify-between h-[100px]'>
+        <div className='container py-4 flex items-center justify-between h-[100px]'>
           <div className='flex-1 flex items-end pl-4'>
             <Link to='/'>
               <svg viewBox='0 0 192 65' className='w-[130px] h-[46px] fill-orange'>
