@@ -3,20 +3,48 @@ import { Link } from 'react-router-dom'
 import Input from '~/components/Input'
 import { FormData, schema } from '~/utils/rulesForm'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query'
+import AuthApi from '~/apis/authApi'
+import omit from 'lodash/omit'
+import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import { errorResponse } from '~/types/utils.type'
 
 const Register = () => {
   const {
     register,
     reset,
+    setError,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
 
+  const registerAccountMutation = useMutation({
+    mutationFn: (data: Omit<FormData, 'confirm_password'>) => AuthApi.register(data)
+  })
+
   const onSubmit = handleSubmit((data: FormData) => {
-    console.log(data)
-    reset()
+    const body = omit(data, ['confirm_password'])
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+        reset()
+      },
+      onError: (error) => {
+        if (isAxiosErrorUnprocessableEntity<errorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof Omit<FormData, 'confirm_password'>, {
+                message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+                type: 'Server'
+              })
+            })
+          }
+        }
+      }
+    })
   })
   return (
     <div className='bg-orange'>

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import HttpStatusCode from '~/constants/HttpStatusCode'
 
 const axiosClients = axios.create({
   baseURL: 'https://api-ecom.duthanhduoc.com/',
@@ -6,7 +8,7 @@ const axiosClients = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-axios.interceptors.request.use(
+axiosClients.interceptors.request.use(
   function (config) {
     return config
   },
@@ -15,11 +17,18 @@ axios.interceptors.request.use(
   }
 )
 
-axios.interceptors.response.use(
+axiosClients.interceptors.response.use(
   function (response) {
     return response.data
   },
   function (error) {
+    const { status, data } = error.response
+    if (status !== HttpStatusCode.UnprocessableEntity) {
+      const message = data.message || error.message
+      toast.error(message, {
+        autoClose: 3000
+      })
+    }
     return Promise.reject(error)
   }
 )

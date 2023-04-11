@@ -1,16 +1,16 @@
 import path from '~/constants/path'
-import axiosClients from './axiosClients'
 import { authResponse } from '~/types/auth.type'
-import { FormData, LoginFormData } from '~/utils/rulesForm'
+import { LoginFormData } from '~/utils/rulesForm'
+import axiosClients from './axiosClients'
 
 const AuthApi = {
   login(data: LoginFormData) {
     const url = path.login
-    axiosClients.post<authResponse>(url, data)
+    return axiosClients.post<authResponse>(url, data)
   },
-  register(data: FormData) {
+  register(data: LoginFormData) {
     const url = path.register
-    axiosClients.post<authResponse>(url, data)
+    return axiosClients.post<authResponse>(url, data)
   }
 }
 

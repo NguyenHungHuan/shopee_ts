@@ -3,20 +3,46 @@ import { Link } from 'react-router-dom'
 import Input from '~/components/Input'
 import { LoginFormData, loginSchema } from '~/utils/rulesForm'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query'
+import AuthApi from '~/apis/authApi'
+import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import { errorResponse } from '~/types/utils.type'
 
 const Login = () => {
   const {
     register,
     reset,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema)
   })
 
+  const loginAccountMutation = useMutation({
+    mutationFn: (data: LoginFormData) => AuthApi.login(data)
+  })
+
   const onSubmit = handleSubmit((data: LoginFormData) => {
-    console.log(data)
-    reset()
+    loginAccountMutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data)
+        reset()
+      },
+      onError: (error) => {
+        if (isAxiosErrorUnprocessableEntity<errorResponse<LoginFormData>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof LoginFormData, {
+                message: formError[key as keyof LoginFormData],
+                type: 'Server'
+              })
+            })
+          }
+        }
+      }
+    })
   })
   return (
     <div className='bg-orange'>
