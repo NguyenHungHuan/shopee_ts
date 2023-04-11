@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import NavHeader from '../NavHeader'
 import path from '~/constants/path'
+import Popover from '../Popover'
 
 export default function Header() {
   return (
@@ -37,20 +38,50 @@ export default function Header() {
               </svg>
             </button>
           </form>
-          <Link to={path.cart} className='px-8 py-4 mx-8'>
-            <svg viewBox='0 0 26.6 25.6' className='fill-white w-[26px] h-[26px] stroke-white'>
-              <polyline
-                fill='none'
-                points='2 1.7 5.5 1.7 9.6 18.3 21.2 18.3 24.6 6.1 7 6.1'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeMiterlimit={10}
-                strokeWidth='2.5'
-              />
-              <circle cx='10.7' cy={23} r='2.2' stroke='none' />
-              <circle cx='19.7' cy={23} r='2.2' stroke='none' />
-            </svg>
-          </Link>
+          <Popover
+            renderPopover={
+              <div className='bg-white rounded-sm shadow-sm border border-t-0 w-[25rem] text-sm'>
+                <div className='p-[10px] text-gray-400 capitalize'>recently added products</div>
+                {Array(5)
+                  .fill(0)
+                  .map((product, index) => (
+                    <div key={index} className='p-[10px] flex items-start gap-2 hover:bg-gray-100'>
+                      <img
+                        className='flex-shrink-0 object-cover w-[42px] h-[42px]'
+                        src='https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
+                        alt='product'
+                      />
+                      <div className='text-black line-clamp-1'>
+                        Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS Max XR 6
+                        6s 7 8 Plus SE2020
+                      </div>
+                      <div className='text-orange ml-8'>₫327.000</div>
+                    </div>
+                  ))}
+
+                <div className='p-[10px] flex items-center justify-end'>
+                  <Link className='text-white bg-orange capitalize px-[15px] py-[7px]' to={path.cart}>
+                    View My Shopping Cart
+                  </Link>
+                </div>
+              </div>
+            }
+          >
+            <Link className='px-8 py-4 mx-8 block' to={path.cart}>
+              <svg viewBox='0 0 26.6 25.6' className='fill-white w-[26px] h-[26px] stroke-white'>
+                <polyline
+                  fill='none'
+                  points='2 1.7 5.5 1.7 9.6 18.3 21.2 18.3 24.6 6.1 7 6.1'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeMiterlimit={10}
+                  strokeWidth='2.5'
+                />
+                <circle cx='10.7' cy={23} r='2.2' stroke='none' />
+                <circle cx='19.7' cy={23} r='2.2' stroke='none' />
+              </svg>
+            </Link>
+          </Popover>
         </div>
       </div>
     </header>
