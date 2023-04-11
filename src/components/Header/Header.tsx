@@ -4,7 +4,7 @@ import path from '~/constants/path'
 
 export default function Header() {
   return (
-    <header className='sticky z-10'>
+    <header className='sticky z-10 inset-0'>
       <NavHeader />
       <div className='bg-orange w-full'>
         <div className='container py-4 flex items-center justify-between h-[5.3125rem]'>

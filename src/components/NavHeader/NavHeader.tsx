@@ -1,20 +1,58 @@
 import { Link } from 'react-router-dom'
 import path from '~/constants/path'
+import Popover from '../Popover'
 
 export default function NavHeader() {
   const isAuthenticated = false
+
   return (
-    <div className='bg-orange h-[2.125rem] flex items-center px-20'>
+    <div className='bg-orange h-[2.125rem] flex items-center'>
       <nav className='container'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center text-white'>
             <Link to='/' className='text-[13px] hover:opacity-80 pr-2 border-r border-r-white/50'>
               Seller Center
             </Link>
-            <Link to='/' className='text-[13px] hover:opacity-80 px-2 border-r border-r-white/50'>
-              Download
-            </Link>
-            <span className='text-[13px] px-2'>Follow us on</span>
+            <Popover
+              isArrow={false}
+              placement='bottom-start'
+              renderPopover={
+                <div className='bg-white w-[11.25rem] rounded-sm shadow-sm border'>
+                  <img
+                    src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/d91264e165ed6facc6178994d5afae79.png'
+                    alt='download_qr_code'
+                    className='w-[180px] h-[180px]'
+                  />
+                  <div className='px-[15px] pb-3 flex flex-wrap justify-between items-center gap-2'>
+                    <div className='w-[70px] mt-[5px]'>
+                      <img
+                        className='w-full'
+                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/39f189e19764dab688d3850742f13718.png'
+                        alt='App Store'
+                      />
+                    </div>
+                    <div className='w-[70px] mt-[5px]'>
+                      <img
+                        className='w-full'
+                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/f4f5426ce757aea491dce94201560583.png'
+                        alt='Play Store'
+                      />
+                    </div>
+                    <div className='w-[70px] mt-[5px]'>
+                      <img
+                        className='w-full'
+                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/1ae215920a31f2fc75b00d4ee9ae8551.png'
+                        alt='App Gallery'
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+              className='text-[13px] px-2 py-4 hover:text-white/80'
+            >
+              <Link to='/'>Download</Link>
+            </Popover>
+            <span className='text-[13px] px-2 border-l border-l-white/50'>Follow us on</span>
             <div className='flex items-center gap-2'>
               <Link
                 to='/'
@@ -50,35 +88,42 @@ export default function NavHeader() {
                 <span>Help</span>
               </Link>
             </li>
-            <li>
-              <Link to='/' className='flex items-center py-2 gap-1 hover:opacity-80'>
-                <svg width={16} height={16} viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path
-                    d='M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path
-                    d='M5.33464 8.00004C5.33464 11.6819 6.52854 14.6667 8.0013 14.6667C9.47406 14.6667 10.668 11.6819 10.668 8.00004C10.668 4.31814 9.47406 1.33337 8.0013 1.33337C6.52854 1.33337 5.33464 4.31814 5.33464 8.00004Z'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path d='M1.33398 8H14.6673' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' />
-                </svg>
-                <span>English</span>
-                <svg viewBox='0 0 12 12' fill='none' width={12} height={12} color='currentColor'>
-                  <path
-                    fillRule='evenodd'
-                    clipRule='evenodd'
-                    d='M6 8.146L11.146 3l.707.707-5.146 5.147a1 1 0 01-1.414 0L.146 3.707.854 3 6 8.146z'
-                    fill='currentColor'
-                  />
-                </svg>
-              </Link>
-            </li>
-            {!isAuthenticated && (
+            <Popover
+              renderPopover={
+                <div className='bg-white min-w-[200px] rounded-sm shadow-sm text-black flex flex-col text-left text-base border border-t-0'>
+                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>English</button>
+                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>Việt Nam</button>
+                </div>
+              }
+              as={'li'}
+              className='flex items-center py-4 gap-1 hover:cursor-pointer hover:text-white/80'
+            >
+              <svg width={16} height={16} viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                <path
+                  d='M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z'
+                  stroke='currentColor'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
+                <path
+                  d='M5.33464 8.00004C5.33464 11.6819 6.52854 14.6667 8.0013 14.6667C9.47406 14.6667 10.668 11.6819 10.668 8.00004C10.668 4.31814 9.47406 1.33337 8.0013 1.33337C6.52854 1.33337 5.33464 4.31814 5.33464 8.00004Z'
+                  stroke='currentColor'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
+                <path d='M1.33398 8H14.6673' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' />
+              </svg>
+              <span>English</span>
+              <svg viewBox='0 0 12 12' fill='none' width={12} height={12} color='currentColor'>
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M6 8.146L11.146 3l.707.707-5.146 5.147a1 1 0 01-1.414 0L.146 3.707.854 3 6 8.146z'
+                  fill='currentColor'
+                />
+              </svg>
+            </Popover>
+            {isAuthenticated && (
               <li className='flex items-center'>
                 <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to={path.register}>
                   Sign Up
@@ -89,14 +134,28 @@ export default function NavHeader() {
               </li>
             )}
             {!isAuthenticated && (
-              <li className='flex p-2 items-center gap-1 cursor-pointer hover:opacity-80'>
+              <Popover
+                as={'li'}
+                className='flex py-4 items-center gap-1 cursor-pointer hover:text-white/80'
+                renderPopover={
+                  <div className='bg-white min-w-[150px] rounded-sm shadow-sm text-black flex flex-col text-left text-base border border-t-0'>
+                    <Link to={path.profile} className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100'>
+                      My Profile
+                    </Link>
+                    <Link to={path.cart} className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100'>
+                      My Cart
+                    </Link>
+                    <button className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100 text-left'>Logout</button>
+                  </div>
+                }
+              >
                 <img
                   className='w-[20px] h-[20px] object-cover rounded-full'
                   src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
                   alt='avatar'
                 />
                 <span>nhhuaan</span>
-              </li>
+              </Popover>
             )}
           </ul>
         </div>
