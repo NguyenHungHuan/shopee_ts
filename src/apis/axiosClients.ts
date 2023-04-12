@@ -3,8 +3,7 @@ import { toast } from 'react-toastify'
 import HttpStatusCode from '~/constants/HttpStatusCode'
 import path from '~/constants/path'
 import { authResponse } from '~/types/auth.type'
-import { getAccessTokenToLS } from '~/utils/auth'
-import { clearAccessTokenToLS, setAccessTokenToLS } from '~/utils/auth'
+import { clearLS, getAccessTokenToLS, setAccessTokenToLS, setProfileToLS } from '~/utils/auth'
 
 const axiosClients = axios.create({
   baseURL: 'https://api-ecom.duthanhduoc.com/',
@@ -28,15 +27,17 @@ axiosClients.interceptors.request.use(
 
 axiosClients.interceptors.response.use(
   function (response) {
-    const { config } = response
-    if (config.url === path.login || path.register) {
-      const accessToken = (response.data as authResponse).data.access_token
+    const { url } = response.config
+    if (url === path.login || url === path.register) {
+      const data = response.data as authResponse
+      const accessToken = data.data.access_token
       setAccessTokenToLS(accessToken)
+      setProfileToLS(data.data.user)
     }
-    if (config.url === path.logout) {
-      return clearAccessTokenToLS()
+    if (url === path.logout) {
+      clearLS()
     }
-    return response.data
+    return response
   },
   function (error) {
     const { status, data } = error.response

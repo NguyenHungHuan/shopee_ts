@@ -1,20 +1,20 @@
-import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
-import Input from '~/components/Input'
-import { LoginFormData, loginSchema } from '~/utils/rulesForm'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation } from 'react-query'
-import AuthApi from '~/apis/authApi'
-import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
-import { errorResponse } from '~/types/utils.type'
 import { useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import { Link, useNavigate } from 'react-router-dom'
+import AuthApi from '~/apis/authApi'
+import Button from '~/components/Button'
 import { AppContext } from '~/components/Contexts/app.context'
+import Input from '~/components/Input'
 import path from '~/constants/path'
+import { errorResponse } from '~/types/utils.type'
+import { LoginFormData, loginSchema } from '~/utils/rulesForm'
+import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 
 const Login = () => {
   const {
     register,
-    reset,
     handleSubmit,
     setError,
     formState: { errors }
@@ -22,18 +22,17 @@ const Login = () => {
     resolver: yupResolver(loginSchema)
   })
   const navigate = useNavigate()
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
 
   const loginAccountMutation = useMutation({
     mutationFn: (data: LoginFormData) => AuthApi.login(data)
   })
 
-  const onSubmit = handleSubmit((data: LoginFormData) => {
+  const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
       onSuccess: (data) => {
-        console.log(data)
-        reset()
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate(path.home)
       },
       onError: (error) => {
@@ -80,12 +79,14 @@ const Login = () => {
                 name='password'
                 register={register}
               />
-              <button
+              <Button
+                disabled={loginAccountMutation.isLoading}
+                isLoading={loginAccountMutation.isLoading}
                 type='submit'
-                className='w-full mt-3 bg-orange/80 hover:bg-orange text-[#fff] py-2 px-4'
+                className='w-full mt-3 bg-orange/90 hover:bg-orange text-[#fff] py-2 px-4 flex items-center justify-center'
               >
                 LOG IN
-              </button>
+              </Button>
               <div className='flex items-center mt-8'>
                 <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
                 <div className='text-xs text-[#ccc] px-4'>OR</div>

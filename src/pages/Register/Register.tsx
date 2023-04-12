@@ -11,6 +11,7 @@ import { errorResponse } from '~/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from '~/components/Contexts/app.context'
 import path from '~/constants/path'
+import Button from '~/components/Button'
 
 const Register = () => {
   const {
@@ -23,7 +24,7 @@ const Register = () => {
     resolver: yupResolver(schema)
   })
   const navigate = useNavigate()
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
 
   const registerAccountMutation = useMutation({
     mutationFn: (data: Omit<FormData, 'confirm_password'>) => AuthApi.register(data)
@@ -33,9 +34,9 @@ const Register = () => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
-        console.log(data)
         reset()
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate(path.home)
       },
       onError: (error) => {
@@ -88,12 +89,14 @@ const Register = () => {
                 placeholder='Confirm your password'
                 errorMessage={errors.confirm_password?.message}
               />
-              <button
+              <Button
+                disabled={registerAccountMutation.isLoading}
+                isLoading={registerAccountMutation.isLoading}
                 type='submit'
-                className='w-full mt-3 bg-orange/80 hover:bg-orange text-[#fff] py-2 px-4'
+                className='w-full mt-3 bg-orange/90 hover:bg-orange text-[#fff] py-2 px-4'
               >
                 SIGN UP
-              </button>
+              </Button>
               <div className='flex items-center mt-8'>
                 <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
                 <div className='text-xs text-[#ccc] px-4'>OR</div>
