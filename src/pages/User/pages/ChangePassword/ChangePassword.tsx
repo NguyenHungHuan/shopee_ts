@@ -5,7 +5,9 @@ export default function ChangePassword() {
     <div className='px-[30px] py-[18px] bg-white shadow rounded-sm'>
       <div className='pb-[18px] border-b border-b-gray-200'>
         <h1 className='text-lg font-medium'>Change Password</h1>
-        <div className='text-sm'>For your account&apos;s security, do not share your password with anyone else</div>
+        <div className='text-sm'>
+          For your account&apos;s security, do not share your password with anyone else
+        </div>
       </div>
       <form className='pt-[30px] flex text-sm'>
         <div className='flex-1 pr-[50px]'>

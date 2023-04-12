@@ -1,9 +1,26 @@
 import { Link } from 'react-router-dom'
 import path from '~/constants/path'
 import Popover from '../Popover'
+import { useMutation } from 'react-query'
+import AuthApi from '~/apis/authApi'
+import { useContext } from 'react'
+import { AppContext } from '../Contexts/app.context'
+import { toast } from 'react-toastify'
 
 export default function NavHeader() {
-  const isAuthenticated = false
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const logoutMutation = useMutation({
+    mutationFn: () => AuthApi.logout(),
+    onSuccess: () => {
+      setIsAuthenticated(false)
+    },
+    onError: (error) => {
+      toast.error(error as string)
+    }
+  })
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
 
   return (
     <div className='bg-orange h-[2.125rem] flex items-center'>
@@ -76,7 +93,12 @@ export default function NavHeader() {
             </li>
             <li>
               <Link to='/' className='flex items-center py-2 gap-1 hover:opacity-80'>
-                <svg height={16} viewBox='0 0 16 16' width={16} className='fill-white w-[1.125rem] h-[1.125rem]'>
+                <svg
+                  height={16}
+                  viewBox='0 0 16 16'
+                  width={16}
+                  className='fill-white w-[1.125rem] h-[1.125rem]'
+                >
                   <g fill='none' fillRule='evenodd' transform='translate(1)'>
                     <circle cx={7} cy={8} r={7} stroke='currentColor' />
                     <path
@@ -91,8 +113,12 @@ export default function NavHeader() {
             <Popover
               renderPopover={
                 <div className='bg-white min-w-[200px] rounded-sm shadow-sm text-black flex flex-col text-left text-base border border-t-0'>
-                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>English</button>
-                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>Việt Nam</button>
+                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>
+                    English
+                  </button>
+                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>
+                    Việt Nam
+                  </button>
                 </div>
               }
               as={'li'}
@@ -111,7 +137,12 @@ export default function NavHeader() {
                   strokeLinecap='round'
                   strokeLinejoin='round'
                 />
-                <path d='M1.33398 8H14.6673' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' />
+                <path
+                  d='M1.33398 8H14.6673'
+                  stroke='currentColor'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
               </svg>
               <span>English</span>
               <svg viewBox='0 0 12 12' fill='none' width={12} height={12} color='currentColor'>
@@ -123,7 +154,7 @@ export default function NavHeader() {
                 />
               </svg>
             </Popover>
-            {isAuthenticated && (
+            {!isAuthenticated && (
               <li className='flex items-center'>
                 <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to={path.register}>
                   Sign Up
@@ -133,7 +164,7 @@ export default function NavHeader() {
                 </Link>
               </li>
             )}
-            {!isAuthenticated && (
+            {isAuthenticated && (
               <Popover
                 as={'li'}
                 className='flex py-4 items-center gap-1 cursor-pointer hover:text-white/80'
@@ -145,7 +176,12 @@ export default function NavHeader() {
                     <Link to={path.cart} className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100'>
                       My Cart
                     </Link>
-                    <button className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100 text-left'>Logout</button>
+                    <button
+                      onClick={handleLogout}
+                      className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100 text-left'
+                    >
+                      Logout
+                    </button>
                   </div>
                 }
               >

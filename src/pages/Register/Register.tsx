@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from '~/components/Input'
 import { FormData, schema } from '~/utils/rulesForm'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,6 +8,9 @@ import AuthApi from '~/apis/authApi'
 import omit from 'lodash/omit'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { errorResponse } from '~/types/utils.type'
+import { useContext } from 'react'
+import { AppContext } from '~/components/Contexts/app.context'
+import path from '~/constants/path'
 
 const Register = () => {
   const {
@@ -19,6 +22,8 @@ const Register = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
+  const navigate = useNavigate()
+  const { setIsAuthenticated } = useContext(AppContext)
 
   const registerAccountMutation = useMutation({
     mutationFn: (data: Omit<FormData, 'confirm_password'>) => AuthApi.register(data)
@@ -30,6 +35,8 @@ const Register = () => {
       onSuccess: (data) => {
         console.log(data)
         reset()
+        setIsAuthenticated(true)
+        navigate(path.home)
       },
       onError: (error) => {
         if (isAxiosErrorUnprocessableEntity<errorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
@@ -81,7 +88,10 @@ const Register = () => {
                 placeholder='Confirm your password'
                 errorMessage={errors.confirm_password?.message}
               />
-              <button type='submit' className='w-full mt-3 bg-orange/80 hover:bg-orange text-[#fff] py-2 px-4'>
+              <button
+                type='submit'
+                className='w-full mt-3 bg-orange/80 hover:bg-orange text-[#fff] py-2 px-4'
+              >
                 SIGN UP
               </button>
               <div className='flex items-center mt-8'>

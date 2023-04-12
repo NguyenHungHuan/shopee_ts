@@ -30,8 +30,8 @@ export default function ProductList() {
                     </div>
                     <div className='p-2'>
                       <div className='text-xs line-clamp-2'>
-                        Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS Max XR 6
-                        6s 7 8 Plus SE2020
+                        Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS
+                        Max XR 6 6s 7 8 Plus SE2020
                       </div>
                       <div className='flex items-center gap-1 mt-2'>
                         <div className='flex items-end text-gray-400 line-through text-sm'>

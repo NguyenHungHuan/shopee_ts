@@ -26,12 +26,24 @@ export default function ProductDetail() {
                 </div>
               ))}
             <button className='absolute py-[10px] left-0 top-[50%] translate-y-[-50%] outline-none'>
-              <svg enableBackground='new 0 0 13 20' viewBox='0 0 13 20' x={0} y={0} className='fill-white w-5 h-5'>
+              <svg
+                enableBackground='new 0 0 13 20'
+                viewBox='0 0 13 20'
+                x={0}
+                y={0}
+                className='fill-white w-5 h-5'
+              >
                 <polygon points='4.2 10 12.1 2.1 10 -.1 1 8.9 -.1 10 1 11 10 20 12.1 17.9' />
               </svg>
             </button>
             <button className='absolute py-[10px] right-0 top-[50%] translate-y-[-50%] outline-none'>
-              <svg enableBackground='new 0 0 13 21' viewBox='0 0 13 21' x={0} y={0} className='fill-white w-5 h-5'>
+              <svg
+                enableBackground='new 0 0 13 21'
+                viewBox='0 0 13 21'
+                x={0}
+                y={0}
+                className='fill-white w-5 h-5'
+              >
                 <polygon points='11.1 9.9 2.1 .9 -.1 3.1 7.9 11 -.1 18.9 2.1 21 11.1 12 12.1 11' />
               </svg>
             </button>
@@ -228,8 +240,24 @@ export default function ProductDetail() {
                     <circle cx={6} cy='13.5' r={1} stroke='none' />
                     <circle cx='11.5' cy='13.5' r={1} stroke='none' />
                   </g>
-                  <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1='7.5' x2='10.5' y1={7} y2={7} />
-                  <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
+                  <line
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeMiterlimit={10}
+                    x1='7.5'
+                    x2='10.5'
+                    y1={7}
+                    y2={7}
+                  />
+                  <line
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeMiterlimit={10}
+                    x1={9}
+                    x2={9}
+                    y1='8.5'
+                    y2='5.5'
+                  />
                 </g>
               </svg>
               <span>add to cart</span>
@@ -260,20 +288,20 @@ export default function ProductDetail() {
           <p className='irIKAp'></p>
           <p className='irIKAp'>【Vỏ Silicone lỏng bền】</p>
           <p className='irIKAp'>
-            Cao su silicone lỏng chất lượng cao, lớp bề mặt mịn.Độ dày được nâng cấp: 2.3mm. (Bình thường chỉ 1,8
-            mm).Chống dấu vân tay, chống xước hiệu suất, bảo vệ chống rơi
+            Cao su silicone lỏng chất lượng cao, lớp bề mặt mịn.Độ dày được nâng cấp: 2.3mm. (Bình thường chỉ
+            1,8 mm).Chống dấu vân tay, chống xước hiệu suất, bảo vệ chống rơi
           </p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>【Hỗ Trợ bộ sạc không dây】</p>
           <p className='irIKAp'>
-            Có THỂ LÀM VIỆC với bộ sạc không dây. Vỏ TPU chất lượng cao tương thích với màn hình vỏ điện thoại iPhone
-            7-12
+            Có THỂ LÀM VIỆC với bộ sạc không dây. Vỏ TPU chất lượng cao tương thích với màn hình vỏ điện thoại
+            iPhone 7-12
           </p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>【Bảo Vệ Toàn thân】</p>
           <p className='irIKAp'>
-            Thiết kế bên ngoài chống va đập 1mm, nâng cao phía trên màn hình một chút, bảo vệ màn hình iphone hoặc
-            camera của bạn bị rơi hoặc đặt úp xuống bề mặt
+            Thiết kế bên ngoài chống va đập 1mm, nâng cao phía trên màn hình một chút, bảo vệ màn hình iphone
+            hoặc camera của bạn bị rơi hoặc đặt úp xuống bề mặt
           </p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>【Nút Xúc giác chính xác】</p>
@@ -283,8 +311,8 @@ export default function ProductDetail() {
           <p className='irIKAp'></p>
           <p className='irIKAp'>【Nhiều Màu để lựa chọn】</p>
           <p className='irIKAp'>
-            Cung cấp cho bạn nhiều màu sắc của vỏ silicone lỏng để lựa chọn, làm cho cuộc sống của bạn trở nên đầy màu
-            sắc hơn
+            Cung cấp cho bạn nhiều màu sắc của vỏ silicone lỏng để lựa chọn, làm cho cuộc sống của bạn trở nên
+            đầy màu sắc hơn
           </p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>Thương hiệu điện thoại tương thích: Apple iPhone</p>
@@ -302,22 +330,25 @@ export default function ProductDetail() {
           <p className='irIKAp'></p>
           <p className='irIKAp'>Ghi chú:</p>
           <p className='irIKAp'>
-            -Do Sự khác biệt giữa các màn hình khác nhau, hình ảnh có thể không phản ánh màu sắc thực tế của sản phẩm.
+            -Do Sự khác biệt giữa các màn hình khác nhau, hình ảnh có thể không phản ánh màu sắc thực tế của
+            sản phẩm.
           </p>
           <p className='irIKAp'>
             -Vui Lòng cho phép sai số nhỏ 1-3 cm do sản phẩm được đo đạc bằng phương pháp thủ công.
           </p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>Dịch vụ của chúng tôi&amp;gt;&amp;gt;&amp;gt;</p>
-          <p className='irIKAp'>1. Vận chuyển nhanh 1-2 ngày + Trả lời nồng nhiệt kịp thời + Thái độ tích cực;</p>
+          <p className='irIKAp'>
+            1. Vận chuyển nhanh 1-2 ngày + Trả lời nồng nhiệt kịp thời + Thái độ tích cực;
+          </p>
           <p className='irIKAp'>2. Nhanh chóng giải quyết vấn đề cho mọi khách hàng;</p>
           <p className='irIKAp'>3. Hỗ trợ dropshipping! Hỗ trợ chọn màu hỗn hợp! Hỗ trợ bán sỉ!</p>
           <p className='irIKAp'></p>
           <p className='irIKAp'>Phản hồi&amp;gt;&amp;gt;&amp;gt;</p>
           <p className='irIKAp'>
-            Chúng tôi phụ thuộc vào sự hài lòng của khách hàng để thành công. Do đó, phản hồi tích cực của bạn và đánh
-            giá 5 sao là cực kỳ quan trọng đối với chúng tôi. Nếu bạn hài lòng với sản phẩm của chúng tôi, xin vui lòng
-            dành một phút đánh giá tích cực cho chúng tôi! Cảm ơn bạn!
+            Chúng tôi phụ thuộc vào sự hài lòng của khách hàng để thành công. Do đó, phản hồi tích cực của bạn
+            và đánh giá 5 sao là cực kỳ quan trọng đối với chúng tôi. Nếu bạn hài lòng với sản phẩm của chúng
+            tôi, xin vui lòng dành một phút đánh giá tích cực cho chúng tôi! Cảm ơn bạn!
           </p>
         </div>
       </div>
@@ -341,8 +372,8 @@ export default function ProductDetail() {
                 </div>
                 <div className='p-2'>
                   <div className='text-xs line-clamp-2'>
-                    Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS Max XR 6 6s 7
-                    8 Plus SE2020
+                    Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS Max
+                    XR 6 6s 7 8 Plus SE2020
                   </div>
                   <div className='flex items-center gap-1 mt-2'>
                     <div className='flex items-end text-gray-400 line-through text-sm'>

@@ -11,6 +11,10 @@ const AuthApi = {
   register(data: LoginFormData) {
     const url = path.register
     return axiosClients.post<authResponse>(url, data)
+  },
+  logout() {
+    const url = path.logout
+    return axiosClients.post(url)
   }
 }
 
