@@ -7,6 +7,7 @@ import FilterPanel from '~/components/FilterPanel'
 import Paginate from '~/components/Paginate'
 import RatingStar from '~/components/RatingStar'
 import SortBar from '~/components/SortBar'
+import { queryParamsDefault } from '~/constants/product'
 import useQueryParams from '~/hooks/useQueryParams'
 import { productListConfig } from '~/types/products.type'
 import { formatPriceNumber, formatSocialNumber } from '~/utils/utils'
@@ -21,14 +22,14 @@ export default function ProductList() {
     {
       category: queryParams.category,
       exclude: queryParams.exclude,
-      page: queryParams.page || '1',
-      limit: queryParams.limit || 5,
+      page: queryParams.page || queryParamsDefault.page,
+      limit: queryParams.limit || queryParamsDefault.limit,
       name: queryParams.name,
+      sort_by: queryParams.sort_by,
       order: queryParams.order,
       price_max: queryParams.price_max,
       price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter,
-      sort_by: queryParams.sort_by
+      rating_filter: queryParams.rating_filter
     },
     isUndefined
   )
@@ -48,7 +49,7 @@ export default function ProductList() {
             <FilterPanel />
           </div>
           <div className='flex-1'>
-            <SortBar />
+            <SortBar queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size as number} />
             <div className='mb-12 mt-4 grid grid-cols-5 gap-[10px] px-[5px]'>
               {productsList?.map((product) => (
                 <Link
