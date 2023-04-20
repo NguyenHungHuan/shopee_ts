@@ -115,7 +115,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
               }}
               key={index}
               className={classNames(
-                'mx-[15px] flex max-w-[40px] justify-center rounded-sm px-[14.5px] py-[1px] outline-none',
+                'mx-[15px] flex max-w-[40px] justify-center rounded-sm px-[14.5px] py-[1px]',
                 {
                   'bg-orange text-white': pageNumber === page
                 }

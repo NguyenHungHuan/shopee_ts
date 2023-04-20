@@ -10,6 +10,10 @@ const productsApi = {
   },
   getProductDetail(id: string) {
     return axiosClients.get<successResponse<product>>(`${url}/${id}`)
+  },
+  getCategories() {
+    const url = path.categories
+    return axiosClients.get<successResponse<product['category'][]>>(url)
   }
 }
 

@@ -20,10 +20,10 @@ export default function ProductList() {
   const queryParams: QueryConfig = useQueryParams()
   const queryConfig: QueryConfig = omitBy(
     {
-      category: queryParams.category,
-      exclude: queryParams.exclude,
       page: queryParams.page || queryParamsDefault.page,
       limit: queryParams.limit || queryParamsDefault.limit,
+      category: queryParams.category,
+      exclude: queryParams.exclude,
       name: queryParams.name,
       sort_by: queryParams.sort_by,
       order: queryParams.order,
@@ -46,7 +46,7 @@ export default function ProductList() {
       <div className='container'>
         <div className='flex gap-5'>
           <div className='w-[190px]'>
-            <FilterPanel />
+            <FilterPanel queryConfig={queryConfig}/>
           </div>
           <div className='flex-1'>
             <SortBar queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size as number} />

@@ -1,10 +1,57 @@
-import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+import { omit } from 'lodash'
+import { useQuery } from 'react-query'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import productsApi from '~/apis/productApi'
+import path from '~/constants/path'
+import { QueryConfig } from '~/pages/ProductList/ProductList'
 
-export default function FilterPanel() {
+interface Props {
+  queryConfig: QueryConfig
+}
+
+export default function FilterPanel({ queryConfig }: Props) {
+  const navigate = useNavigate()
+  const { data } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => productsApi.getCategories()
+  })
+  const categoryList = data?.data.data
+
+  const handleClearFilter = () => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig
+          },
+          ['rating_filter', 'price_max', 'price_min']
+        )
+      ).toString()
+    })
+  }
+
   return (
     <div>
-      <Link to='/' className='flex items-center gap-2 py-4 font-bold border-b border-b-gray-200'>
-        <svg viewBox='0 0 12 10' className='fill-black w-[12px] h-[16px]'>
+      <Link
+        to={{
+          pathname: path.home,
+          search: createSearchParams(
+            omit(
+              {
+                ...queryConfig
+              },
+              ['category']
+            )
+          ).toString()
+        }}
+        className={classNames('flex items-center gap-2 border-b border-b-gray-200 py-4', {
+          'fill-black font-bold': !queryConfig.category,
+          'fill-black/40 font-normal': queryConfig.category
+        })}
+      >
+        <svg viewBox='0 0 12 10' className='h-[16px] w-[12px]'>
           <g fillRule='evenodd' stroke='none' strokeWidth={1}>
             <g transform='translate(-373 -208)'>
               <g transform='translate(155 191)'>
@@ -19,21 +66,38 @@ export default function FilterPanel() {
         </svg>
         <span>All Categories</span>
       </Link>
-      <Link to='/' className='flex items-center gap-2 py-2 pl-3 pr-[10px] text-[14px] font-bold text-orange'>
-        <svg viewBox='0 0 4 7' className='fill-orange w-[4px] h-[7px]'>
-          <polygon points='4 3.5 0 0 0 7' />
-        </svg>
-        Mobile
-      </Link>
-      <Link to='/' className='flex items-center gap-2 py-2 pl-3 pr-[10px] text-[14px] text-black'>
-        Mobile
-      </Link>
-      <Link to='/' className='flex items-center gap-2 py-2 pl-3 pr-[10px] text-[14px] text-black'>
-        Mobile
-      </Link>
-      <div className='mt-[30px] pb-[20px] border-b border-b-gray-300/60'>
+      {categoryList &&
+        categoryList.map((category) => (
+          <Link
+            key={category._id}
+            to={{
+              pathname: path.home,
+              search: createSearchParams({
+                ...queryConfig,
+                category: category._id.toString()
+              }).toString()
+            }}
+            className={classNames('flex items-center gap-2 py-2 pl-3 pr-[10px] text-[14px]', {
+              'font-bold text-orange': queryConfig.category === category._id
+            })}
+          >
+            {queryConfig.category === category._id && (
+              <svg viewBox='0 0 4 7' className='h-[7px] w-[4px] fill-orange'>
+                <polygon points='4 3.5 0 0 0 7' />
+              </svg>
+            )}
+            {category.name}
+          </Link>
+        ))}
+      <div className='mt-[30px] border-b border-b-gray-300/60'>
         <div className='flex items-center gap-2 pb-[20px] font-bold'>
-          <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x={0} y={0} className='stroke-black w-3 h-3'>
+          <svg
+            enableBackground='new 0 0 15 15'
+            viewBox='0 0 15 15'
+            x={0}
+            y={0}
+            className='h-3 w-3 stroke-black'
+          >
             <g>
               <polyline
                 fill='none'
@@ -46,92 +110,104 @@ export default function FilterPanel() {
           </svg>
           <span>SEARCH FILTER</span>
         </div>
-        <div className='text-[14px] mb-2'>By category</div>
-        <div className='py-2'>
-          <input type='checkbox' className='cursor-pointer' id='iphone' />
-          <label htmlFor='iphone' className='pl-2 cursor-pointer'>
-            Iphone
-          </label>
-        </div>
-        <div className='py-2'>
-          <input type='checkbox' className='cursor-pointer' id='iphone' />
-          <label htmlFor='iphone' className='pl-2 cursor-pointer'>
-            Iphone
-          </label>
-        </div>
-        <div className='py-2'>
-          <input type='checkbox' className='cursor-pointer' id='iphone' />
-          <label htmlFor='iphone' className='pl-2 cursor-pointer'>
-            Iphone
-          </label>
-        </div>
       </div>
-      <div className='py-[20px] border-b border-b-gray-300/60'>
-        <div className='text-[14px] mb-4'>Price Range</div>
+      <div className='border-b border-b-gray-300/60 py-[20px]'>
+        <div className='mb-4 text-[14px]'>Price Range</div>
         <form noValidate>
           <div className='flex items-center justify-between'>
             <input
               type='text'
               placeholder='₫ MIN'
-              className='w-[5rem] outline-none border border-gray-400 shadow-inner pl-[5px] py-1 text-[14px]'
+              className='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
             />
-            <div className='flex-1 h-[1px] bg-[#bdbdbd] mx-2'></div>
+            <div className='mx-2 h-[1px] flex-1 bg-[#bdbdbd]'></div>
             <input
               type='text'
               placeholder='₫ MAX'
-              className='w-[5rem] outline-none border border-gray-400 shadow-inner pl-[5px] py-1 text-[14px]'
+              className='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
             />
           </div>
           <button
             type='submit'
-            className='bg-orange hover:bg-[#f05d40] text-sm w-full mt-5 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase'
+            className='mt-5 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
           >
             Apply
           </button>
         </form>
       </div>
-      <div className='py-[20px] border-b border-b-gray-300/80'>
-        <div className='text-[14px] mb-2'>Rating</div>
+      <div className='border-b border-b-gray-300/80 py-[20px]'>
+        <div className='mb-2 text-[14px]'>Rating</div>
         {Array(5)
           .fill(0)
-          .map((rating, index) => (
-            <Link key={index} to='/' className='flex items-center gap-2 pt-2 pl-3.5 pr-[10px] text-[14px] text-black'>
-              {Array(5)
-                .fill(0)
-                .map((star, index) => (
-                  <svg key={index} viewBox='0 0 9.5 8' className='w-[14px] h-[14px]'>
-                    <defs>
-                      <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
-                        <stop offset={0} stopColor='#ffca11' />
-                        <stop offset={1} stopColor='#ffad27' />
-                      </linearGradient>
-                      <polygon
-                        id='ratingStar'
-                        points='14.910357 6.35294118 12.4209136 7.66171903 12.896355 4.88968305 10.8823529 2.92651626 13.6656353 2.52208166 14.910357 0 16.1550787 2.52208166 18.9383611 2.92651626 16.924359 4.88968305 17.3998004 7.66171903'
-                      />
-                    </defs>
-                    <g fill='url(#ratingStarGradient)' fillRule='evenodd' stroke='none' strokeWidth={1}>
-                      <g transform='translate(-876 -1270)'>
-                        <g transform='translate(155 992)'>
-                          <g transform='translate(600 29)'>
-                            <g transform='translate(10 239)'>
-                              <g transform='translate(101 10)'>
-                                <use stroke='#ffa727' strokeWidth='.5' xlinkHref='#ratingStar' />
-                              </g>
-                            </g>
-                          </g>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                ))}
-              & Up
+          .map((_, index) => (
+            <Link
+              key={index}
+              to={{
+                pathname: path.home,
+                search: createSearchParams({
+                  ...queryConfig,
+                  rating_filter: (5 - index).toString()
+                }).toString()
+              }}
+              className='flex items-center gap-2 pl-2 pr-[10px] pt-2 text-[14px] text-black'
+            >
+              <div className='flex items-center gap-[1px]'>
+                {Array(5)
+                  .fill(0)
+                  .map((_, indexStar) => {
+                    if (index < 5 - indexStar) {
+                      return (
+                        <div key={indexStar}>
+                          <svg
+                            enableBackground='new 0 0 15 15'
+                            viewBox='0 0 15 15'
+                            x={0}
+                            y={0}
+                            width={14}
+                            height={14}
+                            fill='#ffce3d'
+                            stroke='#ffce3d'
+                          >
+                            <polygon
+                              points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeMiterlimit={10}
+                            />
+                          </svg>
+                        </div>
+                      )
+                    }
+                    return (
+                      <div key={indexStar}>
+                        <svg
+                          enableBackground='new 0 0 15 15'
+                          viewBox='0 0 15 15'
+                          x={0}
+                          y={0}
+                          width={14}
+                          height={14}
+                          fill='none'
+                          stroke='#ffce3d'
+                        >
+                          <polygon
+                            points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeMiterlimit={10}
+                          />
+                        </svg>
+                      </div>
+                    )
+                  })}
+              </div>
+              {index !== 0 ? '& Up' : ''}
             </Link>
           ))}
       </div>
       <button
-        type='submit'
-        className='bg-orange hover:bg-[#f05d40] w-full mt-4 py-1.5 px-8 text-white rounded-sm shadow-sm uppercase text-sm'
+        onClick={handleClearFilter}
+        className='mt-4 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
       >
         Clear all
       </button>
