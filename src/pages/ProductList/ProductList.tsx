@@ -1,23 +1,47 @@
+import isUndefined from 'lodash/isUndefined'
+import omitBy from 'lodash/omitBy'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import FilterPanel from '~/components/FilterPanel'
+import Paginate from '~/components/Paginate'
 import RatingStar from '~/components/RatingStar'
 import SortBar from '~/components/SortBar'
 import useQueryParams from '~/hooks/useQueryParams'
+import { productListConfig } from '~/types/products.type'
 import { formatPriceNumber, formatSocialNumber } from '~/utils/utils'
 
+export type QueryConfig = {
+  [key in keyof productListConfig]: string
+}
+
 export default function ProductList() {
-  const queryParams = useQueryParams()
+  const queryParams: QueryConfig = useQueryParams()
+  const queryConfig: QueryConfig = omitBy(
+    {
+      category: queryParams.category,
+      exclude: queryParams.exclude,
+      page: queryParams.page || '1',
+      limit: queryParams.limit || 5,
+      name: queryParams.name,
+      order: queryParams.order,
+      price_max: queryParams.price_max,
+      price_min: queryParams.price_min,
+      rating_filter: queryParams.rating_filter,
+      sort_by: queryParams.sort_by
+    },
+    isUndefined
+  )
   const { data, isLoading } = useQuery({
-    queryKey: ['product', queryParams],
-    queryFn: () => productsApi.getProducts(queryParams)
+    queryKey: ['product', queryConfig],
+    keepPreviousData: true,
+    queryFn: () => productsApi.getProducts(queryConfig as productListConfig)
   })
   console.log(data)
   const productsList = data?.data.data.products
 
   return (
-    <div className='pt-10 pb-[60px] bg-[#f5f5f5] border-b-4 border-b-orange'>
+    <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
       <div className='container'>
         <div className='flex gap-5'>
           <div className='w-[190px]'>
@@ -25,24 +49,24 @@ export default function ProductList() {
           </div>
           <div className='flex-1'>
             <SortBar />
-            <div className='grid grid-cols-5 gap-[10px] mt-4 px-[5px]'>
+            <div className='mb-12 mt-4 grid grid-cols-5 gap-[10px] px-[5px]'>
               {productsList?.map((product) => (
                 <Link
                   key={product._id}
                   to='/'
-                  className='transition col-span-1 h-full bg-white rounded-sm shadow hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)] hover:translate-y-[-.0625rem] overflow-hidden'
+                  className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
                 >
-                  <div className='relative pt-[100%] w-full'>
+                  <div className='relative w-full pt-[100%]'>
                     <img
-                      className='absolute top-0 left-0 w-full h-full object-cover'
+                      className='absolute left-0 top-0 h-full w-full object-cover'
                       src={product.image}
                       alt={product.name}
                     />
                   </div>
                   <div className='p-2'>
-                    <div className='text-xs line-clamp-2'>{product.name}</div>
-                    <div className='flex items-center gap-1 mt-2'>
-                      <div className='flex items-end text-gray-400 line-through text-sm'>
+                    <div className='line-clamp-2 text-xs'>{product.name}</div>
+                    <div className='mt-2 flex items-center gap-1'>
+                      <div className='flex items-end text-sm text-gray-400 line-through'>
                         <span>₫</span>
                         <span>{formatPriceNumber(product.price_before_discount)}</span>
                       </div>
@@ -51,7 +75,7 @@ export default function ProductList() {
                         <span className='text-base'>{formatPriceNumber(product.price)}</span>
                       </div>
                     </div>
-                    <div className='flex items-center mt-3 mb-1 gap-1'>
+                    <div className='mb-1 mt-3 flex items-center gap-1'>
                       <RatingStar rating={product.rating} />
                       <span className='text-xs'>{formatSocialNumber(product.sold)} SOLD</span>
                     </div>
@@ -59,6 +83,7 @@ export default function ProductList() {
                 </Link>
               ))}
             </div>
+            <Paginate queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size as number} />
           </div>
         </div>
       </div>
