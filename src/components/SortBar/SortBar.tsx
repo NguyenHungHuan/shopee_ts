@@ -46,19 +46,19 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
       <div className='flex items-center justify-center gap-[10px] text-sm'>
         <span className='mr-1 text-gray-500'>Sort by</span>
         <button
-          onClick={() => handleSort(sortBy.createdAt)}
+          onClick={() => handleSort(sortBy.view)}
           className={classNames('min-w-[90px] rounded-sm px-[21px] py-[7px]  shadow-sm hover:opacity-80', {
-            'bg-orange text-white': isActive(sortBy.createdAt),
-            'bg-white text-black': !isActive(sortBy.createdAt)
+            'bg-orange text-white': isActive(sortBy.view),
+            'bg-white text-black': !isActive(sortBy.view)
           })}
         >
           Popular
         </button>
         <button
-          onClick={() => handleSort(sortBy.view)}
+          onClick={() => handleSort(sortBy.createdAt)}
           className={classNames('min-w-[90px] rounded-sm px-[21px] py-[7px]  shadow-sm hover:opacity-80', {
-            'bg-orange text-white': isActive(sortBy.view),
-            'bg-white text-black': !isActive(sortBy.view)
+            'bg-orange text-white': isActive(sortBy.createdAt),
+            'bg-white text-black': !isActive(sortBy.createdAt)
           })}
         >
           Lasted

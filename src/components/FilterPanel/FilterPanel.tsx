@@ -1,10 +1,15 @@
 import classNames from 'classnames'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { useQuery } from 'react-query'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import path from '~/constants/path'
 import { QueryConfig } from '~/pages/ProductList/ProductList'
+import InputNumber from '../InputNumber'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { FormDataPrice, InputPriceSchema } from '~/utils/rulesForm'
+import { NoUndefinedField } from '~/types/utils.type'
 
 interface Props {
   queryConfig: QueryConfig
@@ -12,13 +17,38 @@ interface Props {
 
 export default function FilterPanel({ queryConfig }: Props) {
   const navigate = useNavigate()
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    trigger
+  } = useForm<NoUndefinedField<FormDataPrice>>({
+    defaultValues: {
+      price_min: '',
+      price_max: ''
+    },
+    resolver: yupResolver(InputPriceSchema)
+  })
   const { data } = useQuery({
     queryKey: ['categories'],
     queryFn: () => productsApi.getCategories()
   })
   const categoryList = data?.data.data
 
-  const handleClearFilter = () => {
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_min: data.price_min,
+        price_max: data.price_max
+      }).toString()
+    })
+  })
+
+  const handleResetFilter = () => {
+    reset()
     navigate({
       pathname: path.home,
       search: createSearchParams(
@@ -113,23 +143,50 @@ export default function FilterPanel({ queryConfig }: Props) {
       </div>
       <div className='border-b border-b-gray-300/60 py-[20px]'>
         <div className='mb-4 text-[14px]'>Price Range</div>
-        <form noValidate>
+        <form noValidate onSubmit={onSubmit}>
           <div className='flex items-center justify-between'>
-            <input
-              type='text'
-              placeholder='₫ MIN'
-              className='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
+            <Controller
+              name='price_min'
+              control={control}
+              render={({ field }) => (
+                <InputNumber
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    trigger('price_max')
+                  }}
+                  classNameError='hidden'
+                  type='text'
+                  placeholder='₫ MIN'
+                  classNameInput='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
+                />
+              )}
             />
             <div className='mx-2 h-[1px] flex-1 bg-[#bdbdbd]'></div>
-            <input
-              type='text'
-              placeholder='₫ MAX'
-              className='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
+            <Controller
+              name='price_max'
+              control={control}
+              render={({ field }) => (
+                <InputNumber
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    trigger('price_min')
+                  }}
+                  type='text'
+                  classNameError='hidden'
+                  placeholder='₫ MAX'
+                  classNameInput='w-[5rem] border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
+                />
+              )}
             />
+          </div>
+          <div className='min-h-[1.5rem] pl-1 pt-1 text-center text-sm text-[#ff424f]'>
+            {errors.price_min?.message}
           </div>
           <button
             type='submit'
-            className='mt-5 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
+            className='mt-2 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
           >
             Apply
           </button>
@@ -206,7 +263,7 @@ export default function FilterPanel({ queryConfig }: Props) {
           ))}
       </div>
       <button
-        onClick={handleClearFilter}
+        onClick={handleResetFilter}
         className='mt-4 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
       >
         Clear all

@@ -13,6 +13,6 @@ export const sortBy = {
 export const queryParamsDefault = {
   page: 1,
   limit: 10,
-  sort_by: 'createdAt',
+  sort_by: 'view',
   order: 'asc'
 }

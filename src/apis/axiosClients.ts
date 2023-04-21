@@ -40,8 +40,11 @@ axiosClients.interceptors.response.use(
     return response
   },
   function (error) {
-    const { status, data } = error.response
-    if (status !== HttpStatusCode.UnprocessableEntity) {
+    const { status, data, config } = error.response
+    if (
+      status !== HttpStatusCode.UnprocessableEntity ||
+      (status === HttpStatusCode.UnprocessableEntity && config.url === path.products)
+    ) {
       const message = data.message || error.message
       toast.error(message, {
         autoClose: 3000
