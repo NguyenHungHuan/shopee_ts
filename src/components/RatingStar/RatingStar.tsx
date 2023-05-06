@@ -1,12 +1,14 @@
 interface Props {
   fillColor?: string
   bgFillColor?: string
+  strokeColor?: string
   size?: number
   rating?: number
 }
 
 export default function RatingStar({
   fillColor = '#ffce3d',
+  strokeColor = '#ffce3d',
   size = 10,
   rating,
   bgFillColor = '#cacaca'
@@ -39,7 +41,7 @@ export default function RatingStar({
                   width={size}
                   height={size}
                   fill={fillColor}
-                  stroke='#ffce3d'
+                  stroke={strokeColor}
                 >
                   <polygon
                     points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'

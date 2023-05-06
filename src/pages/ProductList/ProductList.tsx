@@ -40,7 +40,7 @@ export default function ProductList() {
   const { data, isLoading } = useQuery({
     queryKey: ['product', queryConfig],
     keepPreviousData: true,
-    queryFn: () => productsApi.getProducts(queryConfig as productListConfig),
+    queryFn: () => productsApi.getProducts(queryConfig as productListConfig)
   })
   console.log(data)
   const productsList = data?.data.data.products
@@ -49,7 +49,6 @@ export default function ProductList() {
     navigate({
       pathname: path.home,
       search: createSearchParams({
-        ...queryConfig,
         page: queryParamsDefault.page.toString(),
         limit: queryParamsDefault.limit.toString()
       }).toString()
@@ -86,7 +85,7 @@ export default function ProductList() {
                 {productsList?.map((product) => (
                   <Link
                     key={product._id}
-                    to='/'
+                    to={`${path.home}${product._id}`}
                     className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
                   >
                     <div className='relative w-full pt-[100%]'>

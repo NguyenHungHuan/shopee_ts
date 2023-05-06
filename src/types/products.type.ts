@@ -24,6 +24,7 @@ export type product = {
   image: string
   createdAt: string
   updatedAt: string
+  description: string
 }
 
 export type productListConfig = {
