@@ -16,6 +16,7 @@ export default function ProductDetail() {
   })
   console.log(data)
   const product = data?.data.data
+  const [open, setOpen] = useState(false)
   const [indexImg, setIndexImg] = useState([0, 5])
   const [activeImg, setActiveImg] = useState('')
   const activeListImg = useMemo(() => (product ? product.images.slice(...indexImg) : []), [product, indexImg])
@@ -36,16 +37,122 @@ export default function ProductDetail() {
       setIndexImg((prev) => [prev[0] - 1, prev[1] - 1])
     }
   }
+  const handlePrevModal = () => {
+    if (product) {
+      const indexImgCurrent = product.images.indexOf(activeImg)
+      if (indexImgCurrent <= 0) {
+        const lastIndexImg = product.images.length - 1
+        return setActiveImg(product.images[lastIndexImg])
+      }
+      return setActiveImg(product.images[indexImgCurrent - 1])
+    }
+  }
+
+  const handleNextModal = () => {
+    if (product) {
+      const indexImgCurrent = product.images.indexOf(activeImg)
+      if (indexImgCurrent === product.images.length - 1) {
+        return setActiveImg(product.images[0])
+      }
+      console.log(indexImgCurrent)
+      return setActiveImg(product.images[indexImgCurrent + 1])
+    }
+  }
 
   return (
     <div>
       {product && (
         <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
           <div className='container flex rounded-[3px] bg-white shadow'>
+            {open && (
+              <div
+                aria-hidden
+                className='fixed inset-0 z-50 flex cursor-default items-center justify-center bg-[#0002]'
+                onClick={() => setOpen((prev) => !prev)}
+              >
+                <div
+                  aria-hidden
+                  onClick={(e) => e.stopPropagation()}
+                  className='flex h-[880px] w-[1156px] cursor-default rounded-sm bg-white shadow-2xl'
+                >
+                  <div className='relative h-full w-full flex-1 overflow-hidden py-3 pl-3'>
+                    <div className='relative w-full pt-[100%]'>
+                      <img
+                        src={activeImg}
+                        alt={product.name}
+                        className='absolute left-0 top-0 w-full object-cover'
+                      />
+                    </div>
+                    <div
+                      aria-hidden
+                      onClick={handlePrevModal}
+                      className='absolute top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pr-1 text-white'
+                    >
+                      <svg
+                        enableBackground='new 0 0 13 20'
+                        viewBox='0 0 13 20'
+                        x={0}
+                        y={0}
+                        className='h-[35px] w-[35px]'
+                        fill='white'
+                        stroke='white'
+                      >
+                        <polygon points='4.2 10 12.1 2.1 10 -.1 1 8.9 -.1 10 1 11 10 20 12.1 17.9' />
+                      </svg>
+                    </div>
+                    <div
+                      onClick={handleNextModal}
+                      aria-hidden
+                      className='absolute right-0 top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pl-1 text-white'
+                    >
+                      <svg
+                        enableBackground='new 0 0 13 21'
+                        viewBox='0 0 13 21'
+                        x={0}
+                        y={0}
+                        className='h-[35px] w-[35px]'
+                        fill='white'
+                        stroke='white'
+                      >
+                        <polygon points='11.1 9.9 2.1 .9 -.1 3.1 7.9 11 -.1 18.9 2.1 21 11.1 12 12.1 11' />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='flex w-[296px] flex-col pb-[30px] pl-3 pt-10'>
+                    <div className='line-clamp-2 text-ellipsis pr-3 text-base text-black'>{product.name}</div>
+                    <div className='mt-5 flex flex-1 flex-wrap content-start justify-start overflow-auto'>
+                      {product.images.map((img, index) => {
+                        const isActive = img === activeImg
+                        return (
+                          <div key={index} className='mb-3 mr-3 h-20 w-20'>
+                            <div className='relative w-full pt-[100%]'>
+                              <img
+                                className='absolute left-0 top-0 h-full w-full cursor-pointer object-cover hover:opacity-80'
+                                src={img}
+                                alt={product?.name}
+                                aria-hidden
+                                onClick={() => setActiveImg(img)}
+                              />
+                              {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className='w-[480px] p-[15px]'>
-              <div className='relative w-full cursor-pointer pt-[100%]'>
+              <div
+                className='relative w-full pt-[100%]'
+                role='button'
+                aria-hidden
+                tabIndex={0}
+                onClick={() => setOpen((prev) => !prev)}
+              >
                 <img
-                  className='absolute left-0 top-0 h-full w-full object-cover'
+                  className='absolute left-0 top-0 h-full w-full cursor-pointer object-cover'
                   src={activeImg}
                   alt={product?.name}
                 />
@@ -58,6 +165,8 @@ export default function ProductDetail() {
                       className='relative cursor-pointer'
                       key={index}
                       onMouseEnter={() => setActiveImg(img)}
+                      onClick={() => setOpen((prev) => !prev)}
+                      aria-hidden
                     >
                       <img className='h-[82px] w-[82px] object-cover' src={img} alt={product.name} />
                       {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
