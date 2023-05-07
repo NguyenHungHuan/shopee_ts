@@ -40,6 +40,11 @@ export const InputPriceSchema = yup.object({
   })
 })
 
+export const searchSchema = yup.object({
+  name: yup.string().trim().required()
+})
+
 export type FormData = yup.InferType<typeof schema>
 export type FormDataPrice = yup.InferType<typeof InputPriceSchema>
 export type LoginFormData = yup.InferType<typeof loginSchema>
+export type SearchFormData = yup.InferType<typeof searchSchema>
