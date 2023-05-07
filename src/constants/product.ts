@@ -11,8 +11,8 @@ export const sortBy = {
 } as const
 
 export const queryParamsDefault = {
-  page: 1,
-  limit: 10,
+  page: '1',
+  limit: '10',
   sort_by: 'view',
   order: 'asc'
 }

@@ -3,25 +3,40 @@ import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import RatingStar from '~/components/RatingStar'
-import { formatPriceNumber, formatSocialNumber, getIdFormNameId } from '~/utils/utils'
+import { formatPriceNumber, formatSocialNumber, generateNameId, getIdFormNameId } from '~/utils/utils'
 import NotFound from '../NotFound'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
+import path from '~/constants/path'
+import { queryParamsDefault } from '~/constants/product'
+import QuantityController from '~/components/QuantityController'
+import InputNumber from '~/components/InputNumber'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
   const id = getIdFormNameId(nameId as string)
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['productDetail', id],
     queryFn: () => productsApi.getProductDetail(id as string)
   })
-  console.log(data)
   const product = data?.data.data
+
+  const idCategory = product?.category._id
+  const queryConfig = { category: idCategory, page: queryParamsDefault.page, limit: queryParamsDefault.limit }
+  const { data: dataByCategory } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => productsApi.getProducts(queryConfig),
+    staleTime: 3 * 60 * 1000,
+    enabled: Boolean(product)
+  })
+
   const [open, setOpen] = useState(false)
   const [indexImg, setIndexImg] = useState([0, 5])
   const [activeImg, setActiveImg] = useState('')
   const activeListImg = useMemo(() => (product ? product.images.slice(...indexImg) : []), [product, indexImg])
   const imgRef = useRef<HTMLImageElement>(null)
+  const [buyCount, setBuyCount] = useState(1)
 
   useEffect(() => {
     if (product && product.images.length > 0) {
@@ -369,35 +384,13 @@ export default function ProductDetail() {
               <div className='mt-16 flex items-center gap-16 pl-[20px] text-sm text-gray-500'>
                 <span>Quantity</span>
                 <div className='flex items-center gap-[15px]'>
-                  <div className='flex items-center overflow-hidden rounded-sm shadow-sm'>
-                    <button className='border p-[10px]'>
-                      <svg
-                        enableBackground='new 0 0 10 10'
-                        viewBox='0 0 10 10'
-                        x={0}
-                        y={0}
-                        className='h-[10px] w-[10px] fill-gray-500'
-                      >
-                        <polygon points='4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5' />
-                      </svg>
-                    </button>
-                    <input
-                      type='text'
-                      defaultValue={1}
-                      className='h-8 w-[50px] border-y text-center text-base outline-none'
-                    />
-                    <button className='border p-[10px]'>
-                      <svg
-                        enableBackground='new 0 0 10 10'
-                        viewBox='0 0 10 10'
-                        x={0}
-                        y={0}
-                        className='h-[10px] w-[10px] fill-gray-500'
-                      >
-                        <polygon points='10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5' />
-                      </svg>
-                    </button>
-                  </div>
+                  <QuantityController
+                    value={buyCount}
+                    max={product.quantity}
+                    onType={setBuyCount}
+                    onDecrease={setBuyCount}
+                    onIncrease={setBuyCount}
+                  />
                   <span>{product.quantity} pieces available</span>
                 </div>
               </div>
@@ -477,63 +470,40 @@ export default function ProductDetail() {
           <div className='container'>
             <div className='mt-9 text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
             <div className='mt-5 grid grid-cols-6 gap-3'>
-              {Array(18)
-                .fill(0)
-                .map((_, index) => (
-                  <Link
-                    key={index}
-                    to='/'
-                    className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
-                  >
-                    <div className='relative w-full pt-[100%]'>
-                      <img
-                        className='absolute left-0 top-0 h-full w-full object-cover'
-                        src='https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-                        alt=''
-                      />
-                    </div>
-                    <div className='p-2'>
-                      <div className='line-clamp-2 text-xs'>
-                        Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X XS
-                        Max XR 6 6s 7 8 Plus SE2020
+              {dataByCategory?.data.data.products.map((product) => (
+                <Link
+                  key={product._id}
+                  to={`${path.home}${generateNameId(product.name, product._id)}`}
+                  className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
+                >
+                  <div className='relative w-full pt-[100%]'>
+                    <img
+                      className='absolute left-0 top-0 h-full w-full object-cover'
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </div>
+                  <div className='p-2'>
+                    <div className='line-clamp-2 text-xs'>{product.name}</div>
+                    <div className='mt-2 flex items-center gap-1'>
+                      <div className='flex items-end text-sm text-gray-400 line-through'>
+                        <span>₫</span>
+                        <span>{formatPriceNumber(product.price_before_discount)}</span>
                       </div>
-                      <div className='mt-2 flex items-center gap-1'>
-                        <div className='flex items-end text-sm text-gray-400 line-through'>
-                          <span>₫</span>
-                          <span>54.000</span>
-                        </div>
-                        <div className='flex items-center text-orange'>
-                          <span className='text-xs'>₫</span>
-                          <span className='text-base'>27.000</span>
-                        </div>
-                      </div>
-                      <div className='mb-1 mt-3 flex items-center gap-1'>
-                        <div className='flex items-center gap-[1px]'>
-                          {Array(5)
-                            .fill(0)
-                            .map((star, index) => (
-                              <svg
-                                key={index}
-                                enableBackground='new 0 0 15 15'
-                                viewBox='0 0 15 15'
-                                x={0}
-                                y={0}
-                                className='h-[10px] w-[10px] fill-[#ffce3d]'
-                              >
-                                <polygon
-                                  points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
-                                  strokeLinecap='round'
-                                  strokeLinejoin='round'
-                                  strokeMiterlimit={10}
-                                />
-                              </svg>
-                            ))}
-                        </div>
-                        <span className='text-xs uppercase'>11.4k sold</span>
+                      <div className='flex items-center text-orange'>
+                        <span className='text-xs'>₫</span>
+                        <span className='text-base'>{formatPriceNumber(product.price)}</span>
                       </div>
                     </div>
-                  </Link>
-                ))}
+                    <div className='mb-1 mt-3 flex items-center gap-2'>
+                      <div className='flex items-center gap-[1px]'>
+                        <RatingStar size={10} rating={product.rating} />
+                      </div>
+                      <span className='text-xs text-gray-500'>{formatSocialNumber(product.sold)} sold</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

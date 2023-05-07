@@ -21,9 +21,10 @@ export default function ProductList() {
   const queryConfig = useQueryConfig()
   const resultSearch = queryConfig.name
   const { data, isLoading } = useQuery({
-    queryKey: ['product', queryConfig],
+    queryKey: ['products', queryConfig],
+    queryFn: () => productsApi.getProducts(queryConfig as productListConfig),
     keepPreviousData: true,
-    queryFn: () => productsApi.getProducts(queryConfig as productListConfig)
+    staleTime: 3 * 60 * 1000
   })
   console.log(data)
   const productsList = data?.data.data.products
