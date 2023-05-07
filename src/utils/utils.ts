@@ -24,3 +24,16 @@ export function formatSocialNumber(number: number) {
     .replace('.', ',')
     .toLowerCase()
 }
+
+export const removeSpecialCharacter = (str: string) =>
+  // eslint-disable-next-line no-useless-escape
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+
+export function generateNameId(name: string, id: string) {
+  return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i-${id}`
+}
+
+export function getIdFormNameId(nameId: string) {
+  const arr = nameId.split('-i-')
+  return arr[arr.length - 1]
+}

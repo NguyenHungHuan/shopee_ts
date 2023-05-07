@@ -3,16 +3,17 @@ import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import RatingStar from '~/components/RatingStar'
-import { formatPriceNumber, formatSocialNumber } from '~/utils/utils'
+import { formatPriceNumber, formatSocialNumber, getIdFormNameId } from '~/utils/utils'
 import NotFound from '../NotFound'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
+  const id = getIdFormNameId(nameId as string)
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['productDetail', nameId],
-    queryFn: () => productsApi.getProductDetail(nameId as string)
+    queryKey: ['productDetail', id],
+    queryFn: () => productsApi.getProductDetail(id as string)
   })
   console.log(data)
   const product = data?.data.data
@@ -20,6 +21,7 @@ export default function ProductDetail() {
   const [indexImg, setIndexImg] = useState([0, 5])
   const [activeImg, setActiveImg] = useState('')
   const activeListImg = useMemo(() => (product ? product.images.slice(...indexImg) : []), [product, indexImg])
+  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     if (product && product.images.length > 0) {
@@ -54,9 +56,25 @@ export default function ProductDetail() {
       if (indexImgCurrent === product.images.length - 1) {
         return setActiveImg(product.images[0])
       }
-      console.log(indexImgCurrent)
       return setActiveImg(product.images[indexImgCurrent + 1])
     }
+  }
+
+  const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const image = imgRef.current as HTMLImageElement
+    const { naturalHeight, naturalWidth } = image
+    const { offsetX, offsetY } = event.nativeEvent
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+  const handleRemoveZoom = () => {
+    imgRef.current?.removeAttribute('style')
   }
 
   return (
@@ -145,16 +163,19 @@ export default function ProductDetail() {
             )}
             <div className='w-[480px] p-[15px]'>
               <div
-                className='relative w-full pt-[100%]'
+                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%]'
                 role='button'
                 aria-hidden
                 tabIndex={0}
                 onClick={() => setOpen((prev) => !prev)}
+                onMouseMove={handleZoom}
+                onMouseLeave={handleRemoveZoom}
               >
                 <img
-                  className='absolute left-0 top-0 h-full w-full cursor-pointer object-cover'
+                  className=' pointer-events-none absolute left-0 top-0 h-full w-full object-cover'
                   src={activeImg}
                   alt={product?.name}
+                  ref={imgRef}
                 />
               </div>
               <div className='relative mt-[10px] flex items-center gap-[10px]'>

@@ -12,7 +12,7 @@ import path from '~/constants/path'
 import { queryParamsDefault } from '~/constants/product'
 import useQueryParams from '~/hooks/useQueryParams'
 import { productListConfig } from '~/types/products.type'
-import { formatPriceNumber, formatSocialNumber } from '~/utils/utils'
+import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
 import { toast } from 'react-toastify'
 
 export type QueryConfig = {
@@ -85,7 +85,7 @@ export default function ProductList() {
                 {productsList?.map((product) => (
                   <Link
                     key={product._id}
-                    to={`${path.home}${product._id}`}
+                    to={`${path.home}${generateNameId(product.name, product._id)}`}
                     className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
                   >
                     <div className='relative w-full pt-[100%]'>
