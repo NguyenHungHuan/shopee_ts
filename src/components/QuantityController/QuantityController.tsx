@@ -1,6 +1,6 @@
 import InputNumber from '../InputNumber'
 
-interface Props {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   max?: number
   value: number
   onType?: (value: number) => void
@@ -8,7 +8,7 @@ interface Props {
   onIncrease?: (value: number) => void
 }
 
-export default function QuantityController({ max, value, onDecrease, onIncrease, onType }: Props) {
+export default function QuantityController({ max, value, onDecrease, onIncrease, onType, ...rest }: Props) {
   const handleIncreaseCount = () => {
     if (max !== undefined && value >= max) {
       return (value = max)
@@ -50,6 +50,7 @@ export default function QuantityController({ max, value, onDecrease, onIncrease,
         classNameInput='h-8 w-[50px] border-y text-center text-base outline-none'
         classNameError='hidden'
         onChange={handleChangeCount}
+        {...rest}
       />
       <button className='border p-[10px]' onClick={handleIncreaseCount}>
         <svg

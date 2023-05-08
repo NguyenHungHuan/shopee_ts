@@ -7,6 +7,7 @@ const path = {
   categories: '/categories',
   productDetail: ':nameId',
   cart: '/cart',
+  purchases: '/purchases',
   user: '/user/*',
   profile: '/user/profile',
   changePassword: '/user/password',
