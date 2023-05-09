@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import RatingStar from '~/components/RatingStar'
@@ -11,6 +11,10 @@ import path from '~/constants/path'
 import { queryParamsDefault } from '~/constants/product'
 import QuantityController from '~/components/QuantityController'
 import InputNumber from '~/components/InputNumber'
+import purchaseApi from '~/apis/purchaseApi'
+import { toast } from 'react-toastify'
+import { queryClient } from '~/main'
+import { purchasesStatus } from '~/constants/purchase'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -30,6 +34,8 @@ export default function ProductDetail() {
     staleTime: 3 * 60 * 1000,
     enabled: Boolean(product)
   })
+
+  const addToCartMutation = useMutation(purchaseApi.addToCart)
 
   const [open, setOpen] = useState(false)
   const [indexImg, setIndexImg] = useState([0, 5])
@@ -90,6 +96,21 @@ export default function ProductDetail() {
   }
   const handleRemoveZoom = () => {
     imgRef.current?.removeAttribute('style')
+  }
+
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({ queryKey: ['purchaseList', { status: purchasesStatus.inCart }] })
+          toast.success(data.data.message, {
+            autoClose: 500,
+            hideProgressBar: true
+          })
+        }
+      }
+    )
   }
 
   return (
@@ -395,7 +416,10 @@ export default function ProductDetail() {
                 </div>
               </div>
               <div className='mt-[30px] flex items-center gap-[15px] pl-[20px]'>
-                <button className='flex items-center justify-center gap-[10px] rounded-sm border border-orange bg-[#ffeee8] px-[20px] py-[11px] capitalize text-orange shadow-sm hover:opacity-80'>
+                <button
+                  onClick={addToCart}
+                  className='flex items-center justify-center gap-[10px] rounded-sm border border-orange bg-[#ffeee8] px-[20px] py-[11px] capitalize text-orange shadow-sm hover:opacity-80'
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'

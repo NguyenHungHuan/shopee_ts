@@ -1,15 +1,15 @@
 import {
+  FloatingArrow,
+  arrow,
+  offset,
+  shift,
   useFloating,
   useHover,
   useInteractions,
-  arrow,
-  FloatingArrow,
-  offset,
-  shift,
   type Placement
 } from '@floating-ui/react'
-import { useState, useRef, type ElementType } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useRef, useState, type ElementType } from 'react'
 
 interface Props {
   renderPopover: React.ReactNode
@@ -50,6 +50,7 @@ export default function Popover({
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            className='z-10'
             ref={refs.setFloating}
             style={{
               position: strategy,
@@ -64,7 +65,7 @@ export default function Popover({
             exit={{ opacity: 0, scale: 0 }}
             transition={{ duration: 0.2 }}
           >
-            {isArrow && <FloatingArrow ref={arrowRef} context={context} className='fill-white w-6 h-6' />}
+            {isArrow && <FloatingArrow ref={arrowRef} context={context} className='h-6 w-6 fill-white' />}
             {renderPopover}
           </motion.div>
         )}

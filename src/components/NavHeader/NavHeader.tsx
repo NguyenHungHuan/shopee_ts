@@ -6,6 +6,8 @@ import AuthApi from '~/apis/authApi'
 import { useContext } from 'react'
 import { AppContext } from '../Contexts/app.context'
 import { toast } from 'react-toastify'
+import { queryClient } from '~/main'
+import { purchasesStatus } from '~/constants/purchase'
 
 export default function NavHeader() {
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
@@ -14,6 +16,7 @@ export default function NavHeader() {
     onSuccess: () => {
       setIsAuthenticated(false)
       setProfile(null)
+      queryClient.removeQueries({ queryKey: ['purchaseList', { status: purchasesStatus.inCart }] })
     },
     onError: (error) => {
       toast.error(error as string)
@@ -24,39 +27,39 @@ export default function NavHeader() {
   }
 
   return (
-    <div className='bg-orange h-[2.125rem] flex items-center'>
+    <div className='flex h-[2.125rem] items-center bg-orange'>
       <nav className='container'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center text-white'>
-            <Link to='/' className='text-[13px] hover:opacity-80 pr-2 border-r border-r-white/50'>
+            <Link to='/' className='border-r border-r-white/50 pr-2 text-[13px] hover:opacity-80'>
               Seller Center
             </Link>
             <Popover
               isArrow={false}
               placement='bottom-start'
               renderPopover={
-                <div className='bg-white w-[11.25rem] rounded-sm shadow-sm border'>
+                <div className='w-[11.25rem] rounded-sm border bg-white shadow-sm'>
                   <img
                     src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/d91264e165ed6facc6178994d5afae79.png'
                     alt='download_qr_code'
-                    className='w-[180px] h-[180px]'
+                    className='h-[180px] w-[180px]'
                   />
-                  <div className='px-[15px] pb-3 flex flex-wrap justify-between items-center gap-2'>
-                    <div className='w-[70px] mt-[5px]'>
+                  <div className='flex flex-wrap items-center justify-between gap-2 px-[15px] pb-3'>
+                    <div className='mt-[5px] w-[70px]'>
                       <img
                         className='w-full'
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/39f189e19764dab688d3850742f13718.png'
                         alt='App Store'
                       />
                     </div>
-                    <div className='w-[70px] mt-[5px]'>
+                    <div className='mt-[5px] w-[70px]'>
                       <img
                         className='w-full'
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/f4f5426ce757aea491dce94201560583.png'
                         alt='Play Store'
                       />
                     </div>
-                    <div className='w-[70px] mt-[5px]'>
+                    <div className='mt-[5px] w-[70px]'>
                       <img
                         className='w-full'
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/1ae215920a31f2fc75b00d4ee9ae8551.png'
@@ -66,26 +69,26 @@ export default function NavHeader() {
                   </div>
                 </div>
               }
-              className='text-[13px] px-2 py-4 hover:text-white/80'
+              className='px-2 py-4 text-[13px] hover:text-white/80'
             >
               <Link to='/'>Download</Link>
             </Popover>
-            <span className='text-[13px] px-2 border-l border-l-white/50'>Follow us on</span>
+            <span className='border-l border-l-white/50 px-2 text-[13px]'>Follow us on</span>
             <div className='flex items-center gap-2'>
               <Link
                 to='/'
-                className='w-4 h-4 bg-bg-social bg-[8.064516129032258%_16.129032258064516%] bg-no-repeat bg-[length:487.5%_293.75%]'
+                className='h-4 w-4 bg-bg-social bg-[length:487.5%_293.75%] bg-[8.064516129032258%_16.129032258064516%] bg-no-repeat'
               ></Link>
               <Link
                 to='/'
-                className='w-4 h-4 bg-bg-social bg-[58.064516129032256%_16.129032258064516%] bg-no-repeat bg-[length:487.5%_293.75%]'
+                className='h-4 w-4 bg-bg-social bg-[length:487.5%_293.75%] bg-[58.064516129032256%_16.129032258064516%] bg-no-repeat'
               ></Link>
             </div>
           </div>
-          <ul className='flex items-center text-white gap-4 text-[13px]'>
+          <ul className='flex items-center gap-4 text-[13px] text-white'>
             <li>
-              <Link to='/' className='flex items-center py-2 gap-1 hover:opacity-80'>
-                <svg viewBox='3 2.5 14 14' x={0} y={0} className='fill-white w-[0.875rem] h-[1.125rem]'>
+              <Link to='/' className='flex items-center gap-1 py-2 hover:opacity-80'>
+                <svg viewBox='3 2.5 14 14' x={0} y={0} className='h-[1.125rem] w-[0.875rem] fill-white'>
                   <path d='m17 15.6-.6-1.2-.6-1.2v-7.3c0-.2 0-.4-.1-.6-.3-1.2-1.4-2.2-2.7-2.2h-1c-.3-.7-1.1-1.2-2.1-1.2s-1.8.5-2.1 1.3h-.8c-1.5 0-2.8 1.2-2.8 2.7v7.2l-1.2 2.5-.2.4h14.4zm-12.2-.8.1-.2.5-1v-.1-7.6c0-.8.7-1.5 1.5-1.5h6.1c.8 0 1.5.7 1.5 1.5v7.5.1l.6 1.2h-10.3z' />
                   <path d='m10 18c1 0 1.9-.6 2.3-1.4h-4.6c.4.9 1.3 1.4 2.3 1.4z' />
                 </svg>
@@ -93,12 +96,12 @@ export default function NavHeader() {
               </Link>
             </li>
             <li>
-              <Link to='/' className='flex items-center py-2 gap-1 hover:opacity-80'>
+              <Link to='/' className='flex items-center gap-1 py-2 hover:opacity-80'>
                 <svg
                   height={16}
                   viewBox='0 0 16 16'
                   width={16}
-                  className='fill-white w-[1.125rem] h-[1.125rem]'
+                  className='h-[1.125rem] w-[1.125rem] fill-white'
                 >
                   <g fill='none' fillRule='evenodd' transform='translate(1)'>
                     <circle cx={7} cy={8} r={7} stroke='currentColor' />
@@ -113,17 +116,17 @@ export default function NavHeader() {
             </li>
             <Popover
               renderPopover={
-                <div className='bg-white min-w-[200px] rounded-sm shadow-sm text-black flex flex-col text-left text-base border border-t-0'>
-                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>
+                <div className='flex min-w-[200px] flex-col rounded-sm border border-t-0 bg-white text-left text-base text-black shadow-sm'>
+                  <button className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'>
                     English
                   </button>
-                  <button className='pr-8 pl-4 py-2 hover:text-orange hover:bg-slate-100 text-left'>
+                  <button className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'>
                     Việt Nam
                   </button>
                 </div>
               }
               as={'li'}
-              className='flex items-center py-4 gap-1 hover:cursor-pointer hover:text-white/80'
+              className='flex items-center gap-1 py-4 hover:cursor-pointer hover:text-white/80'
             >
               <svg width={16} height={16} viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path
@@ -157,7 +160,7 @@ export default function NavHeader() {
             </Popover>
             {!isAuthenticated && (
               <li className='flex items-center'>
-                <Link className=' px-2 border-r border-r-white/50 hover:opacity-80' to={path.register}>
+                <Link className=' border-r border-r-white/50 px-2 hover:opacity-80' to={path.register}>
                   Sign Up
                 </Link>
                 <Link className=' px-2 hover:opacity-80' to={path.login}>
@@ -168,18 +171,18 @@ export default function NavHeader() {
             {isAuthenticated && (
               <Popover
                 as={'li'}
-                className='flex py-4 items-center gap-1 cursor-pointer hover:text-white/80'
+                className='flex cursor-pointer items-center gap-1 py-4 hover:text-white/80'
                 renderPopover={
-                  <div className='bg-white min-w-[150px] rounded-sm shadow-sm text-black flex flex-col text-left text-base border border-t-0'>
-                    <Link to={path.profile} className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100'>
+                  <div className='flex min-w-[150px] flex-col rounded-sm border border-t-0 bg-white text-left text-base text-black shadow-sm'>
+                    <Link to={path.profile} className='py-2 pl-4 pr-8 hover:bg-slate-100 hover:text-cyan-400'>
                       My Profile
                     </Link>
-                    <Link to={path.cart} className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100'>
+                    <Link to={path.cart} className='py-2 pl-4 pr-8 hover:bg-slate-100 hover:text-cyan-400'>
                       My Cart
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className='pr-8 pl-4 py-2 hover:text-cyan-400 hover:bg-slate-100 text-left'
+                      className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-cyan-400'
                     >
                       Logout
                     </button>
@@ -187,7 +190,7 @@ export default function NavHeader() {
                 }
               >
                 <img
-                  className='w-[20px] h-[20px] object-cover rounded-full'
+                  className='h-[20px] w-[20px] rounded-full object-cover'
                   src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
                   alt='avatar'
                 />

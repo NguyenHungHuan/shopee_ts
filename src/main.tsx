@@ -7,7 +7,7 @@ import App from './App'
 import './index.css'
 import { AppProvider } from './components/Contexts/app.context'
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,

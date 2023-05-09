@@ -7,8 +7,18 @@ import { SearchFormData, searchSchema } from '~/utils/rulesForm'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useQueryConfig from '~/hooks/useQueryConfig'
 import { omit } from 'lodash'
+import { useQuery } from 'react-query'
+import { purchasesStatus } from '~/constants/purchase'
+import purchaseApi from '~/apis/purchaseApi'
+import { formatPriceNumber } from '~/utils/utils'
+import noProduct from '../../assets/images/noProduct.png'
+import { useContext } from 'react'
+import { AppContext } from '../Contexts/app.context'
+
+const MAX_PURCHASE = 5
 
 export default function Header() {
+  const { isAuthenticated } = useContext(AppContext)
   const queryConfig = useQueryConfig()
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm<SearchFormData>({
@@ -33,6 +43,14 @@ export default function Header() {
       search: createSearchParams(config).toString()
     })
   })
+
+  const { data } = useQuery({
+    queryKey: ['purchaseList', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+    enabled: isAuthenticated
+  })
+
+  const purchaseInCartData = data?.data.data
 
   return (
     <header className='sticky inset-0 z-10'>
@@ -81,34 +99,44 @@ export default function Header() {
             <Popover
               renderPopover={
                 <div className='w-[25rem] rounded-sm border border-t-0 bg-white text-sm shadow-sm'>
-                  <div className='p-[10px] capitalize text-gray-400'>recently added products</div>
-                  {Array(5)
-                    .fill(0)
-                    .map((product, index) => (
-                      <div key={index} className='flex items-start gap-2 p-[10px] hover:bg-gray-100'>
-                        <img
-                          className='h-[42px] w-[42px] flex-shrink-0 object-cover'
-                          src='https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-                          alt='product'
-                        />
-                        <div className='line-clamp-1 text-black'>
-                          Ốp Điện Thoại Silicon Dày Chống Sốc 3 Trong 1 Cho iPhone 13 Pro Max 12 11 Pro Max X
-                          XS Max XR 6 6s 7 8 Plus SE2020
+                  {purchaseInCartData ? (
+                    <div>
+                      <span className='block p-[10px] capitalize text-gray-400'>recently added products</span>
+                      {purchaseInCartData.slice(0, MAX_PURCHASE).map((purchase) => (
+                        <div key={purchase._id} className='flex items-start gap-2 p-[10px] hover:bg-gray-100'>
+                          <img
+                            className='h-[42px] w-[42px] flex-shrink-0 object-cover'
+                            src={purchase.product.image}
+                            alt={purchase.product.name}
+                          />
+                          <div className='line-clamp-1 text-black'>{purchase.product.name}</div>
+                          <div className='ml-8 text-orange'>₫{formatPriceNumber(purchase.product.price)}</div>
                         </div>
-                        <div className='ml-8 text-orange'>₫327.000</div>
+                      ))}
+                      <div className='flex items-center justify-between p-[10px]'>
+                        <div className='text-black'>
+                          {purchaseInCartData.length > MAX_PURCHASE
+                            ? purchaseInCartData.length - MAX_PURCHASE
+                            : ''}{' '}
+                          More Products In Cart
+                        </div>
+                        <Link className='bg-orange px-[15px] py-[7px] capitalize text-white' to={path.cart}>
+                          View My Shopping Cart
+                        </Link>
                       </div>
-                    ))}
-
-                  <div className='flex items-center justify-between p-[10px]'>
-                    <div className='text-black'>2 More Products In Cart</div>
-                    <Link className='bg-orange px-[15px] py-[7px] capitalize text-white' to={path.cart}>
-                      View My Shopping Cart
-                    </Link>
-                  </div>
+                    </div>
+                  ) : (
+                    <div className='w-[25rem]'>
+                      <div className='flex flex-col items-center justify-center py-[3.75rem]'>
+                        <img src={noProduct} alt='No Purchase' className='h-[100px] w-[100px] object-cover' />
+                        <div className='mt-5 capitalize'>no products yet</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               }
             >
-              <Link className='block px-6 py-4' to={path.cart}>
+              <Link className='relative block px-6 py-4' to={path.cart}>
                 <svg viewBox='0 0 26.6 25.6' className='h-[26px] w-[26px] fill-white stroke-white'>
                   <polyline
                     fill='none'
@@ -121,6 +149,11 @@ export default function Header() {
                   <circle cx='10.7' cy={23} r='2.2' stroke='none' />
                   <circle cx='19.7' cy={23} r='2.2' stroke='none' />
                 </svg>
+                {Number(purchaseInCartData?.length) > 0 ? (
+                  <span className='absolute right-2 top-2 rounded-full bg-white px-[6px] text-sm text-orange'>
+                    {purchaseInCartData?.length}
+                  </span>
+                ) : null}
               </Link>
             </Popover>
           </div>
