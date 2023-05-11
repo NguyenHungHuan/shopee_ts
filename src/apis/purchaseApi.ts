@@ -10,16 +10,18 @@ const purchaseApi = {
   },
   addToCart(body: { product_id: string; buy_count: number }) {
     return axiosClients.post<successResponse<purchase>>(`${URL}/add-to-cart`, body)
+  },
+  updatePurchase(body: { product_id: string; buy_count: number }) {
+    return axiosClients.put<successResponse<purchase>>(`${URL}/update-purchase`, body)
+  },
+  buyPurchase(body: { product_id: string; buy_count: number }[]) {
+    return axiosClients.post<successResponse<purchase[]>>(`${URL}/buy-products`, body)
+  },
+  deletePurchase(id: string[]) {
+    return axiosClients.delete<successResponse<{ deleted_count: number }>>(URL, {
+      data: id
+    })
   }
-  // updatePurchase(body: { product_id: string; buy_count: number }) {
-  //   return axiosClients.post(`${URL}/update-purchase`, body)
-  // },
-  // buyPurchase(body: [{ product_id: string; buy_count: number }]) {
-  //   return axiosClients.post(`${URL}/buy-products`, body)
-  // },
-  // deletePurchase(body: [product_id: string]) {
-  //   return axiosClients.delete(URL, body)
-  // }
 }
 
 export default purchaseApi

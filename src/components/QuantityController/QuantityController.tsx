@@ -1,25 +1,31 @@
+import { useState } from 'react'
 import InputNumber from '../InputNumber'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   max?: number
-  value: number
+  value?: number
   onType?: (value: number) => void
   onDecrease?: (value: number) => void
   onIncrease?: (value: number) => void
 }
 
 export default function QuantityController({ max, value, onDecrease, onIncrease, onType, ...rest }: Props) {
+  const [localValue, setLocalValue] = useState<number>(1)
   const handleIncreaseCount = () => {
-    if (max !== undefined && value >= max) {
-      return (value = max)
+    let _value = (value || localValue) + 1
+    if (max !== undefined && _value >= max) {
+      _value = max
     }
-    return onIncrease && onIncrease(value + 1)
+    onIncrease && onIncrease(_value)
+    setLocalValue(_value)
   }
   const handleDecreaseCount = () => {
-    if (value <= 1) {
-      return (value = 1)
+    let _value = (value || localValue) - 1
+    if (_value < 1) {
+      _value = 1
     }
-    return onDecrease && onDecrease(value - 1)
+    onDecrease && onDecrease(_value)
+    setLocalValue(_value)
   }
   const handleChangeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(e.target.value)
@@ -29,7 +35,8 @@ export default function QuantityController({ max, value, onDecrease, onIncrease,
     if (_value < 1) {
       _value = 1
     }
-    return onType && onType(_value)
+    onType && onType(_value)
+    setLocalValue(_value)
   }
 
   return (
@@ -46,7 +53,7 @@ export default function QuantityController({ max, value, onDecrease, onIncrease,
         </svg>
       </button>
       <InputNumber
-        value={value}
+        value={value || localValue}
         classNameInput='h-8 w-[50px] border-y text-center text-base outline-none'
         classNameError='hidden'
         onChange={handleChangeCount}
