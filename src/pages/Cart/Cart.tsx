@@ -1,3 +1,5 @@
+import { produce } from 'immer'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link, createSearchParams } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
@@ -7,14 +9,31 @@ import RatingStar from '~/components/RatingStar'
 import path from '~/constants/path'
 import { queryParamsDefault } from '~/constants/product'
 import { purchasesStatus } from '~/constants/purchase'
+import { purchase } from '~/types/purchase.type'
 import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
 
+interface ExtendPurchase extends purchase {
+  disable: boolean
+  checked: boolean
+}
+
 export default function Cart() {
+  const [extendPurchaseInCart, setExtendPurchaseInCart] = useState<ExtendPurchase[]>([])
   const { data: purchaseInCartData } = useQuery({
     queryKey: ['purchase', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
   const purchaseInCart = purchaseInCartData?.data.data
+
+  useEffect(() => {
+    setExtendPurchaseInCart(
+      purchaseInCart?.map((purchase) => ({
+        ...purchase,
+        disable: false,
+        checked: false
+      })) || []
+    )
+  }, [purchaseInCart])
 
   const categoryId = purchaseInCart && purchaseInCart[0].product.category._id
   const queryConfig = {
@@ -29,6 +48,24 @@ export default function Cart() {
     enabled: Boolean(purchaseInCart)
   })
   const productCategory = productCategoryData?.data.data.products
+  const isAllChecked = extendPurchaseInCart?.every((purchase) => purchase.checked)
+
+  const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExtendPurchaseInCart(
+      produce((draft) => {
+        draft[purchaseIndex].checked = event.target.checked
+      })
+    )
+  }
+
+  const handleCheckedAll = () => {
+    setExtendPurchaseInCart((prev) =>
+      prev.map((purchase) => ({
+        ...purchase,
+        checked: !isAllChecked
+      }))
+    )
+  }
 
   return (
     <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
@@ -36,8 +73,14 @@ export default function Cart() {
         <div className='grid grid-cols-12 rounded-[3px] bg-white px-10 py-4 shadow-sm'>
           <div className='col-span-6 flex items-center'>
             <div className='flex items-center'>
-              <input id='CheckedAllProduct' type='checkbox' className='h-[18px] w-[18px] accent-orange' />
-              <label htmlFor='CheckedAllProduct' className='px-[20px] text-sm'>
+              <input
+                id='CheckedAllProduct'
+                type='checkbox'
+                className='h-[18px] w-[18px] accent-orange'
+                checked={isAllChecked}
+                onChange={handleCheckedAll}
+              />
+              <label htmlFor='CheckedAllProduct' className='cursor-pointer px-[20px] text-sm'>
                 Product
               </label>
             </div>
@@ -51,8 +94,8 @@ export default function Cart() {
             </div>
           </div>
         </div>
-        {purchaseInCart &&
-          purchaseInCart.map((purchase) => (
+        {extendPurchaseInCart &&
+          extendPurchaseInCart.map((purchase, index) => (
             <div key={purchase._id} className='mt-[15px] rounded-[3px] bg-white px-5 py-4 shadow-sm'>
               <div className='grid grid-cols-12 gap-4 border px-5 py-[16px]'>
                 <div className='col-span-6 flex items-center'>
@@ -61,6 +104,8 @@ export default function Cart() {
                       id='CheckedAllProduct'
                       type='checkbox'
                       className='h-[18px] w-[18px] flex-shrink-0 accent-orange'
+                      checked={purchase.checked}
+                      onChange={handleChecked(index)}
                     />
                     <Link
                       to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
@@ -106,9 +151,15 @@ export default function Cart() {
         <div className='sticky bottom-0 mt-[15px] rounded-[3px] border bg-white px-5 py-4 shadow-sm'>
           <div className='flex items-center justify-between text-base'>
             <div className='flex items-center'>
-              <input id='selectAllProduct' type='checkbox' className='h-[18px] w-[18px] accent-orange' />
+              <input
+                id='selectAllProduct'
+                type='checkbox'
+                className='h-[18px] w-[18px] accent-orange'
+                checked={isAllChecked}
+                onChange={handleCheckedAll}
+              />
               <label htmlFor='selectAllProduct' className='cursor-pointer px-[20px]'>
-                Select All ({purchaseInCart?.length})
+                Select All ({extendPurchaseInCart?.length})
               </label>
               <button className='px-1 outline-none'>Delete</button>
             </div>
