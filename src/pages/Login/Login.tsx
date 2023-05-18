@@ -54,10 +54,10 @@ const Login = () => {
     <div className='bg-orange'>
       <div className='container'>
         <div className='grid grid-cols-5 py-[80px]'>
-          <div className='col-start-4 col-span-2'>
+          <div className='col-span-2 col-start-4'>
             <form
               onSubmit={onSubmit}
-              className='w-[400px] min-h-[430px] p-[30px] bg-[#fff] shadow-lg rounded'
+              className='min-h-[430px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
               noValidate
             >
               <div className='text-[20px]'>Log In</div>
@@ -83,18 +83,18 @@ const Login = () => {
                 disabled={loginAccountMutation.isLoading}
                 isLoading={loginAccountMutation.isLoading}
                 type='submit'
-                className='w-full mt-3 bg-orange/90 hover:bg-orange text-[#fff] py-2 px-4 flex items-center justify-center'
+                className='mt-3 flex w-full items-center justify-center bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
               >
                 LOG IN
               </Button>
-              <div className='flex items-center mt-8'>
-                <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
-                <div className='text-xs text-[#ccc] px-4'>OR</div>
-                <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
+              <div className='mt-8 flex items-center'>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+                <div className='px-4 text-xs text-[#ccc]'>OR</div>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
               </div>
-              <div className='flex items-center justify-center gap-2 mt-6'>
-                <div className='text-[#ccc] text-sm'>New to Shopee? </div>
-                <Link className='text-orange text-sm' to='/register'>
+              <div className='mt-6 flex items-center justify-center gap-2'>
+                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
+                <Link className='text-sm text-orange' to='/register'>
                   Sign Up
                 </Link>
               </div>

@@ -3,18 +3,23 @@ import axiosClients from './axiosClients'
 import { successResponse } from '~/types/utils.type'
 import { purchase, purchasesStatus } from '~/types/purchase.type'
 
+export interface purchaseBody {
+  product_id: string
+  buy_count: number
+}
+
 const URL = path.purchases
 const purchaseApi = {
   getPurchases(params: { status: purchasesStatus }) {
     return axiosClients.get<successResponse<purchase[]>>(URL, { params })
   },
-  addToCart(body: { product_id: string; buy_count: number }) {
+  addToCart(body: purchaseBody) {
     return axiosClients.post<successResponse<purchase>>(`${URL}/add-to-cart`, body)
   },
-  updatePurchase(body: { product_id: string; buy_count: number }) {
+  updatePurchase(body: purchaseBody) {
     return axiosClients.put<successResponse<purchase>>(`${URL}/update-purchase`, body)
   },
-  buyPurchase(body: { product_id: string; buy_count: number }[]) {
+  buyPurchase(body: purchaseBody[]) {
     return axiosClients.post<successResponse<purchase[]>>(`${URL}/buy-products`, body)
   },
   deletePurchase(id: string[]) {

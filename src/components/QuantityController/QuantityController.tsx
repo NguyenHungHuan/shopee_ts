@@ -7,9 +7,18 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onType?: (value: number) => void
   onDecrease?: (value: number) => void
   onIncrease?: (value: number) => void
+  onFocusOut?: (value: number) => void
 }
 
-export default function QuantityController({ max, value, onDecrease, onIncrease, onType, ...rest }: Props) {
+export default function QuantityController({
+  max,
+  value,
+  onDecrease,
+  onIncrease,
+  onType,
+  onFocusOut,
+  ...rest
+}: Props) {
   const [localValue, setLocalValue] = useState<number>(1)
   const handleIncreaseCount = () => {
     let _value = (value || localValue) + 1
@@ -38,6 +47,10 @@ export default function QuantityController({ max, value, onDecrease, onIncrease,
     onType && onType(_value)
     setLocalValue(_value)
   }
+  const handleFocusOut = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    const _value = Number(e.target.value)
+    onFocusOut && onFocusOut(_value)
+  }
 
   return (
     <div className='flex items-center overflow-hidden rounded-sm shadow-sm'>
@@ -57,6 +70,7 @@ export default function QuantityController({ max, value, onDecrease, onIncrease,
         classNameInput='h-8 w-[50px] border-y text-center text-base outline-none'
         classNameError='hidden'
         onChange={handleChangeCount}
+        onBlur={handleFocusOut}
         {...rest}
       />
       <button className='border p-[10px]' onClick={handleIncreaseCount}>
