@@ -9,7 +9,7 @@ import omit from 'lodash/omit'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { errorResponse } from '~/types/utils.type'
 import { useContext } from 'react'
-import { AppContext } from '~/components/Contexts/app.context'
+import { AppContext } from '~/Contexts/app.context'
 import path from '~/constants/path'
 import Button from '~/components/Button'
 
@@ -58,10 +58,10 @@ const Register = () => {
     <div className='bg-orange'>
       <div className='container'>
         <div className='grid grid-cols-5 py-[80px]'>
-          <div className='col-start-4 col-span-2'>
+          <div className='col-span-2 col-start-4'>
             <form
               onSubmit={onSubmit}
-              className='w-[400px] min-h-[462px] p-[30px] bg-[#fff] shadow-lg rounded'
+              className='min-h-[462px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
               noValidate
             >
               <div className='text-[20px]'>Register</div>
@@ -93,16 +93,16 @@ const Register = () => {
                 disabled={registerAccountMutation.isLoading}
                 isLoading={registerAccountMutation.isLoading}
                 type='submit'
-                className='w-full mt-3 bg-orange/90 hover:bg-orange text-[#fff] py-2 px-4'
+                className='mt-3 w-full bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
               >
                 SIGN UP
               </Button>
-              <div className='flex items-center mt-8'>
-                <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
-                <div className='text-xs text-[#ccc] px-4'>OR</div>
-                <div className='flex-1 w-full h-[1px] bg-[#ccc]'></div>
+              <div className='mt-8 flex items-center'>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+                <div className='px-4 text-xs text-[#ccc]'>OR</div>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
               </div>
-              <div className='text-center mt-6 text-xs px-8'>
+              <div className='mt-6 px-8 text-center text-xs'>
                 <span className=''>By signing up, you agree to Shopee&apos;s </span>
                 <Link className='text-orange' to='/'>
                   Terms of Service
@@ -112,9 +112,9 @@ const Register = () => {
                   Private Policy
                 </Link>
               </div>
-              <div className='flex items-center justify-center gap-2 mt-6'>
-                <div className='text-[#ccc] text-sm'>New to Shopee? </div>
-                <Link className='text-orange text-sm' to='/login'>
+              <div className='mt-6 flex items-center justify-center gap-2'>
+                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
+                <Link className='text-sm text-orange' to='/login'>
                   Log In
                 </Link>
               </div>

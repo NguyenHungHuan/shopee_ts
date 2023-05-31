@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { Link, useParams } from 'react-router-dom'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import productsApi from '~/apis/productApi'
 import purchaseApi from '~/apis/purchaseApi'
@@ -11,11 +11,15 @@ import RatingStar from '~/components/RatingStar'
 import path from '~/constants/path'
 import { queryParamsDefault } from '~/constants/product'
 import { purchasesStatus } from '~/constants/purchase'
-import { queryClient } from '~/main'
 import { formatPriceNumber, formatSocialNumber, generateNameId, getIdFormNameId } from '~/utils/utils'
 import NotFound from '../NotFound'
+import { AppContext } from '~/Contexts/app.context'
+import Button from '~/components/Button'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const { isAuthenticated } = useContext(AppContext)
   const { nameId } = useParams()
   const id = getIdFormNameId(nameId as string)
 
@@ -98,18 +102,39 @@ export default function ProductDetail() {
   }
 
   const addToCart = () => {
-    addToCartMutation.mutate(
-      { product_id: product?._id as string, buy_count: buyCount },
-      {
-        onSuccess: (data) => {
-          queryClient.invalidateQueries({ queryKey: ['purchaseList', { status: purchasesStatus.inCart }] })
-          toast.success(data.data.message, {
-            autoClose: 500,
-            hideProgressBar: true
-          })
+    if (isAuthenticated) {
+      addToCartMutation.mutate(
+        { product_id: product?._id as string, buy_count: buyCount },
+        {
+          onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['purchaseList', { status: purchasesStatus.inCart }] })
+            toast.success(data.data.message, {
+              autoClose: 500,
+              hideProgressBar: true,
+              position: 'top-center'
+            })
+          }
         }
-      }
-    )
+      )
+    } else {
+      navigate(path.login)
+    }
+  }
+
+  const handleBuyNow = async () => {
+    if (isAuthenticated) {
+      const res = await addToCartMutation.mutateAsync({
+        product_id: product?._id as string,
+        buy_count: buyCount
+      })
+      navigate(path.cart, {
+        state: {
+          purchaseId: res.data.data._id
+        }
+      })
+    } else {
+      navigate(path.login)
+    }
   }
 
   return (
@@ -460,9 +485,14 @@ export default function ProductDetail() {
                   </svg>
                   <span>add to cart</span>
                 </button>
-                <button className='rounded-sm bg-orange px-[20px] py-[12px] capitalize text-white shadow-sm hover:bg-[#f05d40]'>
+                <Button
+                  onClick={handleBuyNow}
+                  isLoading={addToCartMutation.isLoading}
+                  disabled={addToCartMutation.isLoading}
+                  className='rounded-sm bg-orange px-[20px] py-[12px] capitalize text-white shadow-sm hover:bg-[#f05d40]'
+                >
                   buy now
-                </button>
+                </Button>
               </div>
               <div className='mt-8 border-t border-t-gray-200'>
                 <div className='flex items-center gap-[20px] px-[20px] py-9'>

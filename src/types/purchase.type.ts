@@ -12,5 +12,10 @@ export interface purchase {
   updatedAt: string
 }
 
+export interface ExtendedPurchase extends purchase {
+  disabled: boolean
+  checked: boolean
+}
+
 export type purchasesStatus = -1 | 1 | 2 | 3 | 4 | 5
 export type purchasesStatusList = 0 | purchasesStatus

@@ -50,6 +50,10 @@ axiosClients.interceptors.response.use(
         autoClose: 3000
       })
     }
+    if (status === HttpStatusCode.Unauthorized) {
+      clearLS()
+      window.location.reload()
+    }
     return Promise.reject(error)
   }
 )

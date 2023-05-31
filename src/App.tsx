@@ -16,7 +16,7 @@ import NotFound from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useContext } from 'react'
-import { AppContext } from './components/Contexts/app.context'
+import { AppContext } from './Contexts/app.context'
 
 export default function App() {
   const { isAuthenticated } = useContext(AppContext)

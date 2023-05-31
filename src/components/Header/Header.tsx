@@ -1,48 +1,21 @@
-import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import NavHeader from '../NavHeader'
-import path from '~/constants/path'
-import Popover from '../Popover'
-import { useForm } from 'react-hook-form'
-import { SearchFormData, searchSchema } from '~/utils/rulesForm'
-import { yupResolver } from '@hookform/resolvers/yup'
-import useQueryConfig from '~/hooks/useQueryConfig'
-import { omit } from 'lodash'
+import { useContext } from 'react'
 import { useQuery } from 'react-query'
-import { purchasesStatus } from '~/constants/purchase'
+import { Link } from 'react-router-dom'
 import purchaseApi from '~/apis/purchaseApi'
+import path from '~/constants/path'
+import { purchasesStatus } from '~/constants/purchase'
 import { formatPriceNumber } from '~/utils/utils'
 import noProduct from '../../assets/images/noProduct.png'
-import { useContext } from 'react'
-import { AppContext } from '../Contexts/app.context'
+import { AppContext } from '../../Contexts/app.context'
+import NavHeader from '../NavHeader'
+import Popover from '../Popover'
+import useSearchProducts from '~/hooks/useSearchProducts'
 
 const MAX_PURCHASE = 5
 
 export default function Header() {
   const { isAuthenticated } = useContext(AppContext)
-  const queryConfig = useQueryConfig()
-  const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<SearchFormData>({
-    resolver: yupResolver(searchSchema)
-  })
-
-  const onSubmit = handleSubmit((data) => {
-    const config = queryConfig.order
-      ? omit(
-          {
-            ...queryConfig,
-            name: data.name
-          },
-          ['order', 'sort_by']
-        )
-      : {
-          ...queryConfig,
-          name: data.name
-        }
-    navigate({
-      pathname: path.home,
-      search: createSearchParams(config).toString()
-    })
-  })
+  const { onSubmit, register } = useSearchProducts()
 
   const { data } = useQuery({
     queryKey: ['purchaseList', { status: purchasesStatus.inCart }],

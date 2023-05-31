@@ -5,9 +5,9 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
-import { AppProvider } from './components/Contexts/app.context'
+import { AppProvider } from './Contexts/app.context'
 
-export const queryClient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
