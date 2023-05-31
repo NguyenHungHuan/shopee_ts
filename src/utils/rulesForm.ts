@@ -44,7 +44,22 @@ export const searchSchema = yup.object({
   name: yup.string().trim().required()
 })
 
+export const userSchema = yup.object({
+  name: yup.string().max(160, 'Name must be 160 characters or less.').required('Name cannot be empty.'),
+  phone: yup.string().max(20, 'Phone must be 20 characters or less.'),
+  address: yup.string().max(160, 'Address must be 160 characters or less.'),
+  date_of_birth: yup.date().max(new Date(), 'Date is invalid, please set a correct date.'),
+  avatar: yup.string().max(1000, 'Image is invalid, please set a correct image.'),
+  password: schema.fields['password'],
+  new_password: schema.fields['password'],
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Confirm password not correct')
+    .required('Please confirm your password')
+})
+
 export type FormData = yup.InferType<typeof schema>
 export type FormDataPrice = yup.InferType<typeof InputPriceSchema>
 export type LoginFormData = yup.InferType<typeof loginSchema>
 export type SearchFormData = yup.InferType<typeof searchSchema>
+export type UserSchema = yup.InferType<typeof userSchema>

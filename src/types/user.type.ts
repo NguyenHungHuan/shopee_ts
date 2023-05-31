@@ -5,7 +5,7 @@ export type User = {
   roles: Role[]
   email: string
   name?: string
-  date_of_birth?: null
+  date_of_birth?: string
   avatar?: string
   address?: string
   phone?: string

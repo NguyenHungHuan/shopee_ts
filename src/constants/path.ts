@@ -12,6 +12,7 @@ const path = {
   profile: '/user/profile',
   changePassword: '/user/password',
   historyPurchase: '/user/purchase',
+  me: 'me',
   star: '*'
 } as const
 
