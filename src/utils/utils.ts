@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import HttpStatusCode from '~/constants/HttpStatusCode'
+import config from '~/constants/config'
+import noAvatar from '~/assets/images/noAvatar.png'
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
@@ -36,4 +38,8 @@ export function generateNameId(name: string, id: string) {
 export function getIdFormNameId(nameId: string) {
   const arr = nameId.split('-i-')
   return arr[arr.length - 1]
+}
+
+export function getAvatarUrl(avatarName: string) {
+  return avatarName ? `${config.baseUrl}images/${avatarName}` : noAvatar
 }

@@ -1,15 +1,20 @@
 import classNames from 'classnames'
+import { useContext } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { AppContext } from '~/Contexts/app.context'
 import path from '~/constants/path'
+import { getAvatarUrl } from '~/utils/utils'
 
 export default function UserSideNav() {
+  const { profile } = useContext(AppContext)
+
   return (
-    <div className='flex-shrink-0 w-[180px]'>
-      <div className='flex items-center gap-[15px] py-[15px] border-b border-gray-200'>
-        <Link to={path.profile} className='w-12 h-12 rounded-full overflow-hidden border border-gray-400'>
+    <div className='w-[180px] flex-shrink-0'>
+      <div className='flex items-center gap-[15px] border-b border-gray-200 py-[15px]'>
+        <Link to={path.profile} className='h-12 w-12 overflow-hidden rounded-full border border-gray-400'>
           <img
             className='h-full w-full object-cover'
-            src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
+            src={getAvatarUrl(profile?.avatar as string)}
             alt='avatar'
           />
         </Link>
@@ -37,14 +42,14 @@ export default function UserSideNav() {
         <NavLink
           to={path.profile}
           className={({ isActive }) =>
-            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+            classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {
               'text-orange': isActive,
               'text-black': !isActive
             })
           }
         >
           <img
-            className='w-5 h-5'
+            className='h-5 w-5'
             src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
             alt='icon'
           />
@@ -53,7 +58,7 @@ export default function UserSideNav() {
         <NavLink
           to={path.changePassword}
           className={({ isActive }) =>
-            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+            classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {
               'text-orange': isActive,
               'text-black': !isActive
             })
@@ -65,7 +70,7 @@ export default function UserSideNav() {
             viewBox='0 0 24 24'
             strokeWidth={2}
             stroke='#255fba'
-            className='w-5 h-5'
+            className='h-5 w-5'
           >
             <path
               strokeLinecap='round'
@@ -78,14 +83,14 @@ export default function UserSideNav() {
         <NavLink
           to={path.historyPurchase}
           className={({ isActive }) =>
-            classNames('flex items-center gap-[10px] mb-4 text-sm hover:text-orange', {
+            classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {
               'text-orange': isActive,
               'text-black': !isActive
             })
           }
         >
           <img
-            className='w-5 h-5'
+            className='h-5 w-5'
             src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
             alt='icon'
           />

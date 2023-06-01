@@ -3,9 +3,9 @@ import axiosClients from './axiosClients'
 import { successResponse } from '~/types/utils.type'
 import { User } from '~/types/user.type'
 
-interface bodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'createdAt' | 'updatedAt'> {
-  password: string
-  newPassword: string
+interface bodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'email' | 'createdAt' | 'updatedAt'> {
+  password?: string
+  newPassword?: string
 }
 
 const userApi = {

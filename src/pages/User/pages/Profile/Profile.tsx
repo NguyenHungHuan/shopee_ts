@@ -1,26 +1,31 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { useQuery } from 'react-query'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useForm, Controller, FormProvider } from 'react-hook-form'
+import { useMutation, useQuery } from 'react-query'
 import userApi from '~/apis/userApi'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import InputNumber from '~/components/InputNumber'
 import { UserSchema, userSchema } from '~/utils/rulesForm'
+import DateSelect from '../../Components/DateSelect'
+import { setProfileToLS } from '~/utils/auth'
+import { AppContext } from '~/Contexts/app.context'
+import { toast } from 'react-toastify'
+import { getAvatarUrl, isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import { errorResponse } from '~/types/utils.type'
+import config from '~/constants/config'
+import InputFile from '~/components/InputFile'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
-
+type FormDataError = Omit<FormData, 'date_of_birth'> & {
+  date_of_birth?: string
+}
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
-  const {
-    register,
-    control,
-    formState: { errors },
-    handleSubmit,
-    setValue,
-    setError
-  } = useForm<FormData>({
+  const [fileImg, setFileImg] = useState<File>()
+  const { setProfile } = useContext(AppContext)
+  const methods = useForm<FormData>({
     defaultValues: {
       name: '',
       phone: '',
@@ -30,24 +35,77 @@ export default function Profile() {
     },
     resolver: yupResolver(profileSchema)
   })
-  const { data: profileData } = useQuery({
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: userApi.getProfile
   })
   const profile = profileData?.data.data
-  console.log(profile)
+
+  const updateProfileMutation = useMutation({
+    mutationFn: userApi.updateProfile
+  })
+
+  const updateAvatarProfileMutation = useMutation({
+    mutationFn: userApi.updateAvatarProfile
+  })
+
+  const previewAvatar = useMemo(() => {
+    return fileImg ? URL.createObjectURL(fileImg) : ''
+  }, [fileImg])
 
   useEffect(() => {
     if (profile) {
-      setValue('name', profile.name || profile.email)
-      setValue('phone', profile.phone)
-      setValue('address', profile.address)
-      setValue(
+      methods.setValue('name', profile.name || profile.email)
+      methods.setValue('phone', profile.phone)
+      methods.setValue('address', profile.address)
+      methods.setValue(
         'date_of_birth',
         profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1)
       )
     }
-  }, [profile, setValue])
+  }, [profile, methods])
+
+  const onSubmit = methods.handleSubmit(async (data) => {
+    try {
+      let avatarName = profile?.avatar
+      if (fileImg) {
+        const form = new FormData()
+        form.append('image', fileImg)
+        const uploadRes = await updateAvatarProfileMutation.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        methods.setValue('avatar', avatarName)
+      }
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        avatar: avatarName
+      })
+      setProfile(res.data.data)
+      setProfileToLS(res.data.data)
+      refetch()
+      toast.success(res.data.message, {
+        autoClose: 2000,
+        hideProgressBar: true,
+        position: 'top-center'
+      })
+    } catch (error) {
+      if (isAxiosErrorUnprocessableEntity<errorResponse<FormDataError>>(error)) {
+        const formError = error.response?.data.data
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            methods.setError(key as keyof FormDataError, {
+              message: formError[key as keyof FormDataError],
+              type: 'Server'
+            })
+          })
+        }
+      }
+    }
+  })
+
+  const handleChangeInputFile = (file: File) => {
+    setFileImg(file)
+  }
 
   return (
     <div className='rounded-sm bg-white px-[30px] py-[18px] shadow'>
@@ -55,105 +113,98 @@ export default function Profile() {
         <h1 className='text-lg font-medium'>My Profile</h1>
         <div className='text-sm'>Manage and protect your account</div>
       </div>
-      <form className='flex pt-[30px] text-sm' noValidate>
-        <div className='flex-1 pr-[50px]'>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <span className='min-w-[20%] text-right text-gray-400'>Email</span>
-            <span>{profile?.email}</span>
-          </div>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <label htmlFor='name' className='min-w-[20%] text-right text-gray-400'>
-              Name
-            </label>
-            <Input
-              id='name'
-              classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
-              className='flex flex-1'
-              classNameInput='flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
-              name='name'
-              register={register}
-              errorMessage={errors.name?.message}
-            />
-          </div>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <label htmlFor='phone' className='min-w-[20%] text-right text-gray-400'>
-              Phone Number
-            </label>
+      <FormProvider {...methods}>
+        <form onSubmit={onSubmit} className='flex pt-[30px] text-sm' noValidate>
+          <div className='flex-1 pr-[50px]'>
+            <div className='flex items-center gap-5 pb-[40px]'>
+              <span className='min-w-[20%] text-right text-gray-400'>Email</span>
+              <span>{profile?.email}</span>
+            </div>
+            <div className='flex gap-5 pb-[20px]'>
+              <label htmlFor='name' className='mt-2 min-w-[20%] text-right text-gray-400'>
+                Name
+              </label>
+              <Input
+                id='name'
+                classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
+                className='flex-1'
+                classNameInput='w-full flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+                name='name'
+                register={methods.register}
+                errorMessage={methods.formState.errors.name?.message}
+              />
+            </div>
+            <div className='flex gap-5 pb-[20px]'>
+              <label htmlFor='phone' className='mt-2 min-w-[20%] text-right text-gray-400'>
+                Phone Number
+              </label>
+              <Controller
+                name='phone'
+                control={methods.control}
+                render={({ field }) => (
+                  <InputNumber
+                    id='phone'
+                    classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
+                    className='flex-1'
+                    classNameInput='w-full flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+                    errorMessage={methods.formState.errors.phone?.message}
+                    {...field}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </div>
+            <div className='flex gap-5 pb-[20px]'>
+              <label htmlFor='address' className='mt-2 min-w-[20%] text-right text-gray-400'>
+                Address
+              </label>
+              <Input
+                id='address'
+                classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
+                className='flex-1'
+                classNameInput='w-full flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+                name='address'
+                register={methods.register}
+                errorMessage={methods.formState.errors.address?.message}
+              />
+            </div>
             <Controller
-              name='phone'
-              control={control}
+              name='date_of_birth'
+              control={methods.control}
               render={({ field }) => (
-                <InputNumber
-                  id='phone'
-                  classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
-                  className='flex flex-1'
-                  classNameInput='flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
-                  errorMessage={errors.phone?.message}
-                  {...field}
+                <DateSelect
+                  errorMessage={methods.formState.errors.date_of_birth?.message}
                   onChange={field.onChange}
+                  value={field.value}
                 />
               )}
             />
-          </div>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <label htmlFor='address' className='min-w-[20%] text-right text-gray-400'>
-              Address
-            </label>
-            <Input
-              id='address'
-              classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
-              className='flex flex-1'
-              classNameInput='flex-1 border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
-              name='address'
-              register={register}
-              errorMessage={errors.address?.message}
-            />
-          </div>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <span className='min-w-[20%] text-right text-gray-400'>Date of birth</span>
-            <div className='flex flex-1 items-center justify-between gap-2'>
-              <select className='w-full cursor-pointer rounded-sm border px-[15px] py-[10px] outline-none hover:border-orange'>
-                <option value='' disabled>
-                  Day
-                </option>
-              </select>
-              <select className='w-full cursor-pointer rounded-sm border px-[15px] py-[10px] outline-none hover:border-orange'>
-                <option value='' disabled>
-                  Month
-                </option>
-              </select>
-              <select className='w-full cursor-pointer rounded-sm border px-[15px] py-[10px] outline-none hover:border-orange'>
-                <option value='' disabled>
-                  Year
-                </option>
-              </select>
+            <div className='flex items-center gap-5 pb-[30px]'>
+              <div className='min-w-[20%]'></div>
+              <Button
+                type='submit'
+                className='rounded-sm bg-orange px-5 py-[10px] text-white hover:opacity-90'
+              >
+                Save
+              </Button>
             </div>
           </div>
-          <div className='flex items-center gap-5 pb-[30px]'>
-            <div className='min-w-[20%]'></div>
-            <Button type='submit' className='rounded-sm bg-orange px-5 py-[10px] text-white hover:opacity-90'>
-              Save
-            </Button>
-          </div>
-        </div>
-        <div className='flex h-fit w-[280px] justify-center border-l border-l-gray-200'>
-          <div className='flex flex-col items-center'>
-            <img
-              className='my-5 h-[100px] w-[100px] rounded-full object-cover'
-              src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
-              alt='avatar'
-            />
-            <input type='file' accept='.jpg,.jpeg,.png' hidden></input>
-            <button type='button' className='rounded-sm border px-5 py-[10px] shadow-sm hover:bg-[#00000005]'>
-              Select Image
-            </button>
-            <div className='mt-3 text-gray-400'>
-              <div>File size: maximum 1 MB</div>
-              <div>File extension: .JPEG, .PNG</div>
+          <div className='flex h-fit w-[280px] justify-center border-l border-l-gray-200'>
+            <div className='flex flex-col items-center'>
+              <img
+                className='my-5 h-[100px] w-[100px] rounded-full object-cover'
+                src={previewAvatar || getAvatarUrl(profile?.avatar as string)}
+                alt='avatar'
+              />
+              <InputFile onChange={handleChangeInputFile} />
+              <div className='mt-3 text-gray-400'>
+                <div>File size: maximum 1 MB</div>
+                <div>File extension: .JPEG, .PNG</div>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </FormProvider>
     </div>
   )
 }

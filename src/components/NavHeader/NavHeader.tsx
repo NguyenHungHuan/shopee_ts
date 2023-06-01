@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { AppContext } from '../../Contexts/app.context'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from '~/constants/purchase'
+import { getAvatarUrl } from '~/utils/utils'
 
 export default function NavHeader() {
   const queryClient = useQueryClient()
@@ -191,7 +192,7 @@ export default function NavHeader() {
               >
                 <img
                   className='h-[20px] w-[20px] rounded-full object-cover'
-                  src='https://images.unsplash.com/photo-1680728841730-481c20899554?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
+                  src={getAvatarUrl(profile?.avatar as string)}
                   alt='avatar'
                 />
                 <span>{profile?.email}</span>
