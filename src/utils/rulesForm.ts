@@ -54,8 +54,8 @@ export const userSchema = yup.object({
   new_password: schema.fields['password'],
   confirm_password: yup
     .string()
-    .oneOf([yup.ref('password')], 'Confirm password not correct')
-    .required('Please confirm your password')
+    .oneOf([yup.ref('new_password')], 'Confirm password not correct')
+    .required('Please confirm your new password')
 })
 
 export type FormData = yup.InferType<typeof schema>

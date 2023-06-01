@@ -4,8 +4,8 @@ import { successResponse } from '~/types/utils.type'
 import { User } from '~/types/user.type'
 
 interface bodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'email' | 'createdAt' | 'updatedAt'> {
-  password?: string
-  newPassword?: string
+  password?: string | unknown
+  new_password?: string | unknown
 }
 
 const userApi = {

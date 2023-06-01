@@ -6,37 +6,37 @@ export default function HistoryPurchase() {
       <div className='sticky top-0 flex rounded-sm shadow-sm'>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-3 text-center hover:text-orange border-b-orange text-orange'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-orange bg-white py-3 text-center text-orange hover:text-orange'
         >
           All
         </Link>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-3 text-center hover:text-orange border-b-black/10 text-gray-900'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-black/10 bg-white py-3 text-center text-gray-900 hover:text-orange'
         >
           To Pay
         </Link>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-3 text-center hover:text-orange border-b-black/10 text-gray-900'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-black/10 bg-white py-3 text-center text-gray-900 hover:text-orange'
         >
           To Ship
         </Link>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-3 text-center hover:text-orange border-b-black/10 text-gray-900'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-black/10 bg-white py-3 text-center text-gray-900 hover:text-orange'
         >
           To Receive
         </Link>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-3 text-center hover:text-orange border-b-black/10 text-gray-900'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-black/10 bg-white py-3 text-center text-gray-900 hover:text-orange'
         >
           Completed
         </Link>
         <Link
           to='/'
-          className='flex flex-1 items-center justify-center border-b-2 bg-white py-2 text-center hover:text-orange border-b-black/10 text-gray-900'
+          className='flex flex-1 items-center justify-center border-b-2 border-b-black/10 bg-white py-2 text-center text-gray-900 hover:text-orange'
         >
           Cancelled
         </Link>
