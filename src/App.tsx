@@ -1,22 +1,55 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import path from './constants/path'
 import MainLayout from './layouts/MainLayout'
-import ProductDetail from './pages/ProductDetail'
-import ProductList from './pages/ProductList'
 import RegisterLayout from './layouts/RegisterLayout'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import CartLayout from './layouts/CartLayout'
-import Cart from './pages/Cart'
 import UserLayout from './pages/User/layouts/UserLayout'
-import Profile from './pages/User/pages/Profile'
-import ChangePassword from './pages/User/pages/ChangePassword'
-import HistoryPurchase from './pages/User/pages/HistoryPurchase/HistoryPurchase'
-import NotFound from './pages/NotFound'
+// import Login from './pages/Login'
+// import Register from './pages/Register'
+// import ProductList from './pages/ProductList'
+// import ProductDetail from './pages/ProductDetail'
+// import Cart from './pages/Cart'
+// import Profile from './pages/User/pages/Profile'
+// import ChangePassword from './pages/User/pages/ChangePassword'
+// import HistoryPurchase from './pages/User/pages/HistoryPurchase/HistoryPurchase'
+// import NotFound from './pages/NotFound'
+import { Suspense, lazy, useContext } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { useContext } from 'react'
 import { AppContext } from './Contexts/app.context'
+
+const Login = lazy(() => import('./pages/Login'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const ProductList = lazy(() => import('./pages/ProductList'))
+const Register = lazy(() => import('./pages/Register'))
+const Cart = lazy(() => import('./pages/Cart'))
+const Profile = lazy(() => import('./pages/User/pages/Profile'))
+const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
+const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase/HistoryPurchase'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+
+function LoadingPage() {
+  return (
+    <div role='status' className='flex h-[80vh] flex-col items-center justify-center gap-2'>
+      <svg
+        aria-hidden='true'
+        className='mr-2 h-16 w-16 animate-spin fill-orange text-gray-200 dark:text-white'
+        viewBox='0 0 100 101'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path
+          d='M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z'
+          fill='currentColor'
+        />
+        <path
+          d='M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z'
+          fill='currentFill'
+        />
+      </svg>
+    </div>
+  )
+}
 
 export default function App() {
   const { isAuthenticated } = useContext(AppContext)
@@ -31,33 +64,103 @@ export default function App() {
     <>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path={path.home} element={<ProductList />} />
-          <Route path={path.productDetail} element={<ProductDetail />} />
+          <Route
+            path={path.home}
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <ProductList />
+              </Suspense>
+            }
+          />
+          <Route
+            path={path.productDetail}
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <ProductDetail />
+              </Suspense>
+            }
+          />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<UserLayout />}>
-              <Route path={path.user} element={<Profile />} />
-              <Route path={path.profile} element={<Profile />} />
-              <Route path={path.changePassword} element={<ChangePassword />} />
-              <Route path={path.historyPurchase} element={<HistoryPurchase />} />
+              <Route
+                path={path.user}
+                element={
+                  <Suspense fallback={<LoadingPage />}>
+                    <Profile />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={path.profile}
+                element={
+                  <Suspense fallback={<LoadingPage />}>
+                    <Profile />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={path.changePassword}
+                element={
+                  <Suspense fallback={<LoadingPage />}>
+                    <ChangePassword />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={path.historyPurchase}
+                element={
+                  <Suspense fallback={<LoadingPage />}>
+                    <HistoryPurchase />
+                  </Suspense>
+                }
+              />
             </Route>
           </Route>
         </Route>
 
         <Route element={<ProtectedRoute />}>
           <Route element={<CartLayout />}>
-            <Route path={path.cart} element={<Cart />} />
+            <Route
+              path={path.cart}
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <Cart />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
 
         <Route element={<RejectedRoute />}>
           <Route element={<RegisterLayout />}>
-            <Route path={path.login} element={<Login />} />
-            <Route path={path.register} element={<Register />} />
+            <Route
+              path={path.login}
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path={path.register}
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <Register />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
 
-        <Route path={path.star} element={<NotFound />} />
+        <Route
+          path={path.star}
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Routes>
       <ToastContainer />
     </>
