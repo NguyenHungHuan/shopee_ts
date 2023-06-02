@@ -1,7 +1,7 @@
 import path from '~/constants/path'
-import axiosClients from './axiosClients'
+import { purchase, purchasesStatusList } from '~/types/purchase.type'
 import { successResponse } from '~/types/utils.type'
-import { purchase, purchasesStatus } from '~/types/purchase.type'
+import axiosClients from './axiosClients'
 
 export interface purchaseBody {
   product_id: string
@@ -10,7 +10,7 @@ export interface purchaseBody {
 
 const URL = path.purchases
 const purchaseApi = {
-  getPurchases(params: { status: purchasesStatus }) {
+  getPurchases(params: { status: purchasesStatusList }) {
     return axiosClients.get<successResponse<purchase[]>>(URL, { params })
   },
   addToCart(body: purchaseBody) {

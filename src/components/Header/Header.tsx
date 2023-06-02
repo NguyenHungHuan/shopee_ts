@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 import purchaseApi from '~/apis/purchaseApi'
 import path from '~/constants/path'
 import { purchasesStatus } from '~/constants/purchase'
@@ -14,6 +14,8 @@ import useSearchProducts from '~/hooks/useSearchProducts'
 const MAX_PURCHASE = 5
 
 export default function Header() {
+  const isPurchaseRouteMatch = useMatch(path.user)
+  const classNameHeader = isPurchaseRouteMatch ? '' : 'sticky inset-0 z-10'
   const { isAuthenticated } = useContext(AppContext)
   const { onSubmit, register } = useSearchProducts()
 
@@ -26,7 +28,7 @@ export default function Header() {
   const purchaseInCartData = data?.data.data
 
   return (
-    <header className='sticky inset-0 z-10'>
+    <header className={classNameHeader}>
       <NavHeader />
       <div className='w-full bg-orange'>
         <div className='container flex h-[5.3125rem] items-center justify-between py-4'>
