@@ -6,7 +6,7 @@ import path from '~/constants/path'
 import { purchasesStatus } from '~/constants/purchase'
 import useQueryParams from '~/hooks/useQueryParams'
 import { purchasesStatusList } from '~/types/purchase.type'
-import { formatPriceNumber } from '~/utils/utils'
+import { formatPriceNumber, generateNameId } from '~/utils/utils'
 
 export default function HistoryPurchase() {
   const queryParams: { status?: string } = useQueryParams()
@@ -130,7 +130,10 @@ export default function HistoryPurchase() {
             key={purchase._id}
             className='mt-4 rounded-sm border-black/10 bg-white p-4 text-gray-800 shadow-sm'
           >
-            <Link to='/' className='flex'>
+            <Link
+              to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
+              className='flex'
+            >
               <div className='flex-shrink-0'>
                 <img
                   className='h-20 w-20 object-cover'
