@@ -1,6 +1,6 @@
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import useQueryConfig from './useQueryConfig'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import path from '~/constants/path'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SearchFormData, searchSchema } from '~/utils/rulesForm'

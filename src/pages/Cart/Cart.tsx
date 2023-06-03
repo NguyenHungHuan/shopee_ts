@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { keyBy } from 'lodash'
+import keyBy from 'lodash/keyBy'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { Link, createSearchParams, useLocation } from 'react-router-dom'

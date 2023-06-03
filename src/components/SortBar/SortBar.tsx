@@ -4,7 +4,7 @@ import { queryParamsDefault, sortBy, orderConstant } from '~/constants/product'
 import { productListConfig } from '~/types/products.type'
 import path from '~/constants/path'
 import classNames from 'classnames'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 
 interface Props {
   queryConfig: QueryConfig
