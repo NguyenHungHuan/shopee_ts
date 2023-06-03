@@ -5,6 +5,7 @@ import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 import userApi from '~/apis/userApi'
 import Input from '~/components/Input'
+import useScrollTop from '~/hooks/useScrollTop'
 import { errorResponse } from '~/types/utils.type'
 import { UserSchema, userSchema } from '~/utils/rulesForm'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
@@ -13,6 +14,7 @@ type FormData = Pick<UserSchema, 'password' | 'confirm_password' | 'new_password
 const passwordSchema = userSchema.pick(['password', 'confirm_password', 'new_password'])
 
 export default function ChangePassword() {
+  useScrollTop()
   const {
     register,
     setError,

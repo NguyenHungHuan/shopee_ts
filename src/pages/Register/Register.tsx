@@ -12,8 +12,10 @@ import { useContext } from 'react'
 import { AppContext } from '~/Contexts/app.context'
 import path from '~/constants/path'
 import Button from '~/components/Button'
+import useScrollTop from '~/hooks/useScrollTop'
 
 const Register = () => {
+  useScrollTop()
   const {
     register,
     reset,

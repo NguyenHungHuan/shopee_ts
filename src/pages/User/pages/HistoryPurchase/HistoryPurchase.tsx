@@ -5,12 +5,14 @@ import purchaseApi from '~/apis/purchaseApi'
 import path from '~/constants/path'
 import { purchasesStatus } from '~/constants/purchase'
 import useQueryParams from '~/hooks/useQueryParams'
+import useScrollTop from '~/hooks/useScrollTop'
 import { purchasesStatusList } from '~/types/purchase.type'
 import { formatPriceNumber, generateNameId } from '~/utils/utils'
 
 export default function HistoryPurchase() {
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.allProduct
+  useScrollTop([status])
 
   const { data: purchaseData } = useQuery({
     queryKey: ['purchases', { status }],

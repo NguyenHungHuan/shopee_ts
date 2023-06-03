@@ -11,8 +11,10 @@ import path from '~/constants/path'
 import { errorResponse } from '~/types/utils.type'
 import { LoginFormData, loginSchema } from '~/utils/rulesForm'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import useScrollTop from '~/hooks/useScrollTop'
 
 const Login = () => {
+  useScrollTop()
   const {
     register,
     handleSubmit,

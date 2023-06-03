@@ -9,6 +9,7 @@ import SortBar from '~/components/SortBar'
 import path from '~/constants/path'
 import { queryParamsDefault } from '~/constants/product'
 import useQueryConfig from '~/hooks/useQueryConfig'
+import useScrollTop from '~/hooks/useScrollTop'
 import { productListConfig } from '~/types/products.type'
 import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
 
@@ -17,6 +18,7 @@ export type QueryConfig = {
 }
 
 export default function ProductList() {
+  useScrollTop()
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const resultSearch = queryConfig.name

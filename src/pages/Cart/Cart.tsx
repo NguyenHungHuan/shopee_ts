@@ -15,8 +15,10 @@ import { queryParamsDefault } from '~/constants/product'
 import { purchasesStatus } from '~/constants/purchase'
 import { ExtendedPurchase, purchase } from '~/types/purchase.type'
 import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
+import useScrollTop from '~/hooks/useScrollTop'
 
 export default function Cart() {
+  useScrollTop()
   // const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const { data: purchasesInCartData, refetch } = useQuery({

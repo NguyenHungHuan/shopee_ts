@@ -15,6 +15,7 @@ import { getAvatarUrl, isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { errorResponse } from '~/types/utils.type'
 import config from '~/constants/config'
 import InputFile from '~/components/InputFile'
+import useScrollTop from '~/hooks/useScrollTop'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -23,6 +24,7 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
+  useScrollTop()
   const [fileImg, setFileImg] = useState<File>()
   const { setProfile } = useContext(AppContext)
   const methods = useForm<FormData>({

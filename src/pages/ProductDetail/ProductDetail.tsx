@@ -15,6 +15,7 @@ import { formatPriceNumber, formatSocialNumber, generateNameId, getIdFormNameId 
 import NotFound from '../NotFound'
 import { AppContext } from '~/Contexts/app.context'
 import Button from '~/components/Button'
+import useScrollTop from '~/hooks/useScrollTop'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -22,6 +23,7 @@ export default function ProductDetail() {
   const { isAuthenticated } = useContext(AppContext)
   const { nameId } = useParams()
   const id = getIdFormNameId(nameId as string)
+  useScrollTop([nameId])
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['productDetail', id],
