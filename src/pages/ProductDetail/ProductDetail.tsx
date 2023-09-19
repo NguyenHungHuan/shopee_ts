@@ -23,13 +23,14 @@ export default function ProductDetail() {
   const { isAuthenticated } = useContext(AppContext)
   const { nameId } = useParams()
   const id = getIdFormNameId(nameId as string)
-  useScrollTop([nameId])
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ['productDetail', id],
     queryFn: () => productsApi.getProductDetail(id as string)
   })
   const product = data?.data.data
+
+  useScrollTop([product])
 
   const idCategory = product?.category._id
   const queryConfig = { category: idCategory, page: queryParamsDefault.page, limit: queryParamsDefault.limit }
@@ -143,87 +144,85 @@ export default function ProductDetail() {
     <div>
       {product && (
         <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
-          <div className='container flex rounded-[3px] bg-white shadow'>
-            {open && (
-              <div
-                aria-hidden
-                className='fixed inset-0 z-50 flex cursor-default items-center justify-center bg-[#0002]'
-                onClick={() => setOpen((prev) => !prev)}
-              >
+          <div className='container flex flex-col rounded-[3px] bg-white shadow md:flex-row'>
+            <div className='hidden md:block'>
+              {open && (
                 <div
                   aria-hidden
-                  onClick={(e) => e.stopPropagation()}
-                  className='flex h-[880px] w-[1156px] cursor-default rounded-sm bg-white shadow-2xl'
+                  className='fixed inset-0 z-50 flex cursor-default items-center justify-center bg-[#0002]'
+                  onClick={() => setOpen((prev) => !prev)}
                 >
-                  <div className='relative h-full w-full flex-1 overflow-hidden py-3 pl-3'>
-                    <div className='relative w-full pt-[100%]'>
-                      <img
-                        src={activeImg}
-                        alt={product.name}
-                        className='absolute left-0 top-0 w-full object-cover'
-                      />
-                    </div>
-                    <div
-                      aria-hidden
-                      onClick={handlePrevModal}
-                      className='absolute top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pr-1 text-white'
-                    >
-                      <svg
-                        enableBackground='new 0 0 13 20'
-                        viewBox='0 0 13 20'
-                        x={0}
-                        y={0}
-                        className='h-[35px] w-[35px]'
-                        fill='white'
-                        stroke='white'
+                  <div
+                    aria-hidden
+                    onClick={(e) => e.stopPropagation()}
+                    className='flex h-[70%] w-[1156px] max-w-full cursor-default rounded-sm bg-white shadow-2xl'
+                  >
+                    <div className='relative py-3 pl-3'>
+                      <img src={activeImg} alt={product.name} className='h-full w-auto object-cover' />
+                      <div
+                        aria-hidden
+                        onClick={handlePrevModal}
+                        className='absolute top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pr-1 text-white'
                       >
-                        <polygon points='4.2 10 12.1 2.1 10 -.1 1 8.9 -.1 10 1 11 10 20 12.1 17.9' />
-                      </svg>
-                    </div>
-                    <div
-                      onClick={handleNextModal}
-                      aria-hidden
-                      className='absolute right-0 top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pl-1 text-white'
-                    >
-                      <svg
-                        enableBackground='new 0 0 13 21'
-                        viewBox='0 0 13 21'
-                        x={0}
-                        y={0}
-                        className='h-[35px] w-[35px]'
-                        fill='white'
-                        stroke='white'
+                        <svg
+                          enableBackground='new 0 0 13 20'
+                          viewBox='0 0 13 20'
+                          x={0}
+                          y={0}
+                          className='h-[35px] w-[35px]'
+                          fill='white'
+                          stroke='white'
+                        >
+                          <polygon points='4.2 10 12.1 2.1 10 -.1 1 8.9 -.1 10 1 11 10 20 12.1 17.9' />
+                        </svg>
+                      </div>
+                      <div
+                        onClick={handleNextModal}
+                        aria-hidden
+                        className='absolute right-0 top-[50%] z-[2] flex h-20 w-10 cursor-pointer select-none items-center justify-center bg-[rgba(0,0,0,.54)] pl-1 text-white'
                       >
-                        <polygon points='11.1 9.9 2.1 .9 -.1 3.1 7.9 11 -.1 18.9 2.1 21 11.1 12 12.1 11' />
-                      </svg>
+                        <svg
+                          enableBackground='new 0 0 13 21'
+                          viewBox='0 0 13 21'
+                          x={0}
+                          y={0}
+                          className='h-[35px] w-[35px]'
+                          fill='white'
+                          stroke='white'
+                        >
+                          <polygon points='11.1 9.9 2.1 .9 -.1 3.1 7.9 11 -.1 18.9 2.1 21 11.1 12 12.1 11' />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                  <div className='flex w-[296px] flex-col pb-[30px] pl-3 pt-10'>
-                    <div className='line-clamp-2 text-ellipsis pr-3 text-base text-black'>{product.name}</div>
-                    <div className='mt-5 flex flex-1 flex-wrap content-start justify-start overflow-auto'>
-                      {product.images.map((img, index) => {
-                        const isActive = img === activeImg
-                        return (
-                          <div key={index} className='mb-3 mr-3 h-20 w-20'>
-                            <div className='relative w-full pt-[100%]'>
-                              <img
-                                className='absolute left-0 top-0 h-full w-full cursor-pointer object-cover hover:opacity-80'
-                                src={img}
-                                alt={product?.name}
-                                aria-hidden
-                                onClick={() => setActiveImg(img)}
-                              />
-                              {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
+                    <div className='flex w-full flex-1 flex-col pb-[30px] pl-3 pt-10'>
+                      <div className='line-clamp-2 text-ellipsis pr-3 text-base text-black'>
+                        {product.name}
+                      </div>
+                      <div className='mt-5 flex flex-1 flex-wrap content-start justify-start overflow-auto'>
+                        {product.images.map((img, index) => {
+                          const isActive = img === activeImg
+                          return (
+                            <div key={index} className='mb-3 mr-3 h-20 w-20'>
+                              <div className='relative w-full pt-[100%]'>
+                                <img
+                                  className='absolute left-0 top-0 h-full w-full cursor-pointer object-cover hover:opacity-80'
+                                  src={img}
+                                  alt={product?.name}
+                                  aria-hidden
+                                  onClick={() => setActiveImg(img)}
+                                />
+                                {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
+                              </div>
                             </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <div className='w-[480px] p-[15px]'>
+              )}
+            </div>
+            <div className='p-[15px]'>
               <div
                 className='relative w-full cursor-zoom-in overflow-hidden pt-[100%]'
                 role='button'
@@ -251,7 +250,11 @@ export default function ProductDetail() {
                       onClick={() => setOpen((prev) => !prev)}
                       aria-hidden
                     >
-                      <img className='h-[82px] w-[82px] object-cover' src={img} alt={product.name} />
+                      <img
+                        className='h-full w-full object-cover md:h-[82px] md:w-[82px]'
+                        src={img}
+                        alt={product.name}
+                      />
                       {isActive && <div className='absolute inset-0 border-2 border-orange'></div>}
                     </div>
                   )
@@ -296,9 +299,9 @@ export default function ProductDetail() {
                 </button>
               </div>
             </div>
-            <div className='flex-1 pl-[20px] pr-[35px] pt-[20px]'>
+            <div className='flex-1 px-2 py-[20px]'>
               <div className='text-[20px] font-medium'>{product?.name}</div>
-              <div className='mt-4 flex items-center'>
+              <div className='mt-4 flex flex-wrap items-center gap-y-3'>
                 <div className='flex items-center gap-[5px] border-r border-r-gray-300 pr-[15px]'>
                   <span className='border-b border-b-orange text-base text-orange'>{product?.rating}</span>
                   <RatingStar rating={product?.rating} fillColor='#ee4d2d' size={16} strokeColor='#ee4d2d' />
@@ -312,22 +315,10 @@ export default function ProductDetail() {
                 <div className='flex items-center gap-[5px] px-[15px]'>
                   <span className='text-base uppercase'>{formatSocialNumber(product.sold)}</span>
                   <span className='text-sm text-gray-500'>Sold</span>
-                  <svg
-                    enableBackground='new 0 0 15 15'
-                    viewBox='0 0 15 15'
-                    role='img'
-                    className='h-[14px] w-[14px] fill-gray-500 stroke-gray-500'
-                  >
-                    <circle cx='7.5' cy='7.5' fill='none' r='6.5' strokeMiterlimit={10} />
-                    <path
-                      stroke='none'
-                      d='m5.3 5.3c.1-.3.3-.6.5-.8s.4-.4.7-.5.6-.2 1-.2c.3 0 .6 0 .9.1s.5.2.7.4.4.4.5.7.2.6.2.9c0 .2 0 .4-.1.6s-.1.3-.2.5c-.1.1-.2.2-.3.3-.1.2-.2.3-.4.4-.1.1-.2.2-.3.3s-.2.2-.3.4c-.1.1-.1.2-.2.4s-.1.3-.1.5v.4h-.9v-.5c0-.3.1-.6.2-.8s.2-.4.3-.5c.2-.2.3-.3.5-.5.1-.1.3-.3.4-.4.1-.2.2-.3.3-.5s.1-.4.1-.7c0-.4-.2-.7-.4-.9s-.5-.3-.9-.3c-.3 0-.5 0-.7.1-.1.1-.3.2-.4.4-.1.1-.2.3-.3.5 0 .2-.1.5-.1.7h-.9c0-.3.1-.7.2-1zm2.8 5.1v1.2h-1.2v-1.2z'
-                    />
-                  </svg>
                 </div>
               </div>
               <div className='mt-4 bg-[#fafafa] px-[20px] py-[15px]'>
-                <div className='flex items-center gap-[10px]'>
+                <div className='flex flex-wrap items-center gap-[10px]'>
                   <div className='text-base text-gray-400 line-through'>
                     ₫{formatPriceNumber(product.price_before_discount)}
                   </div>
@@ -409,18 +400,6 @@ export default function ProductDetail() {
                   <div>
                     <div className='flex items-center gap-[10px]'>
                       <span className='text-sm text-orange'>Lowest Price</span>
-                      <svg
-                        enableBackground='new 0 0 15 15'
-                        viewBox='0 0 15 15'
-                        role='img'
-                        className='h-[14px] w-[14px] fill-gray-600 stroke-gray-600'
-                      >
-                        <circle cx='7.5' cy='7.5' fill='none' r='6.5' strokeMiterlimit={10} />
-                        <path
-                          stroke='none'
-                          d='m5.3 5.3c.1-.3.3-.6.5-.8s.4-.4.7-.5.6-.2 1-.2c.3 0 .6 0 .9.1s.5.2.7.4.4.4.5.7.2.6.2.9c0 .2 0 .4-.1.6s-.1.3-.2.5c-.1.1-.2.2-.3.3-.1.2-.2.3-.4.4-.1.1-.2.2-.3.3s-.2.2-.3.4c-.1.1-.1.2-.2.4s-.1.3-.1.5v.4h-.9v-.5c0-.3.1-.6.2-.8s.2-.4.3-.5c.2-.2.3-.3.5-.5.1-.1.3-.3.4-.4.1-.2.2-.3.3-.5s.1-.4.1-.7c0-.4-.2-.7-.4-.9s-.5-.3-.9-.3c-.3 0-.5 0-.7.1-.1.1-.3.2-.4.4-.1.1-.2.3-.3.5 0 .2-.1.5-.1.7h-.9c0-.3.1-.7.2-1zm2.8 5.1v1.2h-1.2v-1.2z'
-                        />
-                      </svg>
                     </div>
                     <div className='mt-1 text-xs text-gray-500'>
                       The best offer for this product on Shopee!
@@ -428,9 +407,9 @@ export default function ProductDetail() {
                   </div>
                 </div>
               </div>
-              <div className='mt-16 flex items-center gap-16 pl-[20px] text-sm text-gray-500'>
-                <span>Quantity</span>
-                <div className='flex items-center gap-[15px]'>
+              <div className='mt-6 flex items-center gap-16 pl-[20px] text-sm text-gray-500'>
+                <span className='hidden lg:inline-block'>Quantity</span>
+                <div className='flex flex-wrap items-center gap-[15px]'>
                   <QuantityController
                     value={buyCount}
                     max={product.quantity}
@@ -441,7 +420,7 @@ export default function ProductDetail() {
                   <span>{product.quantity} pieces available</span>
                 </div>
               </div>
-              <div className='mt-[30px] flex items-center gap-[15px] pl-[20px]'>
+              <div className='mt-[30px] flex flex-wrap items-center gap-[15px] pl-[20px]'>
                 <button
                   onClick={addToCart}
                   className='flex items-center justify-center gap-[10px] rounded-sm border border-orange bg-[#ffeee8] px-[20px] py-[11px] capitalize text-orange shadow-sm hover:opacity-80'
@@ -496,7 +475,7 @@ export default function ProductDetail() {
                   buy now
                 </Button>
               </div>
-              <div className='mt-8 border-t border-t-gray-200'>
+              <div className='mt-8 hidden border-t border-t-gray-200 lg:block'>
                 <div className='flex items-center gap-[20px] px-[20px] py-9'>
                   <div className='flex items-center gap-[5px]'>
                     <img
@@ -524,9 +503,10 @@ export default function ProductDetail() {
           </div>
           <div className='container'>
             <div className='mt-9 text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
-            <div className='mt-5 grid grid-cols-6 gap-3'>
+            <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
               {dataByCategory?.data.data.products.map((product) => (
                 <Link
+                  title={product.name}
                   key={product._id}
                   to={`${path.home}${generateNameId(product.name, product._id)}`}
                   className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
@@ -540,7 +520,7 @@ export default function ProductDetail() {
                   </div>
                   <div className='p-2'>
                     <div className='line-clamp-2 text-xs'>{product.name}</div>
-                    <div className='mt-2 flex items-center gap-1'>
+                    <div className='mt-2 flex flex-col items-center gap-1 sm:flex-row'>
                       <div className='flex items-end text-sm text-gray-400 line-through'>
                         <span>₫</span>
                         <span>{formatPriceNumber(product.price_before_discount)}</span>

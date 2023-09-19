@@ -39,7 +39,7 @@ export default function DateSelect({ errorMessage, value, onChange }: Props) {
       <div className='flex gap-5 pb-[10px]'>
         <span className='mt-2 min-w-[20%] text-right text-gray-400'>Date of birth</span>
         <div className='flex-1'>
-          <div className='flex flex-1 items-center justify-between gap-2'>
+          <div className='flex flex-1 flex-wrap items-center justify-between gap-2 sm:flex-nowrap'>
             <select
               onChange={handleChange}
               name='day'

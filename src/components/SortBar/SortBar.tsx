@@ -42,8 +42,8 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
     })
   }
   return (
-    <div className='flex items-center justify-between rounded-sm bg-[#ededed] px-5 py-[13px]'>
-      <div className='flex items-center justify-center gap-[10px] text-sm'>
+    <div className='flex flex-wrap items-center gap-2 rounded-sm bg-[#ededed] px-5 py-[13px] lg:justify-between'>
+      <div className='flex flex-wrap items-center gap-[10px] text-sm'>
         <span className='mr-1 text-gray-500'>Sort by</span>
         <button
           onClick={() => handleSort(sortBy.view)}
@@ -92,6 +92,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
         <div className='flex items-center'>
           {Number(page) > 1 ? (
             <Link
+              title='Previous page'
               to={{
                 pathname: path.home,
                 search: createSearchParams({
@@ -120,6 +121,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
           )}
           {Number(page) < pageSize ? (
             <Link
+              title='Next page'
               to={{
                 pathname: path.home,
                 search: createSearchParams({

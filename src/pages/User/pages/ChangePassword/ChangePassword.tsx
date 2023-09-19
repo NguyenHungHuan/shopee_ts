@@ -59,7 +59,7 @@ export default function ChangePassword() {
   })
 
   return (
-    <div className='rounded-sm bg-white px-[30px] py-[18px] shadow'>
+    <div className='rounded-sm bg-white px-4 py-[18px] shadow sm:px-[30px]'>
       <div className='border-b border-b-gray-200 pb-[18px]'>
         <h1 className='text-lg font-medium'>Change Password</h1>
         <div className='text-sm'>
@@ -67,52 +67,52 @@ export default function ChangePassword() {
         </div>
       </div>
       <form onSubmit={onSubmit} className='flex pt-[30px] text-sm' noValidate>
-        <div className='flex-1 pr-[50px]'>
-          <div className='flex gap-5 pb-[15px]'>
-            <label htmlFor='password' className='mt-2 min-w-[25%] text-right text-gray-400'>
+        <div className='w-full flex-1 pr-0 sm:pr-[50px]'>
+          <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
+            <label htmlFor='password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
               Current Password
             </label>
             <Input
               register={register}
               errorMessage={errors.password?.message}
               type='password'
-              classNameInput='w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+              classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
               id='password'
               name='password'
               placeholder='Input your current password to verify'
             />
           </div>
-          <div className='flex gap-5 pb-[15px]'>
-            <label htmlFor='new_password' className='mt-2 min-w-[25%] text-right text-gray-400'>
+          <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
+            <label htmlFor='new_password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
               New Password
             </label>
             <Input
               register={register}
               errorMessage={errors.new_password?.message}
               type='password'
-              classNameInput='w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+              classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
               id='new_password'
               name='new_password'
               placeholder='Input your new password'
             />
           </div>
-          <div className='flex gap-5 pb-[15px]'>
-            <label htmlFor='confirm_password' className='mt-2 min-w-[25%] text-right text-gray-400'>
+          <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
+            <label htmlFor='confirm_password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
               Confirm Password
             </label>
             <Input
               register={register}
               errorMessage={errors.confirm_password?.message}
               type='password'
-              classNameInput='w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
+              classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
               id='confirm_password'
               name='confirm_password'
               placeholder='Confirm your new password'
             />
           </div>
           <div className='flex items-center gap-5 pb-16'>
-            <div className='min-w-[25%]'></div>
-            <button type='submit' className='rounded-sm bg-orange px-5 py-[10px] text-white'>
+            <div className='hidden min-w-[25%] sm:block'></div>
+            <button type='submit' className='w-full rounded-sm bg-orange px-5 py-[10px] text-white sm:w-auto'>
               Confirm
             </button>
           </div>

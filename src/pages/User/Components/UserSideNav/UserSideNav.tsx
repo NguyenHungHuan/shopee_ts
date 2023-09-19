@@ -9,9 +9,13 @@ export default function UserSideNav() {
   const { profile } = useContext(AppContext)
 
   return (
-    <div className='w-[180px] flex-shrink-0'>
-      <div className='flex items-center gap-[15px] border-b border-gray-200 py-[15px]'>
-        <Link to={path.profile} className='h-12 w-12 overflow-hidden rounded-full border border-gray-400'>
+    <div className='flex w-full flex-shrink-0 items-center justify-between gap-3 md:block md:w-[180px]'>
+      <div className='flex flex-shrink-0 items-center gap-1 border-gray-200 py-[15px] sm:gap-[15px] md:border-b'>
+        <Link
+          title='your profile'
+          to={path.profile}
+          className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-gray-400'
+        >
           <img
             className='h-full w-full object-cover'
             src={getAvatarUrl(profile?.avatar as string)}
@@ -19,8 +23,8 @@ export default function UserSideNav() {
           />
         </Link>
         <div className='text-sm'>
-          <div className='font-bold'>nhhuaan</div>
-          <Link to={path.profile} className='flex items-center text-gray-400'>
+          <div className='font-bold'>{profile?.email}</div>
+          <Link title='Edit Profile' to={path.profile} className='flex items-center text-gray-400'>
             <svg
               width={12}
               height={12}
@@ -38,8 +42,9 @@ export default function UserSideNav() {
           </Link>
         </div>
       </div>
-      <div className='mt-[27px]'>
+      <div className='mt-[27px] flex flex-row flex-wrap gap-3 md:flex-col'>
         <NavLink
+          title='My Account'
           to={path.profile}
           className={({ isActive }) =>
             classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {
@@ -56,6 +61,7 @@ export default function UserSideNav() {
           My Account
         </NavLink>
         <NavLink
+          title='Change Password'
           to={path.changePassword}
           className={({ isActive }) =>
             classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {
@@ -81,6 +87,7 @@ export default function UserSideNav() {
           Change Password
         </NavLink>
         <NavLink
+          title='My Purchase'
           to={path.historyPurchase}
           className={({ isActive }) =>
             classNames('mb-4 flex items-center gap-[10px] text-sm hover:text-orange', {

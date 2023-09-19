@@ -22,8 +22,9 @@ export default function HistoryPurchase() {
 
   return (
     <>
-      <div className='sticky top-0 flex rounded-sm shadow-sm'>
+      <div className='grid grid-cols-2 rounded-sm shadow-sm md:grid-cols-6'>
         <Link
+          title='All'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -41,6 +42,7 @@ export default function HistoryPurchase() {
           All
         </Link>
         <Link
+          title='To Pay'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -58,6 +60,7 @@ export default function HistoryPurchase() {
           To Pay
         </Link>
         <Link
+          title='To Ship'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -75,6 +78,7 @@ export default function HistoryPurchase() {
           To Ship
         </Link>
         <Link
+          title='To Receive'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -92,6 +96,7 @@ export default function HistoryPurchase() {
           To Receive
         </Link>
         <Link
+          title='Completed'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -109,6 +114,7 @@ export default function HistoryPurchase() {
           Completed
         </Link>
         <Link
+          title='Cancelled'
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -134,7 +140,8 @@ export default function HistoryPurchase() {
           >
             <Link
               to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
-              className='flex'
+              className='mb-1 flex flex-col gap-3 sm:mb-0 sm:gap-0 lg:flex-row'
+              title={purchase.product.name}
             >
               <div className='flex-shrink-0'>
                 <img
@@ -143,11 +150,11 @@ export default function HistoryPurchase() {
                   alt={purchase.product.name}
                 />
               </div>
-              <div className='ml-3 flex-grow overflow-hidden'>
-                <div className='truncate'>{purchase.product.name}</div>
+              <div className='ml-0 flex-grow overflow-hidden sm:ml-3'>
+                <div className='line-clamp-2'>{purchase.product.name}</div>
                 <div className='mt-3'>x{purchase.buy_count}</div>
               </div>
-              <div className='ml-3 flex-shrink-0'>
+              <div className='ml-0 flex-shrink-0 sm:ml-3'>
                 <span className='truncate text-gray-500 line-through'>
                   ₫{formatPriceNumber(purchase.product.price_before_discount)}
                 </span>
@@ -156,13 +163,11 @@ export default function HistoryPurchase() {
                 </span>
               </div>
             </Link>
-            <div className='flex justify-end'>
-              <div className='text-sm'>
-                <span>Order Total:</span>
-                <span className='ml-3 text-xl text-orange'>
-                  ₫{formatPriceNumber(purchase.buy_count * purchase.product.price)}
-                </span>
-              </div>
+            <div className='flex items-center justify-end text-sm sm:items-start'>
+              <span>Order Total:</span>
+              <span className='ml-3 text-xl text-orange'>
+                ₫{formatPriceNumber(purchase.buy_count * purchase.product.price)}
+              </span>
             </div>
           </div>
         ))}

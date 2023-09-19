@@ -42,9 +42,10 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
     return null
   }
   return (
-    <div className='mb-14 flex flex-wrap items-center justify-center text-xl text-gray-400'>
+    <div className='mb-14 flex flex-wrap items-center justify-center gap-y-3 text-xl text-gray-400'>
       {page > 1 ? (
         <Link
+          title='Previous page'
           to={{
             pathname: path.home,
             search: createSearchParams({
@@ -106,6 +107,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
           }
           return (
             <Link
+              title={`Page ${pageNumber}`}
               to={{
                 pathname: path.home,
                 search: createSearchParams({
@@ -127,6 +129,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
         })}
       {page < pageSize ? (
         <Link
+          title='Next page'
           to={{
             pathname: path.home,
             search: createSearchParams({

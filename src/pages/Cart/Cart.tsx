@@ -1,13 +1,12 @@
 import { produce } from 'immer'
 import keyBy from 'lodash/keyBy'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { Link, createSearchParams, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import productsApi from '~/apis/productApi'
 import purchaseApi, { purchaseBody } from '~/apis/purchaseApi'
 import Button from '~/components/Button'
-import { AppContext } from '~/Contexts/app.context'
 import QuantityController from '~/components/QuantityController'
 import RatingStar from '~/components/RatingStar'
 import path from '~/constants/path'
@@ -19,7 +18,6 @@ import useScrollTop from '~/hooks/useScrollTop'
 
 export default function Cart() {
   useScrollTop()
-  // const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchase', { status: purchasesStatus.inCart }],
@@ -202,7 +200,7 @@ export default function Cart() {
                 </div>
               </div>
               <div className='col-span-6 flex items-center'>
-                <div className='grid flex-1 grid-cols-6 text-sm text-gray-500/90'>
+                <div className='hidden flex-1 grid-cols-6 text-sm text-gray-500/90 lg:grid'>
                   <div className='col-span-2 text-center'>Unit Price</div>
                   <div className='col-span-2 text-center'>Quantity</div>
                   <div className='col-span-1 text-center'>Total Price</div>
@@ -214,7 +212,7 @@ export default function Cart() {
               extendedPurchases.map((purchase, index) => (
                 <div key={purchase._id} className='mt-[15px] rounded-[3px] bg-white px-5 py-4 shadow-sm'>
                   <div className='grid grid-cols-12 gap-4 border px-5 py-[16px]'>
-                    <div className='col-span-6 flex items-center'>
+                    <div className='col-span-12 flex items-center lg:col-span-6'>
                       <div className='flex items-center gap-5'>
                         <input
                           id='CheckedAllProduct'
@@ -224,6 +222,7 @@ export default function Cart() {
                           onChange={handleChecked(index)}
                         />
                         <Link
+                          title={purchase.product.name}
                           to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
                           className='flex items-start gap-[10px]'
                         >
@@ -238,10 +237,10 @@ export default function Cart() {
                         </Link>
                       </div>
                     </div>
-                    <div className='col-span-6 flex items-center'>
-                      <div className='grid flex-1 grid-cols-6 text-sm text-gray-500/90'>
+                    <div className='col-span-12 flex items-center lg:col-span-6'>
+                      <div className='grid flex-1 grid-cols-2 gap-y-2 text-sm text-gray-500/90 sm:grid-cols-6'>
                         <div className='col-span-2'>
-                          <div className='flex items-center justify-center gap-[10px] text-sm'>
+                          <div className='flex items-center justify-around gap-[10px] text-sm sm:justify-center'>
                             <span className='text-gray-400 line-through'>
                               ₫{formatPriceNumber(purchase.price_before_discount)}
                             </span>
@@ -285,9 +284,9 @@ export default function Cart() {
                   </div>
                 </div>
               ))}
-            <div className='sticky bottom-0 mt-[15px] rounded-[3px] border bg-white px-5 py-4 shadow-sm'>
-              <div className='flex items-center justify-between text-base'>
-                <div className='flex items-center'>
+            <div className='sticky bottom-0 mt-[15px] rounded-[3px] border bg-white px-5 py-1 shadow-sm sm:py-4'>
+              <div className='flex flex-col items-center justify-between gap-y-1 text-base md:flex-row'>
+                <div className='flex flex-1 items-center'>
                   <input
                     id='selectAllProduct'
                     type='checkbox'
@@ -302,8 +301,8 @@ export default function Cart() {
                     Delete ({checkedPurchaseCount})
                   </button>
                 </div>
-                <div className='flex items-center gap-[15px]'>
-                  <div className=''>
+                <div className='flex w-full flex-1 flex-col items-center justify-end gap-[15px] gap-y-1 sm:w-auto sm:flex-row'>
+                  <div>
                     <div className='flex items-center gap-[5px]'>
                       <span>Total ({checkedPurchaseCount} item):</span>
                       <span className='text-2xl leading-4 text-orange'>
@@ -319,7 +318,7 @@ export default function Cart() {
                     onClick={handleBuyPurchase}
                     disabled={buyPurchaseMutation.isLoading}
                     isLoading={buyPurchaseMutation.isLoading}
-                    className='mr-[2px] w-[210px] rounded-sm bg-orange px-[36px] py-[10px] text-sm capitalize text-white hover:bg-[#f05d40]'
+                    className='mr-[2px] w-full rounded-sm bg-orange px-[36px] py-[10px] text-sm capitalize text-white hover:bg-[#f05d40] sm:w-[210px]'
                   >
                     check out
                   </Button>
@@ -329,6 +328,7 @@ export default function Cart() {
             <div className='mt-9 flex items-center justify-between'>
               <div className='text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
               <Link
+                title='See all'
                 to={{
                   pathname: path.home,
                   search: createSearchParams({
@@ -349,10 +349,11 @@ export default function Cart() {
                 </svg>
               </Link>
             </div>
-            <div className='mt-5 grid grid-cols-6 gap-3'>
+            <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
               {productCategory &&
                 productCategory.map((product) => (
                   <Link
+                    title={product.name}
                     key={product._id}
                     to={`${path.home}${generateNameId(product.name, product._id)}`}
                     className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
@@ -392,11 +393,12 @@ export default function Cart() {
             <img
               src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/a60759ad1dabe909c46a817ecbf71878.png'
               className='h-[134px] w-[134px]'
-              alt=''
+              alt='No purchase'
             />
             <span>Uh oh! We couldn&lsquo;t find any purchases?</span>
             <span className='mt-4'>or</span>
             <Link
+              title='Add some products'
               to={path.home}
               className='mt-4 rounded-sm bg-orange px-8 py-[10px] text-lg capitalize text-white shadow-sm hover:bg-orange/90'
             >

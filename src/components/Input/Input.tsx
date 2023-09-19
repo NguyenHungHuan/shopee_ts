@@ -29,7 +29,7 @@ export default function Input({
   }
   return (
     <div className={className}>
-      <div className='relative'>
+      <div className='relative w-full'>
         <input
           className={classNameInputWithTypePassword}
           type={isInputPassword ? typeToggle : 'text'}

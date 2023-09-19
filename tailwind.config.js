@@ -21,12 +21,11 @@ module.exports = {
     plugin(function ({ addComponents }) {
       addComponents({
         '.container': {
-          minWidth: '1200px',
-          width: '1200px',
+          maxWidth: '1200px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          paddingLeft: '20px',
-          paddingRight: '20px'
+          paddingLeft: '8px',
+          paddingRight: '8px'
         }
       })
     })

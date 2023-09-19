@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { useQuery } from 'react-query'
-import { Link, createSearchParams, useNavigate, useParams } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
 import FilterPanel from '~/components/FilterPanel'
 import Paginate from '~/components/Paginate'
@@ -22,7 +22,7 @@ export default function ProductList() {
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const resultSearch = queryConfig.name
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => productsApi.getProducts(queryConfig as productListConfig),
     keepPreviousData: true,
@@ -49,8 +49,8 @@ export default function ProductList() {
       })}
     >
       <div className='container'>
-        <div className='flex gap-5'>
-          <div className='w-[190px]'>
+        <div className='flex flex-col gap-5 md:flex-row'>
+          <div className='md:w-[190px]'>
             <FilterPanel queryConfig={queryConfig} />
           </div>
           {data && data.data.data.products.length <= 0 ? (
@@ -58,7 +58,7 @@ export default function ProductList() {
               <img
                 src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/a60759ad1dabe909c46a817ecbf71878.png'
                 className='h-[134px] w-[134px]'
-                alt=''
+                alt='not found'
               />
               <span>Uh oh! We couldn&lsquo;t find any listings. Try turning off some filters?</span>
               <span className='mt-4'>or</span>
@@ -99,9 +99,10 @@ export default function ProductList() {
                 </div>
               )}
               <SortBar queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size as number} />
-              <div className='mb-12 mt-4 grid grid-cols-5 gap-[10px] px-[5px]'>
+              <div className='mb-12 mt-4 grid grid-cols-2 gap-[10px] px-[5px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {productsList?.map((product) => (
                   <Link
+                    title={product.name}
                     key={product._id}
                     to={`${path.home}${generateNameId(product.name, product._id)}`}
                     className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
@@ -115,7 +116,7 @@ export default function ProductList() {
                     </div>
                     <div className='p-2'>
                       <div className='line-clamp-2 text-xs'>{product.name}</div>
-                      <div className='mt-2 flex items-center gap-1'>
+                      <div className='mt-2 flex flex-col items-center gap-1 sm:flex-row'>
                         <div className='flex items-end text-sm text-gray-400 line-through'>
                           <span>₫</span>
                           <span>{formatPriceNumber(product.price_before_discount)}</span>

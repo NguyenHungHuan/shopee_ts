@@ -1,227 +1,54 @@
-import { Link } from 'react-router-dom'
-
-const customerService = [
-  { name: 'Help Centre' },
-  { name: 'Shopee Blog' },
-  { name: 'Shopee Mall' },
-  { name: 'How To Buy' },
-  { name: 'How To Sell' },
-  { name: 'Payment' },
-  { name: 'Shopee Coins' },
-  { name: 'Shipping' },
-  { name: 'Return & Refund' },
-  { name: 'Contact Us' },
-  { name: 'Warranty Policy' }
-]
-
-const aboutShopee = [
-  { name: 'About Us' },
-  { name: 'Shopee Careers' },
-  { name: 'Shopee Policies' },
-  { name: 'Privacy Policy' },
-  { name: 'Shopee Mall' },
-  { name: 'Seller Centre' },
-  { name: 'Flash Deals' },
-  { name: 'Shopee Ambassador Programme' },
-  { name: 'Media Contact' }
-]
-
-const payment = [
-  { image: 'https://down-vn.img.susercontent.com/file/d4bbea4570b93bfd5fc652ca82a262a8' },
-  { image: 'https://down-vn.img.susercontent.com/file/a0a9062ebe19b45c1ae0506f16af5c16' },
-  { image: 'https://down-vn.img.susercontent.com/file/38fd98e55806c3b2e4535c4e4a6c4c08' },
-  { image: 'https://down-vn.img.susercontent.com/file/bc2a874caeee705449c164be385b796c' },
-  { image: 'https://down-vn.img.susercontent.com/file/2c46b83d84111ddc32cfd3b5995d9281' },
-  { image: 'https://down-vn.img.susercontent.com/file/5e3f0bee86058637ff23cfdf2e14ca09' },
-  { image: 'https://down-vn.img.susercontent.com/file/9263fa8c83628f5deff55e2a90758b06' },
-  { image: 'https://down-vn.img.susercontent.com/file/0217f1d345587aa0a300e69e2195c492' }
-]
-
-const logistics = [
-  { image: 'https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872fdb0bd1d40fbe9e' },
-  { image: 'https://down-vn.img.susercontent.com/file/d10b0ec09f0322f9201a4f3daf378ed2' },
-  { image: 'https://down-vn.img.susercontent.com/file/77bf96a871418fbc21cc63dd39fb5f15' },
-  { image: 'https://down-vn.img.susercontent.com/file/59270fb2f3fbb7cbc92fca3877edde3f' },
-  { image: 'https://down-vn.img.susercontent.com/file/957f4eec32b963115f952835c779cd2c' },
-  { image: 'https://down-vn.img.susercontent.com/file/0d349e22ca8d4337d11c9b134cf9fe63' },
-  { image: 'https://down-vn.img.susercontent.com/file/3900aefbf52b1c180ba66e5ec91190e5' },
-  { image: 'https://down-vn.img.susercontent.com/file/6e3be504f08f88a15a28a9a447d94d3d' },
-  { image: 'https://down-vn.img.susercontent.com/file/b8348201b4611fc3315b82765d35fc63' },
-  { image: 'https://down-vn.img.susercontent.com/file/0b3014da32de48c03340a4e4154328f6' }
-]
-
-const followUs = [
-  { name: 'Facebook', image: 'https://down-vn.img.susercontent.com/file/2277b37437aa470fd1c71127c6ff8eb5' },
-  { name: 'Instagram', image: 'https://down-vn.img.susercontent.com/file/5973ebbc642ceee80a504a81203bfb91' },
-  { name: 'LinkedIn', image: 'https://down-vn.img.susercontent.com/file/f4f86f1119712b553992a75493065d9a' }
-]
-const shopeeAppDownload = [
-  { image: 'https://down-vn.img.susercontent.com/file/ad01628e90ddf248076685f73497c163' },
-  { image: 'https://down-vn.img.susercontent.com/file/ae7dced05f7243d0f3171f786e123def' },
-  { image: 'https://down-vn.img.susercontent.com/file/35352374f39bdd03b25e7b83542b2cb0' }
-]
-const country = [
-  { name: 'Singapore' },
-  { name: 'Indonesia' },
-  { name: 'Taiwan' },
-  { name: 'Thailand' },
-  { name: 'Malaysia' },
-  { name: 'Vietnam' },
-  { name: 'Philippines' },
-  { name: 'Brazil' },
-  { name: 'México' },
-  { name: 'Colombia' },
-  { name: 'Chile' }
-]
 export default function Footer() {
   return (
-    <footer className='bg-[#f5f5f5]'>
-      <div className='bg-[#fbfbfb]'>
-        <div className='container pt-[60px]'>
-          <div className='grid grid-cols-5 gap-4 border-b border-b-gray-300 pb-[30px]'>
-            <div className='col-span-1 text-left'>
-              <div className='text-sm font-bold text-black/70'>CUSTOMER SERVICE</div>
-              <ul className='mt-4 text-sm text-[#000000a6]'>
-                {customerService.map((item) => (
-                  <li key={item.name} className='mt-2'>
-                    <Link to='/' className='hover:text-orange'>
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='col-span-1 text-left'>
-              <div className='text-sm font-bold text-black/70'>CUSTOMER SERVICE</div>
-              <ul className='mt-4 text-sm text-[#000000a6]'>
-                {aboutShopee.map((item) => (
-                  <li key={item.name} className='mt-2'>
-                    <Link to='/' className='hover:text-orange'>
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='col-span-1 text-left'>
-              <div className='text-sm font-bold text-black/70'>PAYMENT</div>
-              <ul className='mt-4 flex flex-wrap gap-2 text-sm text-[#000000a6]'>
-                {payment.map((item) => (
-                  <li key={item.image} className='h-[30px] w-[60px] rounded bg-white p-1 shadow'>
-                    <div className='flex h-full w-full items-center justify-center'>
-                      <img src={item.image} alt='logo' />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <div className='mt-4 text-sm font-bold text-black/70'>LOGISTICS</div>
-              <ul className='mt-4 flex flex-wrap gap-2 text-sm text-[#000000a6]'>
-                {logistics.map((item) => (
-                  <li key={item.image} className='h-[30px] w-[60px] rounded bg-white p-1 shadow'>
-                    <div className='flex h-full w-full items-center justify-center'>
-                      <img src={item.image} alt='logo' />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='col-span-1 text-left'>
-              <div className='text-sm font-bold text-black/70'>FOLLOW US</div>
-              <ul className='mt-4 text-sm text-[#000000a6]'>
-                {followUs.map((item) => (
-                  <li key={item.name} className='mb-2'>
-                    <Link to='/'>
-                      <div className='flex items-center gap-2'>
-                        <img src={item.image} alt='' />
-                        <span className='hover:text-orange'>{item.name}</span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='col-span-1 text-left'>
-              <div className='text-sm font-bold text-black/70'>SHOPEE APP DOWNLOAD</div>
-              <div className='mt-4 flex items-start gap-2'>
-                <Link to='/'>
-                  <img
-                    src='https://down-vn.img.susercontent.com/file/a5e589e8e118e937dc660f224b9a1472'
-                    className='h-[88px] w-[88px] rounded-sm bg-white p-1 shadow'
-                    alt='download_qr_code'
-                  />
-                </Link>
-                <div>
-                  {shopeeAppDownload.map((item) => (
-                    <Link key={item.image} to='/' className='h-4 w-[4.25rem]'>
-                      <img
-                        src={item.image}
-                        className='mb-2 h-full w-full rounded-sm bg-white p-1 shadow'
-                        alt='app'
-                      />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+    <footer className='bg-[#fbfbfb]'>
+      <div className='container space-y-8 overflow-hidden pb-12 pt-4'>
+        <div className='mt-8 flex justify-center space-x-4'>
+          <a
+            href='https://www.facebook.com/huan.hung.311'
+            rel='noopener noreferrer'
+            target='_blank'
+            className='text-blue-600/60 hover:text-blue-600'
+          >
+            <span className='sr-only'>Facebook</span>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              xmlnsXlink='http://www.w3.org/1999/xlink'
+              aria-hidden='true'
+              role='img'
+              className='h-10 w-10'
+              viewBox='0 0 24 24'
+            >
+              <path
+                fill='currentColor'
+                d='M12 2.04c-5.5 0-10 4.49-10 10.02c0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89c1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02Z'
+              />
+            </svg>
+          </a>
+          <a
+            href='https://github.com/NguyenHungHuan/shopee_ts'
+            rel='noopener noreferrer'
+            target='_blank'
+            className='text-black/60 hover:text-black'
+          >
+            <span className='sr-only'>GitHub</span>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              xmlnsXlink='http://www.w3.org/1999/xlink'
+              aria-hidden='true'
+              role='img'
+              className='h-10 w-10'
+              viewBox='0 0 24 24'
+            >
+              <path
+                fill='currentColor'
+                d='M12 2.247a10 10 0 0 0-3.162 19.487c.5.088.687-.212.687-.475c0-.237-.012-1.025-.012-1.862c-2.513.462-3.163-.613-3.363-1.175a3.636 3.636 0 0 0-1.025-1.413c-.35-.187-.85-.65-.013-.662a2.001 2.001 0 0 1 1.538 1.025a2.137 2.137 0 0 0 2.912.825a2.104 2.104 0 0 1 .638-1.338c-2.225-.25-4.55-1.112-4.55-4.937a3.892 3.892 0 0 1 1.025-2.688a3.594 3.594 0 0 1 .1-2.65s.837-.262 2.75 1.025a9.427 9.427 0 0 1 5 0c1.912-1.3 2.75-1.025 2.75-1.025a3.593 3.593 0 0 1 .1 2.65a3.869 3.869 0 0 1 1.025 2.688c0 3.837-2.338 4.687-4.563 4.937a2.368 2.368 0 0 1 .675 1.85c0 1.338-.012 2.413-.012 2.75c0 .263.187.575.687.475A10.005 10.005 0 0 0 12 2.247Z'
+              />
+            </svg>
+          </a>
         </div>
-        <div className='container'>
-          <div className='flex flex-wrap items-center justify-between py-8'>
-            <div className='flex-shrink-0 text-sm text-[#000000a6]'>© 2023 Shopee. All Rights Reserved.</div>
-            <div className='flex flex-wrap items-center justify-center'>
-              <div className='text-sm text-[#000000a6]'>Country & Region:</div>
-              {country.map((item) => (
-                <div
-                  key={item.name}
-                  className='border-r border-r-gray-400/80 px-[5px] text-sm text-[#000000a6] last:border-r-0'
-                >
-                  <Link to='/'>{item.name}</Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='container py-10'>
-        <div className='mb-10 flex items-center justify-center'>
-          <Link to='/' className='border-r border-r-gray-400/80 px-[25px] text-xs text-[#000000a6]'>
-            PRIVACY POLICY
-          </Link>
-          <Link to='/' className='border-r border-r-gray-400/80 px-[25px] text-xs text-[#000000a6]'>
-            TERM OF SERVICE
-          </Link>
-          <Link to='/' className='border-r border-r-gray-400/80 px-[25px] text-xs text-[#000000a6]'>
-            SHIPPING POLICY
-          </Link>
-          <Link to='/' className='px-[25px] text-xs text-[#000000a6]'>
-            VIOLATION
-          </Link>
-        </div>
-        <div className='flex items-center justify-center'>
-          <Link to='/' className='mx-5'>
-            <div className='h-[45px] w-[120px] bg-footer-registered bg-[14.391143911439114%_99.41176470588235%] bg-no-repeat'></div>
-          </Link>
-          <Link to='/' className='mx-5'>
-            <div className='h-[45px] w-[120px] bg-footer-registered bg-[14.391143911439114%_99.41176470588235%] bg-no-repeat'></div>
-          </Link>
-          <Link to='/' className='mx-5'>
-            <div className='h-[48px] w-[48px] bg-footer-registered bg-[1.6286644951140066%_92.21556886227545%] bg-no-repeat'></div>
-          </Link>
-        </div>
-        <div className='mt-2 text-center text-xs font-medium text-[#000000a6]'>
-          <div>Công ty TNHH Shopee</div>
-          <div className='mt-6'>
-            Địa chỉ: Tầng 4-5-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba
-            Đình, Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 19001221 - Email: cskh@hotro.shopee.vn
-          </div>
-          <div className='mt-2'>
-            Chịu Trách Nhiệm Quản Lý Nội Dung: Nguyễn Đức Trí - Điện thoại liên hệ: 024 73081221 (ext 4678)
-          </div>
-          <div className='mt-2'>
-            Mã số doanh nghiệp: 0106773786 do Sở Kế hoạch & Đầu tư TP Hà Nội cấp lần đầu ngày 10/02/2015
-          </div>
-          <div className='mt-2'>© 2015 - Bản quyền thuộc về Công ty TNHH Shopee</div>
-        </div>
+        <p className='mt-8 text-center text-2xl leading-6 text-black/60'>
+          {`© ${new Date().getFullYear()} Shopee clone. Nguyen Hung Huan.`}
+        </p>
       </div>
     </footer>
   )

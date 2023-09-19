@@ -54,54 +54,52 @@ const Login = () => {
   })
   return (
     <div className='bg-orange'>
-      <div className='container'>
-        <div className='grid grid-cols-5 py-[80px]'>
-          <div className='col-span-2 col-start-4'>
-            <form
-              onSubmit={onSubmit}
-              className='min-h-[430px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
-              noValidate
+      <div className='container py-[80px]'>
+        <div className='flex items-center justify-center lg:justify-end'>
+          <form
+            onSubmit={onSubmit}
+            className='min-h-[430px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
+            noValidate
+          >
+            <div className='text-[20px]'>Sign In</div>
+            <Input
+              className='mt-8'
+              errorMessage={errors.email?.message}
+              placeholder='Email'
+              type='email'
+              name='email'
+              register={register}
+            />
+            <Input
+              className='mt-3'
+              classNameInput='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
+              classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
+              errorMessage={errors.password?.message}
+              placeholder='Password'
+              type='password'
+              name='password'
+              register={register}
+            />
+            <Button
+              disabled={loginAccountMutation.isLoading}
+              isLoading={loginAccountMutation.isLoading}
+              type='submit'
+              className='mt-3 flex w-full items-center justify-center bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
             >
-              <div className='text-[20px]'>Log In</div>
-              <Input
-                className='mt-8'
-                errorMessage={errors.email?.message}
-                placeholder='Email'
-                type='email'
-                name='email'
-                register={register}
-              />
-              <Input
-                className='mt-3'
-                classNameInput='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
-                classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
-                errorMessage={errors.password?.message}
-                placeholder='Password'
-                type='password'
-                name='password'
-                register={register}
-              />
-              <Button
-                disabled={loginAccountMutation.isLoading}
-                isLoading={loginAccountMutation.isLoading}
-                type='submit'
-                className='mt-3 flex w-full items-center justify-center bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
-              >
-                LOG IN
-              </Button>
-              <div className='mt-8 flex items-center'>
-                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-                <div className='px-4 text-xs text-[#ccc]'>OR</div>
-                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-              </div>
-              <div className='mt-6 flex items-center justify-center gap-2'>
-                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
-                <Link className='text-sm text-orange' to='/register'>
-                  Sign Up
-                </Link>
-              </div>
-            </form>
-          </div>
+              Sign In
+            </Button>
+            <div className='mt-8 flex items-center'>
+              <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+              <div className='px-4 text-xs text-[#ccc]'>OR</div>
+              <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+            </div>
+            <div className='mt-6 flex items-center justify-center gap-2'>
+              <div className='text-sm text-[#ccc]'>New to Shopee? </div>
+              <Link title='Sign Up' className='text-sm text-orange' to='/register'>
+                Sign Up
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>

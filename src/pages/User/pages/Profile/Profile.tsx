@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import userApi from '~/apis/userApi'
@@ -13,7 +13,6 @@ import { AppContext } from '~/Contexts/app.context'
 import { toast } from 'react-toastify'
 import { getAvatarUrl, isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { errorResponse } from '~/types/utils.type'
-import config from '~/constants/config'
 import InputFile from '~/components/InputFile'
 import useScrollTop from '~/hooks/useScrollTop'
 
@@ -116,8 +115,8 @@ export default function Profile() {
         <div className='text-sm'>Manage and protect your account</div>
       </div>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} className='flex pt-[30px] text-sm' noValidate>
-          <div className='flex-1 pr-[50px]'>
+        <form onSubmit={onSubmit} className='flex flex-col-reverse pt-[30px] text-sm lg:flex-row' noValidate>
+          <div className='flex-1 pr-0 sm:pr-[50px]'>
             <div className='flex items-center gap-5 pb-[40px]'>
               <span className='min-w-[20%] text-right text-gray-400'>Email</span>
               <span>{profile?.email}</span>
@@ -138,7 +137,7 @@ export default function Profile() {
             </div>
             <div className='flex gap-5 pb-[20px]'>
               <label htmlFor='phone' className='mt-2 min-w-[20%] text-right text-gray-400'>
-                Phone Number
+                Phone
               </label>
               <Controller
                 name='phone'
@@ -182,16 +181,16 @@ export default function Profile() {
               )}
             />
             <div className='flex items-center gap-5 pb-[30px]'>
-              <div className='min-w-[20%]'></div>
+              <div className='hidden min-w-[20%] sm:block'></div>
               <Button
                 type='submit'
-                className='rounded-sm bg-orange px-5 py-[10px] text-white hover:opacity-90'
+                className='w-full rounded-sm bg-orange px-5 py-[10px] text-white hover:opacity-90 lg:w-auto'
               >
                 Save
               </Button>
             </div>
           </div>
-          <div className='flex h-fit w-[280px] justify-center border-l border-l-gray-200'>
+          <div className='mb-3 flex h-fit w-full justify-center border-l-gray-200 lg:mb-0 lg:w-[280px] lg:border-l'>
             <div className='flex flex-col items-center'>
               <img
                 className='my-5 h-[100px] w-[100px] rounded-full object-cover'
