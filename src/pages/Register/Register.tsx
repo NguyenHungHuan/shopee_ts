@@ -13,6 +13,7 @@ import { AppContext } from '~/Contexts/app.context'
 import path from '~/constants/path'
 import Button from '~/components/Button'
 import useScrollTop from '~/hooks/useScrollTop'
+import { Helmet } from 'react-helmet-async'
 
 const Register = () => {
   useScrollTop()
@@ -57,62 +58,68 @@ const Register = () => {
     })
   })
   return (
-    <div className='bg-orange'>
-      <div className='container py-[80px]'>
-        <div className='flex items-center justify-center lg:justify-end'>
-          <form
-            onSubmit={onSubmit}
-            className='min-h-[462px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
-            noValidate
-          >
-            <div className='text-[20px]'>Sign Up</div>
-            <Input
-              className='mt-8'
-              name='email'
-              register={register}
-              type='email'
-              placeholder='Email'
-              errorMessage={errors.email?.message}
-            />
-            <Input
-              className='mt-3'
-              name='password'
-              register={register}
-              type='password'
-              placeholder='Password'
-              errorMessage={errors.password?.message}
-            />
-            <Input
-              className='mt-3'
-              name='confirm_password'
-              register={register}
-              type='password'
-              placeholder='Confirm your password'
-              errorMessage={errors.confirm_password?.message}
-            />
-            <Button
-              disabled={registerAccountMutation.isLoading}
-              isLoading={registerAccountMutation.isLoading}
-              type='submit'
-              className='mt-3 w-full bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
+    <>
+      <Helmet>
+        <title>Register | Shopee Clone</title>
+        <meta name='description' content='Page register Shopee Clone' />
+      </Helmet>
+      <div className='bg-orange'>
+        <div className='container py-[80px]'>
+          <div className='flex items-center justify-center lg:justify-end'>
+            <form
+              onSubmit={onSubmit}
+              className='min-h-[462px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
+              noValidate
             >
-              SUBMIT
-            </Button>
-            <div className='mt-8 flex items-center'>
-              <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-              <div className='px-4 text-xs text-[#ccc]'>OR</div>
-              <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-            </div>
-            <div className='mt-6 flex items-center justify-center gap-2'>
-              <div className='text-sm text-[#ccc]'>New to Shopee? </div>
-              <Link title='Sign In' className='text-sm text-orange' to='/login'>
-                Sign In
-              </Link>
-            </div>
-          </form>
+              <div className='text-[20px]'>Sign Up</div>
+              <Input
+                className='mt-8'
+                name='email'
+                register={register}
+                type='email'
+                placeholder='Email'
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                className='mt-3'
+                name='password'
+                register={register}
+                type='password'
+                placeholder='Password'
+                errorMessage={errors.password?.message}
+              />
+              <Input
+                className='mt-3'
+                name='confirm_password'
+                register={register}
+                type='password'
+                placeholder='Confirm your password'
+                errorMessage={errors.confirm_password?.message}
+              />
+              <Button
+                disabled={registerAccountMutation.isLoading}
+                isLoading={registerAccountMutation.isLoading}
+                type='submit'
+                className='mt-3 w-full bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
+              >
+                SUBMIT
+              </Button>
+              <div className='mt-8 flex items-center'>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+                <div className='px-4 text-xs text-[#ccc]'>OR</div>
+                <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
+              </div>
+              <div className='mt-6 flex items-center justify-center gap-2'>
+                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
+                <Link title='Sign In' className='text-sm text-orange' to='/login'>
+                  Sign In
+                </Link>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

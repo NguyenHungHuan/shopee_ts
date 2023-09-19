@@ -15,6 +15,7 @@ import { purchasesStatus } from '~/constants/purchase'
 import { ExtendedPurchase, purchase } from '~/types/purchase.type'
 import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
 import useScrollTop from '~/hooks/useScrollTop'
+import { Helmet } from 'react-helmet-async'
 
 export default function Cart() {
   useScrollTop()
@@ -180,233 +181,239 @@ export default function Cart() {
   }
 
   return (
-    <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
-      <div className='container'>
-        {extendedPurchases && extendedPurchases.length > 0 ? (
-          <>
-            <div className='grid grid-cols-12 rounded-[3px] bg-white px-10 py-4 shadow-sm'>
-              <div className='col-span-6 flex items-center'>
-                <div className='flex items-center'>
-                  <input
-                    id='CheckedAllProduct'
-                    type='checkbox'
-                    className='h-[18px] w-[18px] accent-orange'
-                    checked={isAllChecked}
-                    onChange={handleCheckedAll}
-                  />
-                  <label htmlFor='CheckedAllProduct' className='cursor-pointer px-[20px] text-sm'>
-                    Product
-                  </label>
+    <>
+      <Helmet>
+        <title>Cart | Shopee Clone</title>
+        <meta name='description' content='Page cart Shopee Clone' />
+      </Helmet>
+      <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
+        <div className='container'>
+          {extendedPurchases && extendedPurchases.length > 0 ? (
+            <>
+              <div className='grid grid-cols-12 rounded-[3px] bg-white px-10 py-4 shadow-sm'>
+                <div className='col-span-6 flex items-center'>
+                  <div className='flex items-center'>
+                    <input
+                      id='CheckedAllProduct'
+                      type='checkbox'
+                      className='h-[18px] w-[18px] accent-orange'
+                      checked={isAllChecked}
+                      onChange={handleCheckedAll}
+                    />
+                    <label htmlFor='CheckedAllProduct' className='cursor-pointer px-[20px] text-sm'>
+                      Product
+                    </label>
+                  </div>
+                </div>
+                <div className='col-span-6 flex items-center'>
+                  <div className='hidden flex-1 grid-cols-6 text-sm text-gray-500/90 lg:grid'>
+                    <div className='col-span-2 text-center'>Unit Price</div>
+                    <div className='col-span-2 text-center'>Quantity</div>
+                    <div className='col-span-1 text-center'>Total Price</div>
+                    <div className='col-span-1 text-center'>Actions</div>
+                  </div>
                 </div>
               </div>
-              <div className='col-span-6 flex items-center'>
-                <div className='hidden flex-1 grid-cols-6 text-sm text-gray-500/90 lg:grid'>
-                  <div className='col-span-2 text-center'>Unit Price</div>
-                  <div className='col-span-2 text-center'>Quantity</div>
-                  <div className='col-span-1 text-center'>Total Price</div>
-                  <div className='col-span-1 text-center'>Actions</div>
-                </div>
-              </div>
-            </div>
-            {extendedPurchases &&
-              extendedPurchases.map((purchase, index) => (
-                <div key={purchase._id} className='mt-[15px] rounded-[3px] bg-white px-5 py-4 shadow-sm'>
-                  <div className='grid grid-cols-12 gap-4 border px-5 py-[16px]'>
-                    <div className='col-span-12 flex items-center lg:col-span-6'>
-                      <div className='flex items-center gap-5'>
-                        <input
-                          id='CheckedAllProduct'
-                          type='checkbox'
-                          className='h-[18px] w-[18px] flex-shrink-0 accent-orange'
-                          checked={purchase.checked}
-                          onChange={handleChecked(index)}
-                        />
-                        <Link
-                          title={purchase.product.name}
-                          to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
-                          className='flex items-start gap-[10px]'
-                        >
-                          <img
-                            className='h-20 w-20 object-cover'
-                            src={purchase.product.image}
-                            alt={purchase.product.name}
+              {extendedPurchases &&
+                extendedPurchases.map((purchase, index) => (
+                  <div key={purchase._id} className='mt-[15px] rounded-[3px] bg-white px-5 py-4 shadow-sm'>
+                    <div className='grid grid-cols-12 gap-4 border px-5 py-[16px]'>
+                      <div className='col-span-12 flex items-center lg:col-span-6'>
+                        <div className='flex items-center gap-5'>
+                          <input
+                            id='CheckedAllProduct'
+                            type='checkbox'
+                            className='h-[18px] w-[18px] flex-shrink-0 accent-orange'
+                            checked={purchase.checked}
+                            onChange={handleChecked(index)}
                           />
-                          <span className='line-clamp-2 pt-[5px] text-sm text-black'>
-                            {purchase.product.name}
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className='col-span-12 flex items-center lg:col-span-6'>
-                      <div className='grid flex-1 grid-cols-2 gap-y-2 text-sm text-gray-500/90 sm:grid-cols-6'>
-                        <div className='col-span-2'>
-                          <div className='flex items-center justify-around gap-[10px] text-sm sm:justify-center'>
-                            <span className='text-gray-400 line-through'>
-                              ₫{formatPriceNumber(purchase.price_before_discount)}
-                            </span>
-                            <span className='text-black'>₫{formatPriceNumber(purchase.price)}</span>
-                          </div>
-                        </div>
-                        <div className='col-span-2 flex justify-center'>
-                          <div className='flex items-center overflow-hidden rounded-sm shadow-sm'>
-                            <QuantityController
-                              value={purchase.buy_count}
-                              max={purchase.product.quantity}
-                              onIncrease={(value) =>
-                                handleQuantity(index, value, value <= purchase.product.quantity)
-                              }
-                              onDecrease={(value) => handleQuantity(index, value, value >= 1)}
-                              onType={(value) => handleType(index, value)}
-                              onFocusOut={(value) =>
-                                handleOnFocusOut(
-                                  index,
-                                  value,
-                                  value !== (purchasesInCart as purchase[])[index].buy_count
-                                )
-                              }
-                              disabled={purchase.disabled}
-                            />
-                          </div>
-                        </div>
-                        <div className='col-span-1 text-center text-sm text-orange'>
-                          ₫{formatPriceNumber(purchase.price * purchase.buy_count)}
-                        </div>
-                        <div className='col-span-1 text-center'>
-                          <button
-                            className='text-black outline-none hover:text-orange'
-                            onClick={handleDeletePurchase(index)}
+                          <Link
+                            title={purchase.product.name}
+                            to={`${path.home}${generateNameId(purchase.product.name, purchase.product._id)}`}
+                            className='flex items-start gap-[10px]'
                           >
-                            Delete
-                          </button>
+                            <img
+                              className='h-20 w-20 object-cover'
+                              src={purchase.product.image}
+                              alt={purchase.product.name}
+                            />
+                            <span className='line-clamp-2 pt-[5px] text-sm text-black'>
+                              {purchase.product.name}
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className='col-span-12 flex items-center lg:col-span-6'>
+                        <div className='grid flex-1 grid-cols-2 gap-y-2 text-sm text-gray-500/90 sm:grid-cols-6'>
+                          <div className='col-span-2'>
+                            <div className='flex items-center justify-around gap-[10px] text-sm sm:justify-center'>
+                              <span className='text-gray-400 line-through'>
+                                ₫{formatPriceNumber(purchase.price_before_discount)}
+                              </span>
+                              <span className='text-black'>₫{formatPriceNumber(purchase.price)}</span>
+                            </div>
+                          </div>
+                          <div className='col-span-2 flex justify-center'>
+                            <div className='flex items-center overflow-hidden rounded-sm shadow-sm'>
+                              <QuantityController
+                                value={purchase.buy_count}
+                                max={purchase.product.quantity}
+                                onIncrease={(value) =>
+                                  handleQuantity(index, value, value <= purchase.product.quantity)
+                                }
+                                onDecrease={(value) => handleQuantity(index, value, value >= 1)}
+                                onType={(value) => handleType(index, value)}
+                                onFocusOut={(value) =>
+                                  handleOnFocusOut(
+                                    index,
+                                    value,
+                                    value !== (purchasesInCart as purchase[])[index].buy_count
+                                  )
+                                }
+                                disabled={purchase.disabled}
+                              />
+                            </div>
+                          </div>
+                          <div className='col-span-1 text-center text-sm text-orange'>
+                            ₫{formatPriceNumber(purchase.price * purchase.buy_count)}
+                          </div>
+                          <div className='col-span-1 text-center'>
+                            <button
+                              className='text-black outline-none hover:text-orange'
+                              onClick={handleDeletePurchase(index)}
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            <div className='sticky bottom-0 mt-[15px] rounded-[3px] border bg-white px-5 py-1 shadow-sm sm:py-4'>
-              <div className='flex flex-col items-center justify-between gap-y-1 text-base md:flex-row'>
-                <div className='flex flex-1 items-center'>
-                  <input
-                    id='selectAllProduct'
-                    type='checkbox'
-                    className='h-[18px] w-[18px] accent-orange'
-                    checked={isAllChecked}
-                    onChange={handleCheckedAll}
-                  />
-                  <label htmlFor='selectAllProduct' className='cursor-pointer px-[20px]'>
-                    Select All ({extendedPurchases?.length})
-                  </label>
-                  <button onClick={handleDeleteManyPurchase} className='px-1 outline-none'>
-                    Delete ({checkedPurchaseCount})
-                  </button>
-                </div>
-                <div className='flex w-full flex-1 flex-col items-center justify-end gap-[15px] gap-y-1 sm:w-auto sm:flex-row'>
-                  <div>
-                    <div className='flex items-center gap-[5px]'>
-                      <span>Total ({checkedPurchaseCount} item):</span>
-                      <span className='text-2xl leading-4 text-orange'>
-                        ₫{formatPriceNumber(totalPricePurchase)}
-                      </span>
-                    </div>
-                    <div className='flex items-center justify-end gap-[24px] text-sm'>
-                      <span>Saved</span>
-                      <span className='text-orange'>₫{formatPriceNumber(totalSavingPricePurchase)}</span>
-                    </div>
+                ))}
+              <div className='sticky bottom-0 mt-[15px] rounded-[3px] border bg-white px-5 py-1 shadow-sm sm:py-4'>
+                <div className='flex flex-col items-center justify-between gap-y-1 text-base md:flex-row'>
+                  <div className='flex flex-1 items-center'>
+                    <input
+                      id='selectAllProduct'
+                      type='checkbox'
+                      className='h-[18px] w-[18px] accent-orange'
+                      checked={isAllChecked}
+                      onChange={handleCheckedAll}
+                    />
+                    <label htmlFor='selectAllProduct' className='cursor-pointer px-[20px]'>
+                      Select All ({extendedPurchases?.length})
+                    </label>
+                    <button onClick={handleDeleteManyPurchase} className='px-1 outline-none'>
+                      Delete ({checkedPurchaseCount})
+                    </button>
                   </div>
-                  <Button
-                    onClick={handleBuyPurchase}
-                    disabled={buyPurchaseMutation.isLoading}
-                    isLoading={buyPurchaseMutation.isLoading}
-                    className='mr-[2px] w-full rounded-sm bg-orange px-[36px] py-[10px] text-sm capitalize text-white hover:bg-[#f05d40] sm:w-[210px]'
-                  >
-                    check out
-                  </Button>
+                  <div className='flex w-full flex-1 flex-col items-center justify-end gap-[15px] gap-y-1 sm:w-auto sm:flex-row'>
+                    <div>
+                      <div className='flex items-center gap-[5px]'>
+                        <span>Total ({checkedPurchaseCount} item):</span>
+                        <span className='text-2xl leading-4 text-orange'>
+                          ₫{formatPriceNumber(totalPricePurchase)}
+                        </span>
+                      </div>
+                      <div className='flex items-center justify-end gap-[24px] text-sm'>
+                        <span>Saved</span>
+                        <span className='text-orange'>₫{formatPriceNumber(totalSavingPricePurchase)}</span>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={handleBuyPurchase}
+                      disabled={buyPurchaseMutation.isLoading}
+                      isLoading={buyPurchaseMutation.isLoading}
+                      className='mr-[2px] w-full rounded-sm bg-orange px-[36px] py-[10px] text-sm capitalize text-white hover:bg-[#f05d40] sm:w-[210px]'
+                    >
+                      check out
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='mt-9 flex items-center justify-between'>
-              <div className='text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
-              <Link
-                title='See all'
-                to={{
-                  pathname: path.home,
-                  search: createSearchParams({
-                    ...queryConfig
-                  }).toString()
-                }}
-                className='flex items-center gap-1 p-1 text-sm text-orange'
-              >
-                <span>See All</span>
-                <svg
-                  enableBackground='new 0 0 11 11'
-                  viewBox='0 0 11 11'
-                  x={0}
-                  y={0}
-                  className='h-[10px] w-[10px] fill-orange'
+              <div className='mt-9 flex items-center justify-between'>
+                <div className='text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
+                <Link
+                  title='See all'
+                  to={{
+                    pathname: path.home,
+                    search: createSearchParams({
+                      ...queryConfig
+                    }).toString()
+                  }}
+                  className='flex items-center gap-1 p-1 text-sm text-orange'
                 >
-                  <path d='m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z' />
-                </svg>
+                  <span>See All</span>
+                  <svg
+                    enableBackground='new 0 0 11 11'
+                    viewBox='0 0 11 11'
+                    x={0}
+                    y={0}
+                    className='h-[10px] w-[10px] fill-orange'
+                  >
+                    <path d='m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z' />
+                  </svg>
+                </Link>
+              </div>
+              <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+                {productCategory &&
+                  productCategory.map((product) => (
+                    <Link
+                      title={product.name}
+                      key={product._id}
+                      to={`${path.home}${generateNameId(product.name, product._id)}`}
+                      className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
+                    >
+                      <div className='relative w-full pt-[100%]'>
+                        <img
+                          className='absolute left-0 top-0 h-full w-full object-cover'
+                          src={product.image}
+                          alt={product.name}
+                        />
+                      </div>
+                      <div className='p-2'>
+                        <div className='line-clamp-2 text-xs'>{product.name}</div>
+                        <div className='mt-2 flex items-center gap-1'>
+                          <div className='flex items-end text-sm text-gray-400 line-through'>
+                            <span>₫</span>
+                            <span>{formatPriceNumber(product.price_before_discount)}</span>
+                          </div>
+                          <div className='flex items-center text-orange'>
+                            <span className='text-xs'>₫</span>
+                            <span className='text-base'>{formatPriceNumber(product.price)}</span>
+                          </div>
+                        </div>
+                        <div className='mb-1 mt-3 flex items-center gap-1'>
+                          <div className='flex items-center gap-[1px]'>
+                            <RatingStar size={10} rating={product.rating} />
+                          </div>
+                          <span className='text-xs'>{formatSocialNumber(product.sold)} SOLD</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+              </div>
+            </>
+          ) : (
+            <div className='my-20 flex flex-1 flex-col items-center text-lg text-[#0000008a]'>
+              <img
+                src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/a60759ad1dabe909c46a817ecbf71878.png'
+                className='h-[134px] w-[134px]'
+                alt='No purchase'
+              />
+              <span>Uh oh! We couldn&lsquo;t find any purchases?</span>
+              <span className='mt-4'>or</span>
+              <Link
+                title='Add some products'
+                to={path.home}
+                className='mt-4 rounded-sm bg-orange px-8 py-[10px] text-lg capitalize text-white shadow-sm hover:bg-orange/90'
+              >
+                Add some
               </Link>
             </div>
-            <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-              {productCategory &&
-                productCategory.map((product) => (
-                  <Link
-                    title={product.name}
-                    key={product._id}
-                    to={`${path.home}${generateNameId(product.name, product._id)}`}
-                    className='col-span-1 h-full overflow-hidden rounded-sm bg-white shadow transition hover:translate-y-[-.0625rem] hover:shadow-[0_0.0625rem_20px_0_rgba(0,0,0,.05)]'
-                  >
-                    <div className='relative w-full pt-[100%]'>
-                      <img
-                        className='absolute left-0 top-0 h-full w-full object-cover'
-                        src={product.image}
-                        alt={product.name}
-                      />
-                    </div>
-                    <div className='p-2'>
-                      <div className='line-clamp-2 text-xs'>{product.name}</div>
-                      <div className='mt-2 flex items-center gap-1'>
-                        <div className='flex items-end text-sm text-gray-400 line-through'>
-                          <span>₫</span>
-                          <span>{formatPriceNumber(product.price_before_discount)}</span>
-                        </div>
-                        <div className='flex items-center text-orange'>
-                          <span className='text-xs'>₫</span>
-                          <span className='text-base'>{formatPriceNumber(product.price)}</span>
-                        </div>
-                      </div>
-                      <div className='mb-1 mt-3 flex items-center gap-1'>
-                        <div className='flex items-center gap-[1px]'>
-                          <RatingStar size={10} rating={product.rating} />
-                        </div>
-                        <span className='text-xs'>{formatSocialNumber(product.sold)} SOLD</span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-            </div>
-          </>
-        ) : (
-          <div className='my-20 flex flex-1 flex-col items-center text-lg text-[#0000008a]'>
-            <img
-              src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/a60759ad1dabe909c46a817ecbf71878.png'
-              className='h-[134px] w-[134px]'
-              alt='No purchase'
-            />
-            <span>Uh oh! We couldn&lsquo;t find any purchases?</span>
-            <span className='mt-4'>or</span>
-            <Link
-              title='Add some products'
-              to={path.home}
-              className='mt-4 rounded-sm bg-orange px-8 py-[10px] text-lg capitalize text-white shadow-sm hover:bg-orange/90'
-            >
-              Add some
-            </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

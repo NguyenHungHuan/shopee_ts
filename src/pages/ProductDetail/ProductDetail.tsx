@@ -16,6 +16,8 @@ import NotFound from '../NotFound'
 import { AppContext } from '~/Contexts/app.context'
 import Button from '~/components/Button'
 import useScrollTop from '~/hooks/useScrollTop'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -144,6 +146,10 @@ export default function ProductDetail() {
     <div>
       {product && (
         <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
+          <Helmet>
+            <title>{`${product?.name} | Shopee Clone`}</title>
+            <meta name='description' content={convert(product.description)} />
+          </Helmet>
           <div className='container flex flex-col rounded-[3px] bg-white shadow md:flex-row'>
             <div className='hidden md:block'>
               {open && (

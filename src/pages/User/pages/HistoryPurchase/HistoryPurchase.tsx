@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { Helmet } from 'react-helmet-async'
 import { useQuery } from 'react-query'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchaseApi from '~/apis/purchaseApi'
@@ -22,6 +23,10 @@ export default function HistoryPurchase() {
 
   return (
     <>
+      <Helmet>
+        <title>History Purchase | Shopee Clone</title>
+        <meta name='description' content='Page history purchase Shopee Clone' />
+      </Helmet>
       <div className='grid grid-cols-2 rounded-sm shadow-sm md:grid-cols-6'>
         <Link
           title='All'
