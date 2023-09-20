@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import productsApi from '~/apis/productApi'
@@ -19,6 +20,7 @@ export type QueryConfig = {
 }
 
 export default function ProductList() {
+  const { t } = useTranslation('home')
   useScrollTop()
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
@@ -45,7 +47,7 @@ export default function ProductList() {
   return (
     <>
       <Helmet>
-        <title>Home | Shopee Clone</title>
+        <title>{`${t('home')} | Shopee Clone`}</title>
         <meta name='description' content='Page home Shopee Clone' />
       </Helmet>
       <div
@@ -66,13 +68,13 @@ export default function ProductList() {
                   className='h-[134px] w-[134px]'
                   alt='not found'
                 />
-                <span>Uh oh! We couldn&lsquo;t find any listings. Try turning off some filters?</span>
-                <span className='mt-4'>or</span>
+                <span>{t('desc_err')}</span>
+                <span className='mt-4'>{t('or')}</span>
                 <button
                   onClick={handleResetFilter}
                   className='mt-4 rounded-sm bg-orange px-6 py-[10px] text-lg capitalize text-white shadow-sm hover:bg-orange/90'
                 >
-                  reset filter
+                  {t('reset filter')}
                 </button>
               </div>
             ) : (
@@ -100,7 +102,7 @@ export default function ProductList() {
                         </g>
                       </g>
                     </svg>
-                    Search result for
+                    {t('search result for')}
                     <span className='ml-1 text-orange'>&apos;{resultSearch}&apos;</span>
                   </div>
                 )}
@@ -137,7 +139,9 @@ export default function ProductList() {
                         </div>
                         <div className='mb-1 mt-3 flex items-center gap-1'>
                           <RatingStar rating={product.rating} />
-                          <span className='text-xs'>{formatSocialNumber(product.sold)} SOLD</span>
+                          <span className='text-xs'>
+                            {formatSocialNumber(product.sold)} {t('sold')}
+                          </span>
                         </div>
                       </div>
                     </Link>

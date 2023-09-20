@@ -8,8 +8,13 @@ import { AppContext } from '../../Contexts/app.context'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from '~/constants/purchase'
 import { getAvatarUrl } from '~/utils/utils'
+import { useTranslation } from 'react-i18next'
+import { locales } from '~/i18n/i18n'
+import i18next from 'i18next'
 
 export default function NavHeader() {
+  const { t } = useTranslation('header')
+  const currentLang = locales[i18next.language as keyof typeof locales]
   const queryClient = useQueryClient()
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
   const logoutMutation = useMutation({
@@ -27,6 +32,11 @@ export default function NavHeader() {
     logoutMutation.mutate()
   }
 
+  const handleLanguage = (lang: 'vi' | 'en') => {
+    // eslint-disable-next-line import/no-named-as-default-member
+    i18next.changeLanguage(lang)
+  }
+
   return (
     <div className='flex h-[2.125rem] items-center bg-orange'>
       <nav className='container w-full'>
@@ -34,11 +44,17 @@ export default function NavHeader() {
           <Popover
             renderPopover={
               <div className='flex min-w-[200px] flex-col rounded-sm border border-t-0 bg-white text-left text-base text-black shadow-sm'>
-                <button className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'>
-                  English
+                <button
+                  onClick={() => handleLanguage('en')}
+                  className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'
+                >
+                  {t('english')}
                 </button>
-                <button className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'>
-                  Việt Nam
+                <button
+                  onClick={() => handleLanguage('vi')}
+                  className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-orange'
+                >
+                  {t('vietnamese')}
                 </button>
               </div>
             }
@@ -65,7 +81,7 @@ export default function NavHeader() {
                 strokeLinejoin='round'
               />
             </svg>
-            <span>English</span>
+            <span>{currentLang}</span>
             <svg viewBox='0 0 12 12' fill='none' width={12} height={12} color='currentColor'>
               <path
                 fillRule='evenodd'
@@ -78,14 +94,14 @@ export default function NavHeader() {
           {!isAuthenticated && (
             <li className='flex items-center'>
               <Link
-                title='Sign Up'
+                title={t('sign up')}
                 className=' border-r border-r-white/50 px-2 hover:opacity-80'
                 to={path.register}
               >
-                Sign Up
+                {t('sign up')}
               </Link>
-              <Link title='Sign In' className=' px-2 hover:opacity-80' to={path.login}>
-                Sign In
+              <Link title={t('sign in')} className=' px-2 hover:opacity-80' to={path.login}>
+                {t('sign in')}
               </Link>
             </li>
           )}
@@ -96,25 +112,25 @@ export default function NavHeader() {
               renderPopover={
                 <div className='flex min-w-[150px] flex-col rounded-sm border border-t-0 bg-white text-left text-base text-black shadow-sm'>
                   <Link
-                    title='Your profile'
+                    title={t('my profile')}
                     to={path.profile}
                     className='py-2 pl-4 pr-8 hover:bg-slate-100 hover:text-cyan-400'
                   >
-                    My Profile
+                    {t('my profile')}
                   </Link>
                   <Link
-                    title='Your cart'
+                    title={t('my cart')}
                     to={path.cart}
                     className='py-2 pl-4 pr-8 hover:bg-slate-100 hover:text-cyan-400'
                   >
-                    My Cart
+                    {t('my cart')}
                   </Link>
                   <button
-                    title='Logout your account'
+                    title={t('logout')}
                     onClick={handleLogout}
                     className='py-2 pl-4 pr-8 text-left hover:bg-slate-100 hover:text-cyan-400'
                   >
-                    Logout
+                    {t('logout')}
                   </button>
                 </div>
               }

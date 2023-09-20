@@ -11,12 +11,14 @@ import { FormDataPrice, InputPriceSchema } from '~/utils/rulesForm'
 import { NoUndefinedField } from '~/types/utils.type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema } from 'yup'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   queryConfig: QueryConfig
 }
 
 export default function FilterPanel({ queryConfig }: Props) {
+  const { t } = useTranslation('home')
   const navigate = useNavigate()
   const {
     control,
@@ -69,7 +71,7 @@ export default function FilterPanel({ queryConfig }: Props) {
     <div className='flex flex-col'>
       <div>
         <Link
-          title='All Categories'
+          title={t('all categories')}
           to={{
             pathname: path.home,
             search: createSearchParams(
@@ -99,7 +101,7 @@ export default function FilterPanel({ queryConfig }: Props) {
               </g>
             </g>
           </svg>
-          <span>All Categories</span>
+          <span>{t('all categories')}</span>
         </Link>
         {categoryList &&
           categoryList.map((category) => (
@@ -146,11 +148,11 @@ export default function FilterPanel({ queryConfig }: Props) {
                 />
               </g>
             </svg>
-            <span>SEARCH FILTER</span>
+            <span>{t('filter search')}</span>
           </div>
         </div>
         <div className='border-b border-b-gray-300/60 py-[20px]'>
-          <div className='mb-4 text-[14px]'>Price Range</div>
+          <div className='mb-4 text-[14px]'>{t('price range')}</div>
           <form noValidate onSubmit={onSubmit}>
             <div className='flex items-center justify-between'>
               <div className='grow'>
@@ -166,7 +168,7 @@ export default function FilterPanel({ queryConfig }: Props) {
                       }}
                       classNameError='hidden'
                       type='text'
-                      placeholder='₫ MIN'
+                      placeholder={`₫ ${t('min')}`}
                       classNameInput='w-full border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
                     />
                   )}
@@ -186,7 +188,7 @@ export default function FilterPanel({ queryConfig }: Props) {
                       }}
                       type='text'
                       classNameError='hidden'
-                      placeholder='₫ MAX'
+                      placeholder={`₫ ${t('max')}`}
                       classNameInput='w-full border border-gray-400 py-1 pl-[5px] text-[14px] shadow-inner outline-none'
                     />
                   )}
@@ -200,19 +202,19 @@ export default function FilterPanel({ queryConfig }: Props) {
               type='submit'
               className='mt-2 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
             >
-              Apply
+              {t('apply')}
             </button>
           </form>
         </div>
       </div>
       <div>
         <div className='border-b border-b-gray-300/80 py-[20px]'>
-          <div className='mb-2 text-[14px]'>Rating</div>
+          <div className='mb-2 text-[14px]'>{t('rating')}</div>
           {Array(5)
             .fill(0)
             .map((_, index) => (
               <Link
-                title='Rating'
+                title={t('rating')}
                 key={index}
                 to={{
                   pathname: path.home,
@@ -273,7 +275,7 @@ export default function FilterPanel({ queryConfig }: Props) {
                       )
                     })}
                 </div>
-                {index !== 0 ? '& Up' : ''}
+                {index !== 0 ? `& ${t('up')}` : ''}
               </Link>
             ))}
         </div>
@@ -281,7 +283,7 @@ export default function FilterPanel({ queryConfig }: Props) {
           onClick={handleResetFilter}
           className='mt-4 w-full rounded-sm bg-orange px-8 py-1.5 text-sm uppercase text-white shadow-sm hover:bg-[#f05d40]'
         >
-          Clear all
+          {t('clear all')}
         </button>
       </div>
     </div>

@@ -16,8 +16,10 @@ import { ExtendedPurchase, purchase } from '~/types/purchase.type'
 import { formatPriceNumber, formatSocialNumber, generateNameId } from '~/utils/utils'
 import useScrollTop from '~/hooks/useScrollTop'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 
 export default function Cart() {
+  const { t } = useTranslation('cart')
   useScrollTop()
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
   const { data: purchasesInCartData, refetch } = useQuery({
@@ -183,7 +185,7 @@ export default function Cart() {
   return (
     <>
       <Helmet>
-        <title>Cart | Shopee Clone</title>
+        <title>{`${t('cart')} | Shopee Clone`}</title>
         <meta name='description' content='Page cart Shopee Clone' />
       </Helmet>
       <div className='border-b-4 border-b-orange bg-[#f5f5f5] pb-[60px] pt-10'>
@@ -201,16 +203,16 @@ export default function Cart() {
                       onChange={handleCheckedAll}
                     />
                     <label htmlFor='CheckedAllProduct' className='cursor-pointer px-[20px] text-sm'>
-                      Product
+                      {t('product')}
                     </label>
                   </div>
                 </div>
                 <div className='col-span-6 flex items-center'>
                   <div className='hidden flex-1 grid-cols-6 text-sm text-gray-500/90 lg:grid'>
-                    <div className='col-span-2 text-center'>Unit Price</div>
-                    <div className='col-span-2 text-center'>Quantity</div>
-                    <div className='col-span-1 text-center'>Total Price</div>
-                    <div className='col-span-1 text-center'>Actions</div>
+                    <div className='col-span-2 text-center'>{t('unit price')}</div>
+                    <div className='col-span-2 text-center'>{t('quantity')}</div>
+                    <div className='col-span-1 text-center'>{t('total price')}</div>
+                    <div className='col-span-1 text-center'>{t('actions')}</div>
                   </div>
                 </div>
               </div>
@@ -282,7 +284,7 @@ export default function Cart() {
                               className='text-black outline-none hover:text-orange'
                               onClick={handleDeletePurchase(index)}
                             >
-                              Delete
+                              {t('delete')}
                             </button>
                           </div>
                         </div>
@@ -301,22 +303,24 @@ export default function Cart() {
                       onChange={handleCheckedAll}
                     />
                     <label htmlFor='selectAllProduct' className='cursor-pointer px-[20px]'>
-                      Select All ({extendedPurchases?.length})
+                      {t('select all')} ({extendedPurchases?.length})
                     </label>
                     <button onClick={handleDeleteManyPurchase} className='px-1 outline-none'>
-                      Delete ({checkedPurchaseCount})
+                      {t('delete')} ({checkedPurchaseCount})
                     </button>
                   </div>
                   <div className='flex w-full flex-1 flex-col items-center justify-end gap-[15px] gap-y-1 sm:w-auto sm:flex-row'>
                     <div>
                       <div className='flex items-center gap-[5px]'>
-                        <span>Total ({checkedPurchaseCount} item):</span>
+                        <span>
+                          {t('total')} ({checkedPurchaseCount} {t('item')}):
+                        </span>
                         <span className='text-2xl leading-4 text-orange'>
                           ₫{formatPriceNumber(totalPricePurchase)}
                         </span>
                       </div>
                       <div className='flex items-center justify-end gap-[24px] text-sm'>
-                        <span>Saved</span>
+                        <span>{t('saved')}</span>
                         <span className='text-orange'>₫{formatPriceNumber(totalSavingPricePurchase)}</span>
                       </div>
                     </div>
@@ -326,15 +330,15 @@ export default function Cart() {
                       isLoading={buyPurchaseMutation.isLoading}
                       className='mr-[2px] w-full rounded-sm bg-orange px-[36px] py-[10px] text-sm capitalize text-white hover:bg-[#f05d40] sm:w-[210px]'
                     >
-                      check out
+                      {t('check out')}
                     </Button>
                   </div>
                 </div>
               </div>
               <div className='mt-9 flex items-center justify-between'>
-                <div className='text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
+                <div className='text-base uppercase text-gray-500'>{t('you may also like')}</div>
                 <Link
-                  title='See all'
+                  title={t('see all')}
                   to={{
                     pathname: path.home,
                     search: createSearchParams({
@@ -343,7 +347,7 @@ export default function Cart() {
                   }}
                   className='flex items-center gap-1 p-1 text-sm text-orange'
                 >
-                  <span>See All</span>
+                  <span>{t('see all')}</span>
                   <svg
                     enableBackground='new 0 0 11 11'
                     viewBox='0 0 11 11'
@@ -387,7 +391,9 @@ export default function Cart() {
                           <div className='flex items-center gap-[1px]'>
                             <RatingStar size={10} rating={product.rating} />
                           </div>
-                          <span className='text-xs'>{formatSocialNumber(product.sold)} SOLD</span>
+                          <span className='text-xs'>
+                            {formatSocialNumber(product.sold)} {t('sold')}
+                          </span>
                         </div>
                       </div>
                     </Link>
@@ -401,14 +407,14 @@ export default function Cart() {
                 className='h-[134px] w-[134px]'
                 alt='No purchase'
               />
-              <span>Uh oh! We couldn&lsquo;t find any purchases?</span>
-              <span className='mt-4'>or</span>
+              <span>{t('desc_err')}</span>
+              <span className='mt-4'>{t('or')}</span>
               <Link
-                title='Add some products'
+                title={t('add some')}
                 to={path.home}
                 className='mt-4 rounded-sm bg-orange px-8 py-[10px] text-lg capitalize text-white shadow-sm hover:bg-orange/90'
               >
-                Add some
+                {t('add some')}
               </Link>
             </div>
           )}

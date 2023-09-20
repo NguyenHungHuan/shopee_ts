@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import omit from 'lodash/omit'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 import userApi from '~/apis/userApi'
@@ -15,6 +16,7 @@ type FormData = Pick<UserSchema, 'password' | 'confirm_password' | 'new_password
 const passwordSchema = userSchema.pick(['password', 'confirm_password', 'new_password'])
 
 export default function ChangePassword() {
+  const { t } = useTranslation('profile')
   useScrollTop()
   const {
     register,
@@ -62,21 +64,19 @@ export default function ChangePassword() {
   return (
     <>
       <Helmet>
-        <title>Change Password | Shopee Clone</title>
+        <title>{`${t('change password')} | Shopee Clone`}</title>
         <meta name='description' content='Page change password Shopee Clone' />
       </Helmet>
       <div className='rounded-sm bg-white px-4 py-[18px] shadow sm:px-[30px]'>
         <div className='border-b border-b-gray-200 pb-[18px]'>
-          <h1 className='text-lg font-medium'>Change Password</h1>
-          <div className='text-sm'>
-            For your account&apos;s security, do not share your password with anyone else
-          </div>
+          <h1 className='text-lg font-medium'>{t('change password')}</h1>
+          <div className='text-sm'>{t('desc_password')}</div>
         </div>
         <form onSubmit={onSubmit} className='flex pt-[30px] text-sm' noValidate>
           <div className='w-full flex-1 pr-0 sm:pr-[50px]'>
             <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
               <label htmlFor='password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
-                Current Password
+                {t('current password')}
               </label>
               <Input
                 register={register}
@@ -85,12 +85,11 @@ export default function ChangePassword() {
                 classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
                 id='password'
                 name='password'
-                placeholder='Input your current password to verify'
               />
             </div>
             <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
               <label htmlFor='new_password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
-                New Password
+                {t('new password')}
               </label>
               <Input
                 register={register}
@@ -99,12 +98,11 @@ export default function ChangePassword() {
                 classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
                 id='new_password'
                 name='new_password'
-                placeholder='Input your new password'
               />
             </div>
             <div className='flex flex-col gap-5 pb-[15px] sm:flex-row'>
               <label htmlFor='confirm_password' className='mt-2 min-w-[25%] text-gray-400 sm:text-right'>
-                Confirm Password
+                {t('confirm password')}
               </label>
               <Input
                 register={register}
@@ -113,7 +111,6 @@ export default function ChangePassword() {
                 classNameInput='w-full sm:w-[360px] border border-gray-200 p-[9px] shadow-inner outline-none focus:border-gray-400'
                 id='confirm_password'
                 name='confirm_password'
-                placeholder='Confirm your new password'
               />
             </div>
             <div className='flex items-center gap-5 pb-16'>
@@ -122,7 +119,7 @@ export default function ChangePassword() {
                 type='submit'
                 className='w-full rounded-sm bg-orange px-5 py-[10px] text-white sm:w-auto'
               >
-                Confirm
+                {t('save')}
               </button>
             </div>
           </div>

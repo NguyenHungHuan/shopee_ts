@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, NavLink } from 'react-router-dom'
 import { AppContext } from '~/Contexts/app.context'
 import path from '~/constants/path'
 import { getAvatarUrl } from '~/utils/utils'
 
 export default function UserSideNav() {
+  const { t } = useTranslation('profile')
   const { profile } = useContext(AppContext)
 
   return (
@@ -38,7 +40,7 @@ export default function UserSideNav() {
                 fillRule='evenodd'
               />
             </svg>
-            Edit Profile
+            {t('edit profile')}
           </Link>
         </div>
       </div>
@@ -58,7 +60,7 @@ export default function UserSideNav() {
             src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
             alt='icon'
           />
-          My Account
+          {t('my account')}
         </NavLink>
         <NavLink
           title='Change Password'
@@ -84,7 +86,7 @@ export default function UserSideNav() {
               d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
             />
           </svg>
-          Change Password
+          {t('change password')}
         </NavLink>
         <NavLink
           title='My Purchase'
@@ -101,7 +103,7 @@ export default function UserSideNav() {
             src='https://down-vn.img.susercontent.com/file/f0049e9df4e536bc3e7f140d071e9078'
             alt='icon'
           />
-          My Purchase
+          {t('my purchase')}
         </NavLink>
       </div>
     </div>

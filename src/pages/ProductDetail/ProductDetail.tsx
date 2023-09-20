@@ -18,8 +18,10 @@ import Button from '~/components/Button'
 import useScrollTop from '~/hooks/useScrollTop'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductDetail() {
+  const { t } = useTranslation('product')
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { isAuthenticated } = useContext(AppContext)
@@ -316,11 +318,11 @@ export default function ProductDetail() {
                   <span className='border-b border-b-black text-base uppercase'>
                     {formatSocialNumber(product.view)}
                   </span>
-                  <span className='text-sm text-gray-500'>Views</span>
+                  <span className='text-sm text-gray-500'>{t('views')}</span>
                 </div>
                 <div className='flex items-center gap-[5px] px-[15px]'>
                   <span className='text-base uppercase'>{formatSocialNumber(product.sold)}</span>
-                  <span className='text-sm text-gray-500'>Sold</span>
+                  <span className='text-sm text-gray-500'>{t('sold')}</span>
                 </div>
               </div>
               <div className='mt-4 bg-[#fafafa] px-[20px] py-[15px]'>
@@ -335,7 +337,7 @@ export default function ProductDetail() {
                     {Math.round(
                       ((product.price_before_discount - product.price) / product.price_before_discount) * 100
                     )}
-                    % off
+                    % {t('off')}
                   </div>
                 </div>
                 <div className='mt-[10px] flex items-center gap-[10px]'>
@@ -405,16 +407,14 @@ export default function ProductDetail() {
                   </svg>
                   <div>
                     <div className='flex items-center gap-[10px]'>
-                      <span className='text-sm text-orange'>Lowest Price</span>
+                      <span className='text-sm text-orange'>{t('lowest price')}</span>
                     </div>
-                    <div className='mt-1 text-xs text-gray-500'>
-                      The best offer for this product on Shopee!
-                    </div>
+                    <div className='mt-1 text-xs text-gray-500'>{t('desc_price')}</div>
                   </div>
                 </div>
               </div>
               <div className='mt-6 flex items-center gap-16 pl-[20px] text-sm text-gray-500'>
-                <span className='hidden lg:inline-block'>Quantity</span>
+                <span className='hidden lg:inline-block'>{t('quantity')}</span>
                 <div className='flex flex-wrap items-center gap-[15px]'>
                   <QuantityController
                     value={buyCount}
@@ -423,7 +423,9 @@ export default function ProductDetail() {
                     onDecrease={setBuyCount}
                     onIncrease={setBuyCount}
                   />
-                  <span>{product.quantity} pieces available</span>
+                  <span>
+                    {product.quantity} {t('pieces available')}
+                  </span>
                 </div>
               </div>
               <div className='mt-[30px] flex flex-wrap items-center gap-[15px] pl-[20px]'>
@@ -470,7 +472,7 @@ export default function ProductDetail() {
                       />
                     </g>
                   </svg>
-                  <span>add to cart</span>
+                  <span>{t('add to cart')}</span>
                 </button>
                 <Button
                   onClick={handleBuyNow}
@@ -478,7 +480,7 @@ export default function ProductDetail() {
                   disabled={addToCartMutation.isLoading}
                   className='rounded-sm bg-orange px-[20px] py-[12px] capitalize text-white shadow-sm hover:bg-[#f05d40]'
                 >
-                  buy now
+                  {t('buy now')}
                 </Button>
               </div>
               <div className='mt-8 hidden border-t border-t-gray-200 lg:block'>
@@ -489,17 +491,15 @@ export default function ProductDetail() {
                       src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/83e10a1f95cb083579c089448ef8dd3b.png'
                       alt='logo'
                     />
-                    <span className='text-sm'>shopee guarantee</span>
+                    <span className='text-sm'>{t('shopee guarantee')}</span>
                   </div>
-                  <span className='text-sm text-gray-500'>
-                    Get the items you ordered or get your money back.
-                  </span>
+                  <span className='text-sm text-gray-500'>{t('desc_sale')}</span>
                 </div>
               </div>
             </div>
           </div>
           <div className='container mt-[15px] rounded-[3px] bg-white p-[25px] shadow'>
-            <div className='bg-[#fafafa] p-[14px] text-lg capitalize'>Product Description</div>
+            <div className='bg-[#fafafa] p-[14px] text-lg capitalize'>{t('product description')}</div>
             <div
               className='m-[15px] mt-[30px] whitespace-pre-wrap text-sm leading-loose'
               dangerouslySetInnerHTML={{
@@ -508,7 +508,7 @@ export default function ProductDetail() {
             />
           </div>
           <div className='container'>
-            <div className='mt-9 text-base uppercase text-gray-500'>YOU MAY ALSO LIKE</div>
+            <div className='mt-9 text-base uppercase text-gray-500'>{t('you may also like')}</div>
             <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
               {dataByCategory?.data.data.products.map((product) => (
                 <Link
@@ -540,7 +540,9 @@ export default function ProductDetail() {
                       <div className='flex items-center gap-[1px]'>
                         <RatingStar size={10} rating={product.rating} />
                       </div>
-                      <span className='text-xs text-gray-500'>{formatSocialNumber(product.sold)} sold</span>
+                      <span className='text-xs text-gray-500'>
+                        {formatSocialNumber(product.sold)} {t('sold')}
+                      </span>
                     </div>
                   </div>
                 </Link>

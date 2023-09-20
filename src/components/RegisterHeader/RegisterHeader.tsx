@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Link, useMatch } from 'react-router-dom'
 import path from '~/constants/path'
 
 export default function RegisterHeader() {
+  const { t } = useTranslation('login')
   const isLoginPage = useMatch(path.login)
   return (
     <nav className='container bg-white py-5'>
@@ -14,7 +16,7 @@ export default function RegisterHeader() {
               </g>
             </svg>
           </Link>
-          <div className='text-2xl'>{isLoginPage ? 'Sign In' : 'Sign Up'}</div>
+          <div className='text-2xl'>{isLoginPage ? `${t('sign in')}` : `${t('sign up')}`}</div>
         </div>
       </div>
     </nav>

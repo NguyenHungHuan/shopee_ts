@@ -14,8 +14,10 @@ import path from '~/constants/path'
 import Button from '~/components/Button'
 import useScrollTop from '~/hooks/useScrollTop'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 
 const Register = () => {
+  const { t } = useTranslation('login')
   useScrollTop()
   const {
     register,
@@ -60,7 +62,7 @@ const Register = () => {
   return (
     <>
       <Helmet>
-        <title>Register | Shopee Clone</title>
+        <title>{`${t('sign up')} | Shopee Clone`}</title>
         <meta name='description' content='Page register Shopee Clone' />
       </Helmet>
       <div className='bg-orange'>
@@ -71,7 +73,7 @@ const Register = () => {
               className='min-h-[462px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
               noValidate
             >
-              <div className='text-[20px]'>Sign Up</div>
+              <div className='text-[20px]'>{t('sign up')}</div>
               <Input
                 className='mt-8'
                 name='email'
@@ -85,7 +87,7 @@ const Register = () => {
                 name='password'
                 register={register}
                 type='password'
-                placeholder='Password'
+                placeholder={t('password')}
                 errorMessage={errors.password?.message}
               />
               <Input
@@ -93,7 +95,7 @@ const Register = () => {
                 name='confirm_password'
                 register={register}
                 type='password'
-                placeholder='Confirm your password'
+                placeholder={t('confirm_password')}
                 errorMessage={errors.confirm_password?.message}
               />
               <Button
@@ -102,17 +104,17 @@ const Register = () => {
                 type='submit'
                 className='mt-3 w-full bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
               >
-                SUBMIT
+                {t('sign up')}
               </Button>
               <div className='mt-8 flex items-center'>
                 <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-                <div className='px-4 text-xs text-[#ccc]'>OR</div>
+                <div className='px-4 text-xs text-[#ccc]'>{t('or')}</div>
                 <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
               </div>
               <div className='mt-6 flex items-center justify-center gap-2'>
-                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
-                <Link title='Sign In' className='text-sm text-orange' to='/login'>
-                  Sign In
+                <div className='text-sm text-[#ccc]'>{t('register_desc')} </div>
+                <Link title={t('sign in')} className='text-sm text-orange' to='/login'>
+                  {t('sign in')}
                 </Link>
               </div>
             </form>

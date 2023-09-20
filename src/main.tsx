@@ -8,6 +8,7 @@ import './index.css'
 import { AppProvider } from './Contexts/app.context'
 import ErrorBoundary from './components/ErrorBoundary'
 import { HelmetProvider } from 'react-helmet-async'
+import '../src/i18n/i18n'
 
 const queryClient = new QueryClient({
   defaultOptions: {

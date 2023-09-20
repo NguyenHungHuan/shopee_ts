@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { Link, createSearchParams } from 'react-router-dom'
 import path from '~/constants/path'
 import { QueryConfig } from '~/pages/ProductList/ProductList'
@@ -10,6 +11,7 @@ interface Props {
 
 const RANGE = 2
 export default function Paginate({ pageSize, queryConfig }: Props) {
+  const { t } = useTranslation('home')
   const page = Number(queryConfig.page)
   let dotBefore = false
   let dotAfter = false
@@ -45,7 +47,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
     <div className='mb-14 flex flex-wrap items-center justify-center gap-y-3 text-xl text-gray-400'>
       {page > 1 ? (
         <Link
-          title='Previous page'
+          title={t('previous')}
           to={{
             pathname: path.home,
             search: createSearchParams({
@@ -107,7 +109,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
           }
           return (
             <Link
-              title={`Page ${pageNumber}`}
+              title={`${t('page')} ${pageNumber}`}
               to={{
                 pathname: path.home,
                 search: createSearchParams({
@@ -129,7 +131,7 @@ export default function Paginate({ pageSize, queryConfig }: Props) {
         })}
       {page < pageSize ? (
         <Link
-          title='Next page'
+          title={t('next')}
           to={{
             pathname: path.home,
             search: createSearchParams({

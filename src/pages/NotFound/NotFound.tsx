@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import path from '~/constants/path'
 
 export default function NotFound() {
+  const { t } = useTranslation('error')
   return (
     <>
       <Helmet>
-        <title>Not Found | Shopee Clone</title>
+        <title>{`${t('not found')} | Shopee Clone`}</title>
         <meta name='description' content='Page not found Shopee Clone' />
       </Helmet>
       <div className='flex h-[60vh] flex-col items-center justify-center'>
@@ -16,9 +18,9 @@ export default function NotFound() {
           alt='not found'
         />
         <span className='mb-2 mt-4'>404</span>
-        <span className='text-sm text-[#0000008a]'>It looks like something is missing!</span>
+        <span className='text-sm text-[#0000008a]'>{t('desc')}</span>
         <Link title='Home' to={path.home} className='mt-4 rounded bg-orange px-6 py-2 text-white shadow'>
-          Go Home
+          {t('go home')}
         </Link>
       </div>
     </>

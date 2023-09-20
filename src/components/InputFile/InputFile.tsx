@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import config from '~/constants/config'
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function InputFile({ onChange }: Props) {
+  const {t} = useTranslation('profile')
   const {
     clearErrors,
     setError,
@@ -50,7 +52,7 @@ export default function InputFile({ onChange }: Props) {
         type='button'
         className='rounded-sm border px-5 py-[10px] shadow-sm hover:bg-[#00000005]'
       >
-        Select Image
+        {t('select img')}
       </button>
       <div className='min-h-[1.5rem] pl-1 pt-1 text-center text-sm text-[#ff424f]'>
         {errors.root?.message}

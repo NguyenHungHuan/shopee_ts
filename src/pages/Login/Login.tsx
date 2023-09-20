@@ -13,8 +13,10 @@ import { LoginFormData, loginSchema } from '~/utils/rulesForm'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import useScrollTop from '~/hooks/useScrollTop'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 
 const Login = () => {
+  const { t } = useTranslation('login')
   useScrollTop()
   const {
     register,
@@ -56,7 +58,7 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>Login | Shopee Clone</title>
+        <title>{`${t('sign in')} | Shopee Clone`}</title>
         <meta name='description' content='Page login Shopee Clone' />
       </Helmet>
       <div className='bg-orange'>
@@ -67,7 +69,7 @@ const Login = () => {
               className='min-h-[430px] w-[400px] rounded bg-[#fff] p-[30px] shadow-lg'
               noValidate
             >
-              <div className='text-[20px]'>Sign In</div>
+              <div className='text-[20px]'>{t('sign in')}</div>
               <Input
                 className='mt-8'
                 errorMessage={errors.email?.message}
@@ -81,7 +83,7 @@ const Login = () => {
                 classNameInput='w-full outline-none border px-4 py-2 border-[#00000024] rounded-sm'
                 classNameError='text-[#ff424f] min-h-[1.5rem] text-sm pt-1 pl-1'
                 errorMessage={errors.password?.message}
-                placeholder='Password'
+                placeholder={t('password')}
                 type='password'
                 name='password'
                 register={register}
@@ -92,17 +94,17 @@ const Login = () => {
                 type='submit'
                 className='mt-3 flex w-full items-center justify-center bg-orange/90 px-4 py-2 text-[#fff] hover:bg-orange'
               >
-                Sign In
+                {t('sign in')}
               </Button>
               <div className='mt-8 flex items-center'>
                 <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
-                <div className='px-4 text-xs text-[#ccc]'>OR</div>
+                <div className='px-4 text-xs text-[#ccc]'>{t('or')}</div>
                 <div className='h-[1px] w-full flex-1 bg-[#ccc]'></div>
               </div>
               <div className='mt-6 flex items-center justify-center gap-2'>
-                <div className='text-sm text-[#ccc]'>New to Shopee? </div>
-                <Link title='Sign Up' className='text-sm text-orange' to='/register'>
-                  Sign Up
+                <div className='text-sm text-[#ccc]'>{t('login_desc')} </div>
+                <Link title={t('sign up')} className='text-sm text-orange' to='/register'>
+                  {t('sign up')}
                 </Link>
               </div>
             </form>

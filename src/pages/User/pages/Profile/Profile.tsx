@@ -16,6 +16,7 @@ import { errorResponse } from '~/types/utils.type'
 import InputFile from '~/components/InputFile'
 import useScrollTop from '~/hooks/useScrollTop'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -24,6 +25,7 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
+  const { t } = useTranslation('profile')
   useScrollTop()
   const [fileImg, setFileImg] = useState<File>()
   const { setProfile } = useContext(AppContext)
@@ -112,13 +114,13 @@ export default function Profile() {
   return (
     <>
       <Helmet>
-        <title>Profile | Shopee Clone</title>
+        <title>{`${t('profile')} | Shopee Clone`}</title>
         <meta name='description' content='Page profile Shopee Clone' />
       </Helmet>
       <div className='rounded-sm bg-white px-[30px] py-[18px] shadow'>
         <div className='border-b border-b-gray-200 pb-[18px]'>
-          <h1 className='text-lg font-medium'>My Profile</h1>
-          <div className='text-sm'>Manage and protect your account</div>
+          <h1 className='text-lg font-medium'>{t('my profile')}</h1>
+          <div className='text-sm'>{t('desc_profile')}</div>
         </div>
         <FormProvider {...methods}>
           <form
@@ -133,7 +135,7 @@ export default function Profile() {
               </div>
               <div className='flex gap-5 pb-[20px]'>
                 <label htmlFor='name' className='mt-2 min-w-[20%] text-right text-gray-400'>
-                  Name
+                  {t('name')}
                 </label>
                 <Input
                   id='name'
@@ -147,7 +149,7 @@ export default function Profile() {
               </div>
               <div className='flex gap-5 pb-[20px]'>
                 <label htmlFor='phone' className='mt-2 min-w-[20%] text-right text-gray-400'>
-                  Phone
+                  {t('phone')}
                 </label>
                 <Controller
                   name='phone'
@@ -167,7 +169,7 @@ export default function Profile() {
               </div>
               <div className='flex gap-5 pb-[20px]'>
                 <label htmlFor='address' className='mt-2 min-w-[20%] text-right text-gray-400'>
-                  Address
+                  {t('address')}
                 </label>
                 <Input
                   id='address'
@@ -196,7 +198,7 @@ export default function Profile() {
                   type='submit'
                   className='w-full rounded-sm bg-orange px-5 py-[10px] text-white hover:opacity-90 lg:w-auto'
                 >
-                  Save
+                  {t('save')}
                 </Button>
               </div>
             </div>
@@ -209,8 +211,8 @@ export default function Profile() {
                 />
                 <InputFile onChange={handleChangeInputFile} />
                 <div className='mt-3 text-gray-400'>
-                  <div>File size: maximum 1 MB</div>
-                  <div>File extension: .JPEG, .PNG</div>
+                  <div>{t('file size')}</div>
+                  <div>{t('file extension')}</div>
                 </div>
               </div>
             </div>

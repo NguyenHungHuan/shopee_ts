@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchaseApi from '~/apis/purchaseApi'
@@ -11,6 +12,7 @@ import { purchasesStatusList } from '~/types/purchase.type'
 import { formatPriceNumber, generateNameId } from '~/utils/utils'
 
 export default function HistoryPurchase() {
+  const { t } = useTranslation('profile')
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.allProduct
   useScrollTop([status])
@@ -24,12 +26,12 @@ export default function HistoryPurchase() {
   return (
     <>
       <Helmet>
-        <title>History Purchase | Shopee Clone</title>
+        <title>{`${t('my purchase')} | Shopee Clone`}</title>
         <meta name='description' content='Page history purchase Shopee Clone' />
       </Helmet>
       <div className='grid grid-cols-2 rounded-sm shadow-sm md:grid-cols-6'>
         <Link
-          title='All'
+          title={t('all')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -44,10 +46,10 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          All
+          {t('all')}
         </Link>
         <Link
-          title='To Pay'
+          title={t('to pay')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -62,10 +64,10 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          To Pay
+          {t('to pay')}
         </Link>
         <Link
-          title='To Ship'
+          title={t('to ship')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -80,10 +82,10 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          To Ship
+          {t('to ship')}
         </Link>
         <Link
-          title='To Receive'
+          title={t('to receive')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -98,10 +100,10 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          To Receive
+          {t('to receive')}
         </Link>
         <Link
-          title='Completed'
+          title={t('completed')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -116,10 +118,10 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          Completed
+          {t('completed')}
         </Link>
         <Link
-          title='Cancelled'
+          title={t('cancelled')}
           to={{
             pathname: path.historyPurchase,
             search: createSearchParams({
@@ -134,7 +136,7 @@ export default function HistoryPurchase() {
             }
           )}
         >
-          Cancelled
+          {t('cancelled')}
         </Link>
       </div>
       {purchase &&
@@ -169,7 +171,7 @@ export default function HistoryPurchase() {
               </div>
             </Link>
             <div className='flex items-center justify-end text-sm sm:items-start'>
-              <span>Order Total:</span>
+              <span>{t('order total')}:</span>
               <span className='ml-3 text-xl text-orange'>
                 ₫{formatPriceNumber(purchase.buy_count * purchase.product.price)}
               </span>
@@ -183,7 +185,7 @@ export default function HistoryPurchase() {
             className='h-[100px] w-[100px]'
             alt='No orders yet'
           />
-          <span className='mt-4'>No orders yet</span>
+          <span className='mt-4'>{t('no orders yet')}</span>
         </div>
       )}
     </>

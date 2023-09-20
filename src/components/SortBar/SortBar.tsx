@@ -5,6 +5,7 @@ import { productListConfig } from '~/types/products.type'
 import path from '~/constants/path'
 import classNames from 'classnames'
 import omit from 'lodash/omit'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   queryConfig: QueryConfig
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function SortBar({ queryConfig, pageSize }: Props) {
+  const { t } = useTranslation('home')
   const navigate = useNavigate()
   const { sort_by = queryParamsDefault.sort_by, order, page } = queryConfig
   const handleSort = (value: Exclude<productListConfig['sort_by'], undefined>) => {
@@ -44,7 +46,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
   return (
     <div className='flex flex-wrap items-center gap-2 rounded-sm bg-[#ededed] px-5 py-[13px] lg:justify-between'>
       <div className='flex flex-wrap items-center gap-[10px] text-sm'>
-        <span className='mr-1 text-gray-500'>Sort by</span>
+        <span className='mr-1 text-gray-500'>{t('sort by')}</span>
         <button
           onClick={() => handleSort(sortBy.view)}
           className={classNames('min-w-[90px] rounded-sm px-[21px] py-[7px]  shadow-sm hover:opacity-80', {
@@ -52,7 +54,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
             'bg-white text-black': !isActive(sortBy.view)
           })}
         >
-          Popular
+          {t('popular')}
         </button>
         <button
           onClick={() => handleSort(sortBy.createdAt)}
@@ -61,7 +63,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
             'bg-white text-black': !isActive(sortBy.createdAt)
           })}
         >
-          Lasted
+          {t('lasted')}
         </button>
         <button
           onClick={() => handleSort(sortBy.sold)}
@@ -70,7 +72,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
             'bg-white text-black': !isActive(sortBy.sold)
           })}
         >
-          Top Sales
+          {t('top sales')}
         </button>
         <select
           value={order || ''}
@@ -78,10 +80,10 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
           className='min-w-[200px] cursor-pointer rounded-sm bg-white px-2 py-[9px] outline-none hover:opacity-80'
         >
           <option value='' hidden>
-            Price
+            {t('price')}
           </option>
-          <option value={orderConstant.asc}>Price: Low to High</option>
-          <option value={orderConstant.desc}>Price: High to Low</option>
+          <option value={orderConstant.asc}>{t('low to high')}</option>
+          <option value={orderConstant.desc}>{t('high to low')}</option>
         </select>
       </div>
       <div className='flex items-center gap-5'>
@@ -92,7 +94,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
         <div className='flex items-center'>
           {Number(page) > 1 ? (
             <Link
-              title='Previous page'
+              title={t('previous')}
               to={{
                 pathname: path.home,
                 search: createSearchParams({
@@ -121,7 +123,7 @@ export default function SortBar({ queryConfig, pageSize }: Props) {
           )}
           {Number(page) < pageSize ? (
             <Link
-              title='Next page'
+              title={t('next')}
               to={{
                 pathname: path.home,
                 search: createSearchParams({
