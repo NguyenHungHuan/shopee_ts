@@ -3,9 +3,7 @@
 
 ## Official Link
 
-https://shopee-clone-mh4l.onrender.com/
-
-https://courageous-platypus-32ab62.netlify.app/
+https://vshopee.vercel.app/
 
 ## Main features
 
